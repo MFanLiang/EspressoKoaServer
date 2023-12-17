@@ -67,7 +67,7 @@ app.use(koajwt({
   }
 }))
 
-// 服务接口控制器
+// 服务控制器
 InitManager.initCore(app)
 
 // error-handling

@@ -17,7 +17,6 @@ const mysql_sequelize = new Sequelize(mysql_config.DB, mysql_config.USER, mysql_
       // console.log('@服务日志消息@', msg);
     }
   },
-  timezone: '+8:00', //东八时区
 })
 
 // 测试数据库连接

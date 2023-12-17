@@ -2,6 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const bcrypt = require('bcryptjs');
 
 // 传入文件夹的路径看是否存在，存在不用管，不存在则直接创建文件夹
 /**
@@ -83,4 +84,16 @@ exports.getLocalIP = async function () {
       break;
   }
   return ip;
+};
+
+/** 加密密码口令 */
+exports.encryptPassword = async function (passwordVal) {
+  // 创建加密前的盐
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(passwordVal, salt);
+};
+
+/** 解密密码口令 */
+exports.decodePassword = async function (originVal, cryptograph) {
+  return bcrypt.compareSync(originVal, cryptograph);
 };

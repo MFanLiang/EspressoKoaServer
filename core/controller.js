@@ -8,20 +8,19 @@ const router = require('koa-router')();
  */
 const handleUrl = (urlMapping) => {
   Object.entries(urlMapping).forEach(([url, hanler]) => {
-    console.log('url :>> ', url);
     // 处理 GET 请求
-    // if (url.startsWith('GET')) {
-    //   let _analyze_path = url.substring(4);
-    //   router.get(_analyze_path, hanler);
-    //   return null;
-    // }
+    if (url.startsWith('GET')) {
+      let _analyze_path = url.substring(4);
+      router.get(_analyze_path, hanler);
+      return null;
+    }
     // 处理 POST 请求
-    // if (url.startsWith('POST')) {
-    //   let _analyze_path = url.substring(5);
-    //   router.post(_analyze_path, hanler);
-    //   return null;
-    // }
-    // console.log(`invalid (无效的) URL：${url}`)
+    if (url.startsWith('POST')) {
+      let _analyze_path = url.substring(5);
+      router.post(_analyze_path, hanler);
+      return null;
+    }
+    console.log(`invalid (无效的) URL：${url}`)
   })
 };
 
