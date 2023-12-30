@@ -1,4 +1,4 @@
-const homePage = (ctx, next) => {
+const homePage = async (ctx, next) => {
   ctx.response.body = 'hello Word 你好世界 Koa Server default page!';
 };
 

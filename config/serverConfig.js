@@ -18,7 +18,7 @@ const getMysqlConfig = () => {
       // 数据库端口号
       port: '3306',
       // 连接数据库的方言(One of mysql, postgres, sqlite, db2, mariadb and mssql.)
-      dialect: "mysql",
+      dialect: 'mysql',
       pool: {
         // 最大连接数
         max: 5,

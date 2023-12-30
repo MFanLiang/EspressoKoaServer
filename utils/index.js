@@ -46,7 +46,7 @@ exports.useDelay = async function (time) {
 };
 
 /** 获取本地计算机的ip地址 */
-exports.getLocalIP = async function () {
+exports.getLocalIP = function () {
   // 获取当前的操作系统类型 Windows_NT(windows操作系统) ｜ Linux(Linux操作系统) ｜ Darwin(Mac操作系统)
   const osType = os.type();
 
