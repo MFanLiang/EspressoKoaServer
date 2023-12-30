@@ -5,7 +5,8 @@ const {
   getPointerUserInfo,
   getAllUser,
   updatePointerUser,
-  delPointerUser
+  delPointerUser,
+  fuzzyQuery
 } = require('../apis/userApi');
 
 const router = new Router();
@@ -16,5 +17,6 @@ router.get('/user/:id', getPointerUserInfo);
 router.post('/user/user-all-info', getAllUser);
 router.put('/user', updatePointerUser)
 router.del('/user', delPointerUser);
+router.post('/user/fuzzyquery', fuzzyQuery);
 
 module.exports = router;
