@@ -123,10 +123,19 @@ const getPointerUserInfo = async (ctx, next) => {
 
 /** 获取所有用户信息 */
 const getAllUser = async (ctx, next) => {
-  await sequelizeDB.userSchema.findAll().then(async (users) => {
+  await sequelizeDB.mysql_sequelize.query('SELECT id, userName, userFullName, userRole, avatar, tel, status, createDate FROM sys_network.user_manage ORDER BY createDate DESC;', {
+    modal: sequelizeDB.userSchema,
+    mapToModel: true
+  }).then((data) => {
+    const result = JSON.parse(JSON.stringify(data))[0].map((item) => {
+      return {
+        ...item,
+        status: item.status === 1 ? true : false,
+      }
+    });
     ctx.response.body = {
       code: 200,
-      data: JSON.parse(JSON.stringify(users)),
+      data: result,
       message: '查询所有用户信息已完成'
     }
   }).catch((error) => {
