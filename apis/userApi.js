@@ -136,7 +136,10 @@ const getAllUser = async (ctx, next) => {
     ctx.response.body = {
       code: 200,
       data: result,
-      message: '查询所有用户信息已完成'
+      message: '查询所有用户信息已完成',
+      total: JSON.parse(JSON.stringify(data))[0].length,
+      currentPage: 1,
+      pageSize: 10
     }
   }).catch((error) => {
     if (error) {

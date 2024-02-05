@@ -6,7 +6,8 @@ const getInvoiceList = async (ctx, next) => {
     ctx.response.body = {
       code: 200,
       data: JSON.parse(JSON.stringify(data)),
-      message: '查询所有咖啡产品成功'
+      message: '查询所有咖啡产品成功',
+      total: JSON.parse(JSON.stringify(data)).length
     }
   }).catch((err) => {
     ctx.response.status = err.statusCode || err.status || 500;

@@ -65,6 +65,12 @@ const coffeeSchema = (mysql_sequelize, Sequelize) => {
       type: DataTypes.STRING(15),
       allowNull: true,
       comment: '提交作者',
+    },
+
+    createDate: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+      comment: '用户创建时间'
     }
   }, {
     // 是否自动添加 createdAt / updateAt 字段
