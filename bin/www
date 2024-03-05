@@ -13,6 +13,7 @@ var { getLocalIP } = require('./../utils/index');
  * Get port from environment and store in Express.
  */
 
+// * 服务端口
 var port = normalizePort(process.env.PORT || '5050');
 // app.set('port', port);
 
@@ -65,7 +66,7 @@ function onError (error) {
     ? 'Pipe ' + port
     : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
+  // * handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');

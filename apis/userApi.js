@@ -63,9 +63,7 @@ const login = async (ctx, next) => {
 const register = async (ctx, next) => {
   // 如果表不存在, 则创建用户表(如果已经存在, 则不执行任何操作)
   await sequelizeDB.userSchema.sync();
-
-  let { userName, password } = ctx.request.body;
-
+  let { password } = ctx.request.body;
   // 创建加密前的盐
   const salt = await bcrypt.genSalt(10);
   // 加密密码
