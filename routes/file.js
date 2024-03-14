@@ -4,6 +4,13 @@ const multerUpload = require('./../config/uploadFileCtl');
 
 const router = new Router();
 
+/**
+ * @swagger
+ * tags:
+ *    name: 文件管理
+ *    desription: File management
+ */
+
 router.post('/upload/simgle', multerUpload.single('file'), UploadFileSimgle);
 router.post('/readimgsurl', readAllFilesByStatic);
 

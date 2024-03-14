@@ -33,8 +33,11 @@ const checkIsNonTokenApi = (ctx) => {
   if ((isNonTokenApi(ctx.path) || isNonTokenRegApi(ctx.path)) && ctx.method == 'GET') {
     return true
   } else {
-    // * 特殊 post 接口，不需要验证 jwt
-    if (ctx.path == '/user/login' || ctx.path == '/user/register') {
+    // * 特殊的接口地址，不需要验证 jwt
+    // * /user/login --> 登录地址忽略验证
+    // * /user/register --> 注册地址忽略验证
+    // * /swagger --> swagger接口文档地址忽略验证
+    if (ctx.path == '/user/login' || ctx.path == '/user/register' || ctx.path === '/swagger') {
       return true
     }
     return false

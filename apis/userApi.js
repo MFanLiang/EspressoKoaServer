@@ -119,7 +119,7 @@ const getPointerUserInfo = async (ctx, next) => {
   })
 };
 
-/** 获取所有用户信息 */
+/** 获取所有用户信息列表 */
 const getAllUser = async (ctx, next) => {
   await sequelizeDB.mysql_sequelize.query('SELECT id, userName, userFullName, userRole, avatar, tel, status, createDate FROM sys_network.user_manage ORDER BY createDate DESC;', {
     modal: sequelizeDB.userSchema,
