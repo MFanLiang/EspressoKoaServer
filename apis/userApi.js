@@ -7,11 +7,11 @@ const { encryptPassword, decodePassword } = require('../utils');
 
 /** 登录接口 */
 const login = async (ctx, next) => {
-  const { userName, password } = ctx.request.body;
+  const { username, password } = ctx.request.body;
 
   await sequelizeDB.userSchema.findAll({
     where: {
-      userName
+      username
     }
   }).then(async (user) => {
     if (!JSON.parse(JSON.stringify(user))[0]) {
@@ -29,16 +29,16 @@ const login = async (ctx, next) => {
           message: '用户名或密码错误'
         }
       } else {
-        const { userName, status, tel, userRole, avatar, userFullName, id } = JSON.parse(JSON.stringify(user))[0];
+        const { username, status, tel, userRole, avatar, userFullName, id } = JSON.parse(JSON.stringify(user))[0];
 
         // 生成鉴权 token 私钥口令，有效期2小时
         // 调用 jsonwebtoken 的 sign() 方法来生成token，接收三个参数，第一个是载荷，用于编码后存储在 token 中的数据，也是验证 token 后可以拿到的数据；第二个是密钥，自己定义的，验证的时候也是要相同的密钥才能解码；第三个是options，可以设置 token 的过期时间
 
         const tokenStr = jwt.sign({
-          userName,
+          username,
           id: JSON.parse(JSON.stringify(user))[0].id
         }, 'espresso_token', { expiresIn: '2h' });
-        const userInfo = { userName, status, tel, userRole, avatar, userFullName, id };
+        const userInfo = { username, status, tel, userRole, avatar, userFullName, id };
         await useDelay(800);
         ctx.response.body = {
           code: 200,
@@ -68,7 +68,8 @@ const register = async (ctx, next) => {
   const salt = await bcrypt.genSalt(10);
   // 加密密码
   password = await bcrypt.hash(password, salt);
-  await sequelizeDB.userSchema.create({ ...ctx.request.body, password }).then(users => {
+  await sequelizeDB.userSchema.create({ ...ctx.request.body, password }).then(async (users) => {
+    await useDelay(1000);
     ctx.response.body = {
       code: 200,
       data: JSON.parse(JSON.stringify(users)),
@@ -121,7 +122,7 @@ const getPointerUserInfo = async (ctx, next) => {
 
 /** 获取所有用户信息列表 */
 const getAllUser = async (ctx, next) => {
-  await sequelizeDB.mysql_sequelize.query('SELECT id, userName, userFullName, userRole, avatar, tel, status, createDate FROM sys_network.user_manage ORDER BY createDate DESC;', {
+  await sequelizeDB.mysql_sequelize.query('SELECT id, username, userFullName, userRole, avatar, tel, status, createDate FROM sys_network.user_manage ORDER BY createDate DESC;', {
     modal: sequelizeDB.userSchema,
     mapToModel: true
   }).then((data) => {

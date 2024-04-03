@@ -64,8 +64,8 @@ const getMysqlConfig = () => {
 let mysql_config = getMysqlConfig();
 
 /** 上传后资源的 url 地址 */
-// const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
-const RESOURCE_URL = `http://60.204.248.239:${process.env.PORT || '5050'}/`;
+const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
+// const RESOURCE_URL = `http://60.204.248.239:${process.env.PORT || '5050'}/`;
 
 /** 存储上传图片文件的目录 */
 const UPLOAD_DIRIMGS = path.join(__dirname, '../public/images');

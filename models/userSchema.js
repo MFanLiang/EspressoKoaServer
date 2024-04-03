@@ -1,4 +1,5 @@
 /** 用户相关的数据模型 */
+const { RESOURCE_URL } = require('../config/serverConfig');
 
 const userSchema = (mysql_sequelize, Sequelize) => {
   const { DataTypes } = Sequelize;
@@ -20,7 +21,7 @@ const userSchema = (mysql_sequelize, Sequelize) => {
     },
 
     // 用户名
-    userName: {
+    username: {
       type: DataTypes.TEXT,
       allowNull: false,
       minlength: 2,
@@ -56,7 +57,7 @@ const userSchema = (mysql_sequelize, Sequelize) => {
     avatar: {
       type: DataTypes.STRING,
       allowNull: true, // 允许为空
-      defaultValue: '',
+      defaultValue: `${RESOURCE_URL}dog.png`,
       comment: '用户头像'
     },
 

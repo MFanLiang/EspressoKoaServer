@@ -9,10 +9,6 @@ router.get('/', homePage);
 
 router.get(
   '/swagger',
-  // async ctx => {
-  //   ctx.set('Content-Type', 'application/json')
-  //   ctx.body = swaggerSpec
-  // }
   swaggerUI({
     routePrefix: '/swagger',
     swaggerOptions: {

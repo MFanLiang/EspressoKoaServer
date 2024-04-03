@@ -11,7 +11,7 @@ const router = new Router();
  *    desription: File management
  */
 
-router.post('/upload/simgle', multerUpload.single('file'), UploadFileSimgle);
-router.post('/readimgsurl', readAllFilesByStatic);
+router.post('/coffee/upload/simgle', multerUpload.single('file'), UploadFileSimgle);
+router.post('/coffee/readimgsurl', readAllFilesByStatic);
 
 module.exports = router;

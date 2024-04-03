@@ -1,5 +1,6 @@
 const Router = require('koa-router');
-const { getMenuList } = require('../apis/menuListApi');
+const { getMenuList, getAuthBtns } = require('../apis/menuListApi');
+const { useDelay } = require('../utils');
 
 const router = new Router;
 
@@ -10,6 +11,22 @@ const router = new Router;
  *    desription: Menu management
  */
 
-router.get('/sys/menu/list', getMenuList);
+router.post('/coffee/menu/list', getMenuList);
+
+router.get('/coffee/auth/buttons', getAuthBtns);
+
+router.get('/coffee/apis/lists', async (ctx, next) => {
+  await useDelay(1000);
+  ctx.response.body = {
+    code: 200,
+    data: [
+      '/coffee/menu/list',
+      '/coffee/user/user-all-info',
+      '/coffee/list',
+    ],
+    concurrentQuantity: 4,
+    message: '请求三个接口的数组正常'
+  }
+});
 
 module.exports = router;
