@@ -18,7 +18,6 @@ const { getLocalIP} = require('./utils');
 onerror(app)
 
 const ipAddress = getLocalIP();
-console.log('ipAddress :>> ', ipAddress);
 
 // 挂载 middlewares
 app.use(bodyparser({

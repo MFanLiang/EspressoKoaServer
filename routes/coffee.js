@@ -7,7 +7,7 @@ const {
 
 const router = new Router();
 
-router.get('/coffee/list', getInvoiceList);
+router.post('/coffee/list', getInvoiceList);
 router.post('/coffee/add', addInvoiceItem);
 // router.post('/coffee/edit', updateInvoiceItem);
 router.delete('/coffee/del', delInvoiceItem);

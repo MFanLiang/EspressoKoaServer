@@ -34,7 +34,6 @@ const delInvoiceItem = async (ctx, next) => {
   });
 };
 
-
 /** 添加 sys_network.invoice 表数据 */
 const addInvoiceItem = async (ctx, next) => {
   // 如果表不存在, 则创建咖啡产品表(如果已经存在, 则不执行任何操作)
@@ -54,7 +53,6 @@ const addInvoiceItem = async (ctx, next) => {
       message: err.message || '添加咖啡产品失败'
     }
   })
-
 };
 
 module.exports = {

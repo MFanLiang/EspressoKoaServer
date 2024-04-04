@@ -4,7 +4,14 @@ const multerUpload = require('./../config/uploadFileCtl');
 
 const router = new Router();
 
-router.post('/upload/simgle', multerUpload.single('file'), UploadFileSimgle);
-router.post('/readimgsurl', readAllFilesByStatic);
+/**
+ * @swagger
+ * tags:
+ *    name: 文件管理
+ *    desription: File management
+ */
+
+router.post('/coffee/upload/simgle', multerUpload.single('file'), UploadFileSimgle);
+router.post('/coffee/readimgsurl', readAllFilesByStatic);
 
 module.exports = router;

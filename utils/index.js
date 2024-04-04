@@ -1,10 +1,10 @@
-// 函数工具库
+/** 函数工具库 */
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const bcrypt = require('bcryptjs');
 
-// 传入文件夹的路径看是否存在，存在不用管，不存在则直接创建文件夹
+// * 传入文件夹的路径看是否存在，存在不用管，不存在则直接创建文件夹
 /**
  * 判断文件夹是否存在，不存在可以直接创建
  * @param reaPath {String} 文件路径
@@ -33,7 +33,7 @@ exports.exitsFolder = async function (reaPath) {
   });
 };
 
-/** 
+/**
  * 延时执行
  * 模拟网络延迟返回
  * */
@@ -47,13 +47,13 @@ exports.useDelay = async function (time) {
 
 /** 获取本地计算机的ip地址 */
 exports.getLocalIP = function () {
-  // 获取当前的操作系统类型 Windows_NT(windows操作系统) ｜ Linux(Linux操作系统) ｜ Darwin(Mac操作系统)
+  // * 获取当前的操作系统类型 Windows_NT(windows操作系统) ｜ Linux(Linux操作系统) ｜ Darwin(Mac操作系统)
   const osType = os.type();
 
-  // 获取网络信息
+  // * 获取网络信息
   const netInfo = os.networkInterfaces();
 
-  // 定义ip地址变量做存储
+  // * 定义ip地址变量做存储
   let ip = '';
 
   switch (osType) {
@@ -88,7 +88,7 @@ exports.getLocalIP = function () {
 
 /** 加密密码口令 */
 exports.encryptPassword = async function (passwordVal) {
-  // 创建加密前的盐
+  // * 创建加密前的盐
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(passwordVal, salt);
 };
