@@ -1,3 +1,4 @@
+const { WHITELIST } = require("../config/serverConfig");
 /** 用于判断客户端当前请求接口是否需要jwt验证 */
 
 // * 定义secret
@@ -37,10 +38,8 @@ const checkIsNonTokenApi = (ctx) => {
     // * /user/login --> 登录地址忽略验证
     // * /user/register --> 注册地址忽略验证
     // * /swagger --> swagger接口文档地址忽略验证
-    if (ctx.path == '/coffee/user/login' || ctx.path == '/coffee/user/register' || ctx.path === '/swagger') {
-      return true
-    }
-    return false
+    if (WHITELIST.includes(ctx.path)) return true;
+    return false;
   }
 }
 
