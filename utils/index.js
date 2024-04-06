@@ -62,7 +62,7 @@ exports.getLocalIP = function () {
         // win7的网络信息中显示为本地连接，win10显示为以太网
         if (dev === '本地连接' || dev === '以太网') {
           for (let j = 0; j < netInfo[dev].length; j++) {
-            if (netInfo[dev][j].family === 'IPV4') {
+            if (netInfo[dev][j].family === 'IPv4') {
               ip = netInfo[dev][j].address;
               break;
             }

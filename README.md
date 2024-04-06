@@ -1,15 +1,46 @@
-# 项目简介
+# 后端 nodejs 接口服务系统
 
-koa 后端服务框架，开箱即用的脚手架，由 koa-generator 提供的 Koa2 命令安装实现
+## 项目介绍
 
-> 关于package.json 里面的scripts 的项目命令，star和test命令可以直接运行 'npm start' & 'npm test'
-> 而dev 和 prd 命令需要运行 'npm run dev' & 'npm run prd'
+koa 后端服务框架，开箱即用的脚手架，由 koa-generator 提供的 Koa2 命令安装实现，代码功能完全开源，用以给个性化独立网站提供必要的接口服务。
 
-## 问题解答
+## 项目目录结构
 
-在package.json中想要使用 npm run dev 命令来启动项目，会遇到报错
-![图片素材](./images/dev.png "npm run dev")
-:rage: 问题所在原因，目前还没找到
-:alien: 所以搞一个更牛X的解决方法（**更改package.json文件里面的scripts项目命令**）
-![图片素材](./images/change_dev.png "change_dev")
-> :point_right: 在这之前需要先检查是否安装了 **nodemon** 这个工具包，顺便说下，这个包是用来做node自启动的，也就是说，当项目里面的任何文件发生改变，nodemon工具都会监听到并重启项目服务，这是它的官网 <https://nodemon.io/>
+[treer.md](./markdown/treer.md)
+
+## 项目 start
+
+:point_right:必备条件
+
+> - node > 14.0
+> - mysql > 8.0
+
+### 初始化配置数据库
+
+在跑项目之前，首先要做的就是，在本地安装 mysql 8.0.* 数据库服务，当数据库准备完毕后，进行初始化数据库配置工作。
+
+项目中集成了 sequelize 第三方库管理数据库，因此后续操作须按照如下进行：
+
+- 1. 先找到项目的 <font color='red'>\koa-generator\config\serverConfig.js </font> 配置文件，根据实际的数据库配置将文件内的参数修改正确
+
+- 2. 调用接口 <font color="red">/coffee/rundbSyncShell</font>，或找到项目目录 shell 内的 dbSync.js 脚本直接在终端运行，就可以在数据库创建所有的数据表哦
+
+具体的操作，我写了简单的文档，已经放到了 [这里](./markdown/Sequelize.md)
+
+### 项目 install & run
+
+```shell{.line-numbers}
+git clone https://github.com/MFanLiang/EspressoKoaServer.git
+
+cd EspressoKoaServer
+
+npm config set --registry=https://registry.npm.taobao.org
+
+pnpm install
+
+pnpm run start:dev
+```
+
+## 注意事项及问题
+
+[Q&A.md](./markdown/Q&A.md)

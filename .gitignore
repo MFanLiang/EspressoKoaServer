@@ -1,4 +1,4 @@
-# Logs
+# 日志文件
 logs
 *.log
 npm-debug.log*
@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+pnpm-lock.yaml
 dist
 dist-ssr
 *.local
@@ -22,3 +23,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+backups/
+public/uploads/
+deploy.sh
