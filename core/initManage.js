@@ -3,7 +3,7 @@ const router = require('koa-router')
 
 class InitManager {
   static initCore (app) {
-    // 入口方法
+    // * 入口方法
     InitManager.app = app;
     InitManager.initLoadRouters();
   }
@@ -20,7 +20,7 @@ class InitManager {
         }
       }
     }
-    // 拼接绝对路径
+    // * 拼接绝对路径
     const apiDirectory = `${process.cwd()}/routes`;
     requireDirectory(module, apiDirectory, {
       visit: whenLoadModule

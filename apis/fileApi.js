@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { RESOURCE_URL } = require('../config/serverConfig');
+const { useDelay } = require('../utils/index');
 
 /** 上传单文件图片资源文件 */
 const UploadFileSimgle = async (ctx, next) => {
@@ -24,6 +25,7 @@ const readAllFilesByStatic = async (ctx, next) => {
     return `${RESOURCE_URL}${item}`
   });
   if (filesName) {
+    await useDelay(1000);
     ctx.response.body = {
       code: 200,
       results: filesPath
