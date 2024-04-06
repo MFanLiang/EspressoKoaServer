@@ -17,7 +17,7 @@ const router = new Router();
  *    desription: User management
  */
 
-router.post('/coffee/user/register', register);
+// router.post('/coffee/user/register', register);
 
 /**
  * @swagger
@@ -145,12 +145,12 @@ router.get('/coffee/user/:id', getPointerUserInfo);
  *         description: 请求资源未找到
  * 
  */
-router.post('/coffee/user/user-all-info', getAllUser);
+// router.post('/coffee/user/user-all-info', getAllUser);
 
-router.put('/coffee/user', updatePointerUser);
+// router.put('/coffee/user', updatePointerUser);
 
-router.del('/coffee/user', delPointerUser);
+// router.del('/coffee/user', delPointerUser);
 
-router.post('/coffee/user/fuzzyquery', fuzzyQuery);
+// router.post('/coffee/user/fuzzyquery', fuzzyQuery);
 
 module.exports = router;
