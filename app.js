@@ -67,15 +67,14 @@ app.use(koajwt({
       return false;
     }
   }
-}))
+}));
 
 // * 服务控制器
-InitManager.initCore(app)
+InitManager.initCore(app);
 
 // * error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
-
 
 module.exports = app;
