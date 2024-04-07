@@ -1,22 +1,17 @@
-/** 文件资源上传处理 控制器 */
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2023-09-06 13:12:54
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-07 13:55:27
+ * @FilePath: \koa-generator\core\uploadFileCtl.js
+ * @Description: 文件资源上传处理。文件级别：核心处理文件
+ */
 
 const multer = require('@koa/multer');
 const { UPLOAD_DIRIMGS } = require('../config/serverConfig');
 
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    // * 获取日期时间对象
-    let date = new Date();
-
-    // * 根据日期时间对象读取年份
-    let year = date.getFullYear();
-
-    // * 根据日期时间对象读取月份
-    let month = (date.getMonth() + 1).toString().padStart(2, '0');
-
-    // * 根据日期时间对象读取日期
-    let day = date.getDate();
-
     // * 设置文件或图片资源的存储目录
     cb(null, UPLOAD_DIRIMGS);
   },

@@ -1,15 +1,15 @@
 var DataTypes = require("sequelize").DataTypes;
-var _coffeelist = require("./coffeelist");
-var _user = require("./user");
+var _coffee_list = require("./coffee_list");
+var _user_manage = require("./user_manage");
 
 function initModels(sequelize) {
-  var coffeelist = _coffeelist(sequelize, DataTypes);
-  var user = _user(sequelize, DataTypes);
+  var coffee_list = _coffee_list(sequelize, DataTypes);
+  var user_manage = _user_manage(sequelize, DataTypes);
 
 
   return {
-    coffeelist,
-    user,
+    coffee_list,
+    user_manage,
   };
 }
 module.exports = initModels;

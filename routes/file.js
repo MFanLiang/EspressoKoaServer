@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const { UploadFileSimgle, readAllFilesByStatic } = require('../apis/fileApi');
-const multerUpload = require('./../config/uploadFileCtl');
+const multerUpload = require('./../core/uploadFileCtl');
 
 const router = new Router();
 

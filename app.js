@@ -1,22 +1,28 @@
+// 引入 koa 核心主程序
 const Koa = require('koa');
+// 创建 koa 实例 app
 const app = new Koa();
+
+const onerror = require('koa-onerror');
 const views = require('koa-views');
 const json = require('koa-json');
-const onerror = require('koa-onerror');
+const cors = require('@koa/cors');
+const koajwt = require('koa-jwt');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const staticDir = require('koa-static');
-const { UPLOAD_DIRIMGS } = require('./config/serverConfig');
 const InitManager = require('./core/initManage');
-const cors = require('@koa/cors');
-const jwtUnless = require('./config/jwt_unless');
-const koajwt = require('koa-jwt');
+const jwtUnless = require('./core/jwt_unless');
+const { UPLOAD_DIRIMGS } = require('./config/serverConfig');
 
-// * error handler
-onerror(app)
+// 引入日志格式化输出工具函数
+const logsUtils = require("./utils/logs.js");
 
 // * 引入 NodeJS 环境变量配置
 require("./env/env.config.js");
+
+// * error handler
+onerror(app);
 
 // * 挂载 middlewares
 app.use(bodyparser({
@@ -31,17 +37,9 @@ app.use(staticDir(UPLOAD_DIRIMGS));
 
 app.use(views(__dirname + '/views', {
   extension: 'pug html'
-}))
+}));
 
-// * logger 日志
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-});
-
-// * 错误处理
+// * 未鉴权接口访问错误处理
 app.use((ctx, next) => {
   return next().catch((err) => {
     if (err.status === 401) {
@@ -69,12 +67,20 @@ app.use(koajwt({
   }
 }));
 
-// * 服务控制器
-InitManager.initCore(app);
-
-// * error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
+// * logger 日志
+app.use(async (ctx, next) => {
+  const start = new Date();
+  await next();
+  let ms = 0; // 接口耗时
+  ms = new Date() - start;
+  // 若在开发环境下，记录响应日志；生产环境下不输出，为了减少服务器磁盘使用
+  if (process.env.NODE_ENV) {
+    logsUtils.logResponse(ctx, ms);
+  };
+  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
+
+// * 系统路由注册
+InitManager.initCore(app);
 
 module.exports = app;

@@ -1,4 +1,11 @@
-/** Swagger 配置文件 */
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-06 20:42:45
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-07 13:58:59
+ * @FilePath: \koa-generator\config\swagger.config.js
+ * @Description: Swagger-UI 配置文件。文件级别：配置文件
+ */
 
 const swaggerJSDoc = require('swagger-jsdoc');
 

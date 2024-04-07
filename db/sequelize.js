@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:19:02
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-06 17:51:43
+ * @LastEditTime: 2024-04-07 14:19:55
  * @FilePath: \koa-generator\db\sequelize.js
  * @Description: Sequelize 实例运行脚本
  */
@@ -49,9 +49,9 @@ const sequelize = new Sequelize(mysql_config.DB, mysql_config.USER, mysql_config
 // * 测试数据库连接
 try {
   sequelize.authenticate();
-  console.log('Connection has been established successfully.');
+  console.log('Mysql connection has been established successfully.');
 } catch (error) {
-  console.error('Unable to connect to the database:', error);
+  console.error('Unable to connect to the database, Error output: ', error);
 };
 
 module.exports = sequelize;

@@ -6,6 +6,7 @@ const rundbSyncShell = async (ctx, next) => {
   return await new Promise((resolve, reject) => {
     cp.exec('node shell/dbSync.js', (err, stdout, stderr) => {
       if (err) {
+        console.log('err :>> ', err);
         reject(ctx.response.body = {
           code: 500,
           data: 0,

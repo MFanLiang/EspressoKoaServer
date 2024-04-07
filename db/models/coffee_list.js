@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('coffeelist', {
+  return sequelize.define('coffee_list', {
     id: {
       type: DataTypes.CHAR(36),
       allowNull: false,
@@ -58,7 +58,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'coffeelist',
+    tableName: 'coffee_list',
     timestamps: false,
     indexes: [
       {
