@@ -4,15 +4,15 @@ const sendMail = async (ctx, next) => {
   // 定义配置收件人信息存储空间
   let receiver = null;
   receiver = ctx.request.body;
-  
+
   /** 接口入参实例
    * method: POST
    * Content-Type: application/x-www-form-urlencoded
    * {
-   *  from: "xiaomengge777076<xiaomengge777076@163.com>"
+   *  from: "xxxxxxxxxx<xxxxxxxxxxxx@163.com>"
    *  subject: '我爱吃红烧肉'
-   *  to: "2837247375@qq.com"
-   *  html: '<h1>你好, 这是我为你发送的一封测试邮件，请注意查收哦！</h1>'
+   *  to: "xxxxxxxxxxx@qq.com"
+   *  html: '<h1>您好, 这是我为你发送的一封测试邮件，请注意查收哦！</h1>'
    * }
    */
   return await new Promise((resolve, reject) => {
@@ -24,9 +24,9 @@ const sendMail = async (ctx, next) => {
           data: 0,
           message: '邮件发送失败'
         });
-        return null;
       }
-      transporter.close();
+      // 要记得关闭邮件服务，不然会导致接口一直处于 pending 状态，前端拿不到 response 数据
+      myEmail.transporter.close();
       resolve(ctx.response.body = {
         code: 200,
         data: {

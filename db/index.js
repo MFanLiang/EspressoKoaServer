@@ -9,7 +9,7 @@
 
 const sequelize = require("./sequelize");
 
-const initModels = require("./init-models");
+const initModels = require("./models/init-models");
 const models = initModels(sequelize);
 
 module.exports = models;

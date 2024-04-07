@@ -41,6 +41,7 @@ class InitManager {
     });
   }
 
+  // * 加载系统服务全局配置文件
   static loadConfig(path = '') {
     const configPath = path || process.cwd() + '/config/serverConfig.js';
     const config = require(configPath);
