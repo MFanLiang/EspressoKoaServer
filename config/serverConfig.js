@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:22:07
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-07 13:56:45
+ * @LastEditTime: 2024-04-07 19:32:23
  * @FilePath: \koa-generator\config\serverConfig.js
  * @Description: 全局基础服务配置文件。文件级别：配置文件
  */

@@ -40,6 +40,7 @@
     "mime-types": "^2.1.35",
     "module-alias": "^2.2.3",
     "mysql2": "^3.6.5",
+    "nodemailer": "^6.9.13",
     "pug": "^2.0.3",
     "qr-image": "^3.2.0",
     "require-directory": "^2.1.1",

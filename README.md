@@ -41,6 +41,18 @@ pnpm install
 pnpm run start:dev
 ```
 
+## 功能点
+
+- [ ] 登录 / 注销
+- [ ] token权限验证
+- [x] 系统日志文件
+- [x] swagger文档
+- [x] Sequelize映射
+- [x] 邮件功能
+- [x] 异常处理
+- [x] 静态资源目录
+- [x] 文件上传
+
 ## 注意事项及问题
 
 [Q&A.md](./markdown/Q&A.md)

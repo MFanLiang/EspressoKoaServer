@@ -86,6 +86,9 @@ dependencies:
   mysql2:
     specifier: ^3.6.5
     version: registry.npmmirror.com/mysql2@3.6.5
+  nodemailer:
+    specifier: ^6.9.13
+    version: registry.npmmirror.com/nodemailer@6.9.13
   pug:
     specifier: ^2.0.3
     version: registry.npmmirror.com/pug@2.0.4
@@ -5647,6 +5650,13 @@ packages:
     resolution: {integrity: sha512-y10wOWt8yZpqXmOgRo77WaHEmhYQYGNA6y421PKsKYWEK8aW+cqAphborZDhqfyKrbZEN92CN1X2KbafY2s7Yw==, tarball: https://registry.npmmirror.com/node-releases/-/node-releases-2.0.14.tgz}
     name: node-releases
     version: 2.0.14
+    dev: false
+
+  registry.npmmirror.com/nodemailer@6.9.13:
+    resolution: {integrity: sha512-7o38Yogx6krdoBf3jCAqnIN4oSQFx+fMa0I7dK1D+me9kBxx12D+/33wSb+fhOCtIxvYJ+4x4IMEhmhCKfAiOA==, tarball: https://registry.npmmirror.com/nodemailer/-/nodemailer-6.9.13.tgz}
+    name: nodemailer
+    version: 6.9.13
+    engines: {node: '>=6.0.0'}
     dev: false
 
   registry.npmmirror.com/nodemon@1.19.4:
