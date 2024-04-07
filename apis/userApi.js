@@ -2,14 +2,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { useDelay } = require('../utils');
 const { expiresInTime } = require("../config/serverConfig.js");
-const sequelizeDB = require('../db/sequelize.js');
-const { decodePassword } = require('../utils');
+const models = require('@db/index');
+const { decodePassword } = require('../utils/encryption.js');
 
 /** 登录接口 */
 const login = async (ctx, next) => {
   const { username, password } = ctx.request.body;
 
-  await sequelizeDB.userSchema.findAll({
+  await models.user_manage.findAll({
     where: {
       username
     }
@@ -50,6 +50,7 @@ const login = async (ctx, next) => {
     }
   }).catch((error) => {
     if (error) {
+      console.log('error :>> ', error);
       ctx.response.body = {
         code: 500,
         data: null,
@@ -62,13 +63,14 @@ const login = async (ctx, next) => {
 /** 注册用户接口 */
 const register = async (ctx, next) => {
   // 如果表不存在, 则创建用户表(如果已经存在, 则不执行任何操作)
-  await sequelizeDB.userSchema.sync();
+  await models.user_manage.sync();
+
   let { password } = ctx.request.body;
   // 创建加密前的盐
   const salt = await bcrypt.genSalt(10);
   // 加密密码
   password = await bcrypt.hash(password, salt);
-  await sequelizeDB.userSchema.create({ ...ctx.request.body, password }).then(async (users) => {
+  await models.user_manage.create({ ...ctx.request.body, password }).then(async (users) => {
     await useDelay(1000);
     ctx.response.body = {
       code: 200,
@@ -76,11 +78,14 @@ const register = async (ctx, next) => {
       message: '用户创建成功',
     }
   }).catch(err => {
+    const gui = JSON.parse(JSON.stringify(err));
+    const validate = JSON.parse(JSON.stringify(err.errors));
     ctx.response.status = err.statusCode || err.status || 500;
     ctx.response.body = {
       code: 500,
       data: [],
-      message: err.message || '创建用户失败'
+      message: validate[0].message || '创建用户失败',
+      mysqlReturnInfo: gui
     }
   });
 };

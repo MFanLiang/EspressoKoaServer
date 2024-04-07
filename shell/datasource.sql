@@ -1019,13 +1019,13 @@ INSERT INTO `route`(`id`, `name`, `alias`, `icon`, `status`, `create_time`, `upd
 -- ----------------------------
 -- 文博院馆;2:寺庙观堂; 3:旅游度假区; 4:自然保护区; 5:主题公园; 6:森林公园; 7:地质公园; 8:游乐园; 9:动物园; 0:植物园
 
-INSERT INTO dictionary VALUES (1,1, '文博院馆', 1,'2018-01-01','2018-01-01',null );
-INSERT INTO dictionary VALUES (2,1, '寺庙观堂', 2,'2018-01-01','2018-01-01',null );
-INSERT INTO dictionary VALUES (3,1, '旅游度假区', 3,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (4,1, '自然保护区', 4,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (5,1, '主题公园', 5,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (6,1, '森林公园', 6,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (7,1, '地质公园', 7,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (8,1, '游乐园', 8,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (9,1, '动物园', 9,'2018-01-01','2018-01-01',null);
-INSERT INTO dictionary VALUES (10,1, '植物园', 0,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (1,1, '文博院馆', 1,'2018-01-01','2018-01-01',null );
+INSERT INTO sys_network.dictionary VALUES (2,1, '寺庙观堂', 2,'2018-01-01','2018-01-01',null );
+INSERT INTO sys_network.dictionary VALUES (3,1, '旅游度假区', 3,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (4,1, '自然保护区', 4,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (5,1, '主题公园', 5,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (6,1, '森林公园', 6,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (7,1, '地质公园', 7,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (8,1, '游乐园', 8,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (9,1, '动物园', 9,'2018-01-01','2018-01-01',null);
+INSERT INTO sys_network.dictionary VALUES (10,1, '植物园', 0,'2018-01-01','2018-01-01',null);

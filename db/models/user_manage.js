@@ -20,7 +20,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     user_full_name: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
       comment: "用户全称"
     },
     user_role: {
@@ -42,8 +42,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     status: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: 0,
+      allowNull: true,
+      defaultValue: 1,
       comment: "用户状态 (1 可用状态，0 注销不可用状态)"
     }
   }, {

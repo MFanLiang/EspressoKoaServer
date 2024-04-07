@@ -1,3 +1,12 @@
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2023-11-23 21:46:40
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-07 22:01:10
+ * @FilePath: \koa-generator\routes\user_server.js
+ * @Description: 用户操作管理服务-接口路由
+ */
+
 const Router = require('koa-router');
 const {
   register,
@@ -17,7 +26,7 @@ const router = new Router();
  *    desription: User management
  */
 
-// router.post('/coffee/user/register', register);
+router.post('/coffee/user/register', register);
 
 /**
  * @swagger

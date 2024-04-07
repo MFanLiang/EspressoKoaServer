@@ -12,6 +12,7 @@ const catchError = async (ctx, next) => {
   try {
     await next();
   } catch (error) {
+    console.log('error :>> ', error);
     // mysql报错处理
     if (error.errno) {
       // sql报错处理
