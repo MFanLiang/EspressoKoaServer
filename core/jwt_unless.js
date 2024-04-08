@@ -1,3 +1,12 @@
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2023-12-30 16:37:30
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-08 23:03:46
+ * @FilePath: \koa-generator\core\jwt_unless.js
+ * @Description: JWT 验证能力
+ */
+
 const { WHITELIST } = require("../config/serverConfig");
 /** 用于判断客户端当前请求接口是否需要jwt验证 */
 
