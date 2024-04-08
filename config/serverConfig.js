@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:22:07
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-07 13:56:45
+ * @LastEditTime: 2024-04-09 00:08:12
  * @FilePath: \koa-generator\config\serverConfig.js
  * @Description: 全局基础服务配置文件。文件级别：配置文件
  */
@@ -66,7 +66,14 @@ const refreshTime = '2h';
 const expiresInTime = '2h';
 
 /** 路由接口白名单(特殊的接口地址，不需要验证 jwt) */
-const WHITELIST = ["/", "/coffee/user/login", "/coffee/user/register", "/swagger", "/coffee/rundbSyncShell"];
+const WHITELIST = [
+  "/",
+  "/coffee/user/login",
+  "/coffee/user/register",
+  "/swagger",
+  "/coffee/rundbSyncShell",
+  "/coffee/send-email",
+];
 
 // * 分量导出所有服务运行时配置变量
 module.exports = {

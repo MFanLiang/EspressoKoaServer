@@ -41,6 +41,20 @@ pnpm install
 pnpm run start:dev
 ```
 
+## 功能点
+
+- [ ] 登录 / 注销
+- [ ] token权限验证
+- [x] 系统日志文件
+- [ ] swagger文档
+- [x] Sequelize映射
+- [x] 邮件功能
+- [x] 异常处理
+- [x] 静态资源目录
+- [ ] 文件上传
+- [ ] 各个接口的响应数据格式的swagger文档注释还没有全部完成
+- [ ] 发送邮件服务的swagger文档未编写完整，需要待补充
+
 ## 注意事项及问题
 
 [Q&A.md](./markdown/Q&A.md)

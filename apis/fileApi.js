@@ -28,7 +28,8 @@ const readAllFilesByStatic = async (ctx, next) => {
     await useDelay(1000);
     ctx.response.body = {
       code: 200,
-      results: filesPath
+      results: filesPath,
+      message: '所有图片返回成功'
     }
   }
 };
