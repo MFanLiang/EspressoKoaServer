@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('user_manage', {
     id: {
-      type: DataTypes.CHAR(36),
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV1,
       allowNull: false,
       primaryKey: true,
       comment: "唯一主键"
@@ -32,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     avatar: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      defaultValue: "http:\/\/192.168.10.208:5050\/dog.png",
+      defaultValue: "https:\/\/116.63.42.17\/staticdata\/dog.png",
       comment: "用户头像"
     },
     tel: {

@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 20:42:45
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 01:02:56
+ * @LastEditTime: 2024-04-09 12:22:48
  * @FilePath: \koa-generator\config\swagger.config.js
  * @Description: Swagger-UI 配置文件。文件级别：配置文件
  */
@@ -20,7 +20,7 @@ const options = {
     // * servers 的每一项，可以理解为一个服务
     servers: [
       {
-        url: '/coffee',
+        url: process.env.NODE_ENV === "development" ? '/' : '/api',
         description: 'API dev server'
       },
       // {
