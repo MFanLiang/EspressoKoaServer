@@ -8,7 +8,7 @@
     "start": "nodemon bin/www",
     "start:dev": "cross-env NODE_ENV=development nodemon bin/www",
     "start:prod": "cross-env NODE_ENV=production nodemon bin/www",
-    "prd": "cross-env NODE_ENV=production pm2 start bin/www --name=esporessoKoaServer --watch",
+    "prd": "cross-env NODE_ENV=production pm2 start bin/www --name=KoaServer --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "auto-models": "node ./config/sequelize-auto.config.js"
   },

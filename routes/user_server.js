@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 02:27:33
+ * @LastEditTime: 2024-04-09 11:27:38
  * @FilePath: \koa-generator\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -19,6 +19,92 @@ const {
 } = require('../apis/userApi');
 const router = new Router();
 
+/**
+ * @swagger
+ * /coffee/user/register:
+ *   post:
+ *     summary: 新用户注册
+ *     description: 注册新的用户账户信息，用于登录系统
+ *     tags: [用户管理]
+ *     requestBody:
+ *       description: "注册需要的请求参数"
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: 'string'
+ *                 description: 用户唯一主键，autocreate
+ *               username:
+ *                 type: 'string'
+ *                 description: 用户名
+ *                 required: true
+ *               password:
+ *                 type: 'string'
+ *                 description: 密码
+ *               user_full_name:
+ *                 type: 'string'
+ *                 description: 用户全名
+ *               use_role:
+ *                 type: 'number'
+ *                 description: 用户角色
+ *               avatar:
+ *                 type: 'string'
+ *                 description: 头像
+ *               tel:
+ *                 type: 'string'
+ *                 description: 手机号码
+ *               status:
+ *                 type: 'boolean'
+ *                 description: 用户账号状态
+ *             example:
+ *               username: 'user'
+ *               password: '*********'
+ *               user_full_name: 'userFullName'
+ *               tel: '139********'
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *             properties:
+ *               username:
+ *                 type: 'string'
+ *                 description: 用户名
+ *               password:
+ *                 type: 'string'
+ *                 description: 密码
+ *               user_full_name:
+ *                 type: 'string'
+ *                 description: 用户全名
+ *               use_role:
+ *                 type: 'number'
+ *                 description: 用户角色
+ *               avatar:
+ *                 type: 'string'
+ *                 description: 头像
+ *               tel:
+ *                 type: 'string'
+ *                 description: 手机号码
+ *               status:
+ *                 type: 'boolean'
+ *                 description: 用户账号状态
+ *             required:
+ *               - username
+ *               - password
+ *               - user_full_name
+ *               - tel
+ *     responses:
+ *       200:
+ *         description: Ok
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to get access
+ *       '404':
+ *         description: 请求资源未找到
+ */
 router.post('/coffee/user/register', register);
 
 /**

@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-07-30 17:12:28
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 02:27:35
+ * @LastEditTime: 2024-04-09 12:32:37
  * @FilePath: \koa-generator\routes\index.js
  * @Description: 默认(测试)服务-接口路由
  */
@@ -10,6 +10,7 @@
 const Router = require('koa-router');
 const { homePage } = require('../apis/indexApi');
 const swaggerUI = require('koa2-swagger-ui').koaSwagger;
+var { getLocalIP } = require('./../utils/index');
 const swaggerSpec = require('../config/swagger.config');
 const router = new Router();
 
@@ -75,12 +76,12 @@ router.get('/', homePage);
  *         description: Ok
  */
 router.get(
-  '/swagger',
+  '/swagger-ui',
   swaggerUI({
-    routePrefix: '/swagger',
+    routePrefix: '/swagger-ui',
     swaggerOptions: {
       spec: swaggerSpec,
-      url: 'http://localhost:5050/swagger'
+      url: `${process.env.NODE_ENV === 'development' ? getLocalIP() || process.env.HOST_IPADDRESS : 'https://116.63.42.17'}:${process.env.PORT || '5050'}/swagger-ui`
     },
   })
 );

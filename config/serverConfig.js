@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:22:07
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 00:08:12
+ * @LastEditTime: 2024-04-09 12:08:16
  * @FilePath: \koa-generator\config\serverConfig.js
  * @Description: 全局基础服务配置文件。文件级别：配置文件
  */
@@ -70,7 +70,7 @@ const WHITELIST = [
   "/",
   "/coffee/user/login",
   "/coffee/user/register",
-  "/swagger",
+  "/swagger-ui",
   "/coffee/rundbSyncShell",
   "/coffee/send-email",
 ];
