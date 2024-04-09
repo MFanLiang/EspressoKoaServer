@@ -2,9 +2,11 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('coffee_list', {
     id: {
-      type: DataTypes.CHAR(36),
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV1,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      comment: "唯一主键"
     },
     name: {
       type: DataTypes.STRING(40),
@@ -51,15 +53,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       comment: "提交作者"
     },
-    create_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      comment: "用户创建时间"
-    }
   }, {
     sequelize,
     tableName: 'coffee_list',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",

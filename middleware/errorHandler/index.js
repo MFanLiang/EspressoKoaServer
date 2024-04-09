@@ -12,7 +12,7 @@ const catchError = async (ctx, next) => {
   try {
     await next();
   } catch (error) {
-    console.log('error :>> ', error);
+    console.log('捕获异常生成返回的接口 error :>> ', error);
     // mysql报错处理
     if (error.errno) {
       // sql报错处理

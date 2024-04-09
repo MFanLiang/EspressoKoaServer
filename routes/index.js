@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-07-30 17:12:28
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 12:32:37
+ * @LastEditTime: 2024-04-09 23:05:21
  * @FilePath: \koa-generator\routes\index.js
  * @Description: 默认(测试)服务-接口路由
  */
@@ -17,36 +17,43 @@ const router = new Router();
 /**
  * @swagger
  * tags:
- *    name: default-api
- *    desription: sys default API
+ *   name: default-api
+ *   description: sys default API
  */
 
 /**
  * @swagger
  * tags:
- *    name: 公共模块
- *    desription: base module API
+ *   name: 公共模块
+ *   description: base module API
  */
 
 /**
  * @swagger
  * tags:
- *    name: 菜单管理
- *    desription: Menu management
+ *   name: 菜单管理
+ *   description: Menu management
  */
 
 /**
  * @swagger
  * tags:
- *    name: 文件服务
- *    desription: File management
+ *   name: 文件服务
+ *   description: File management
  */
 
 /**
  * @swagger
  * tags:
- *    name: 用户管理
- *    desription: User management
+ *   name: 用户管理
+ *   description: User management
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: 业务模块
+ *   description: General service module
  */
 
 /**

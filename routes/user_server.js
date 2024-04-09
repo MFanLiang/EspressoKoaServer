@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 11:27:38
+ * @LastEditTime: 2024-04-09 23:10:11
  * @FilePath: \koa-generator\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -27,7 +27,7 @@ const router = new Router();
  *     description: 注册新的用户账户信息，用于登录系统
  *     tags: [用户管理]
  *     requestBody:
- *       description: "注册需要的请求参数"
+ *       description: "注册请求参数"
  *       required: true
  *       content:
  *         application/json:
@@ -115,7 +115,7 @@ router.post('/coffee/user/register', register);
  *     description: 用户登录系统
  *     tags: [用户管理]
  *     requestBody:
- *       description: "登录所需要的请求参数"
+ *       description: "登录请求参数"
  *       required: true
  *       content:
  *         application/json:
