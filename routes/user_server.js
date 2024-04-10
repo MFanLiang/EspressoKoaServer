@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 23:10:11
+ * @LastEditTime: 2024-04-10 13:25:52
  * @FilePath: \koa-generator\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -233,9 +233,9 @@ router.get('/coffee/user/:id', getPointerUserInfo);
 //  */
 // router.post('/coffee/user/user-all-info', getAllUser);
 
-// router.put('/coffee/user', updatePointerUser);
+router.put('/coffee/user', updatePointerUser);
 
-// router.del('/coffee/user', delPointerUser);
+router.delete('/coffee/user', delPointerUser);
 
 // router.post('/coffee/user/fuzzyquery', fuzzyQuery);
 
