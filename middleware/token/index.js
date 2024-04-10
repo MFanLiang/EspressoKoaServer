@@ -1,7 +1,10 @@
-/**
- * @author linzq
- * @date 2020/6/19
- * @description token中间件
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-09 13:01:38
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-10 17:53:57
+ * @FilePath: \koa-generator\middleware\token\index.js
+ * @Description: token中间件
  */
 
 const { getToken, checkToken, decryptToken, decryptRSAToken, verifyToken } = require('./token');

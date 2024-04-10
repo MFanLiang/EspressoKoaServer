@@ -1,8 +1,9 @@
 /*
- * @Author: linzq
- * @Date: 2021-03-25 16:49:43
- * @LastEditors: linzq
- * @LastEditTime: 2021-03-30 10:14:18
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-09 13:01:38
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-10 17:55:39
+ * @FilePath: \koa-generator\middleware\validate\validate.js
  * @Description: 验证方法封装
  */
 
