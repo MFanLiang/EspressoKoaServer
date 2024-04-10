@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 20:42:45
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 11:40:44
+ * @LastEditTime: 2024-04-10 18:05:19
  * @FilePath: \koa-generator\routes\menu_server.js
  * @Description: 菜单服务-接口路由
  */
@@ -17,6 +17,7 @@ const router = new Router;
  * @swagger
  * /coffee/menu/list:
  *   get:
+ *     summary: 菜单目录列表
  *     description: 返回系统菜单目录
  *     tags: [菜单管理]
  *     security:
@@ -35,6 +36,7 @@ router.get('/coffee/menu/list', getMenuList);
  * @swagger
  * /coffee/auth/buttons:
  *   get:
+ *     summary: 系统权限按钮
  *     description: 返回系统权限按钮
  *     tags: [菜单管理]
  *     security:
@@ -53,6 +55,7 @@ router.get('/coffee/auth/buttons', getAuthBtns);
  * @swagger
  * /coffee/apis/lists:
  *   get:
+ *     summary: 并行请求测试接口
  *     description: 获取三个接口的数组，用作前端并行请求的测试使用
  *     tags: [菜单管理]
  *     security:

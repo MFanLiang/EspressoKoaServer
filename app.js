@@ -45,7 +45,24 @@ app.use(token); // token，中间件
 app.use(myLog); // 日志中间件，中间件
 app.use(baseCheckPath); // 检查文件路径有效性，中间件
 app.use(bodyparser({
-  enableTypes: ['json', 'form', 'text']
+  // 解析器将仅在请求类型命中enableTypes时进行解析，默认值为【json，form】
+  enableTypes: ['json', 'form', 'text', 'xml'],
+  // 请求的编码。共同主体默认为utf-8
+  encoding: 'utf-8',
+  // urlencoded 正文的限制。如果主体最终大于此限制，将返回 413 错误代码。默认值为 56KB
+  formLimit: '1mb',
+  // json主体的限制。默认值为1mb
+  jsonLimit: '2mb',
+  // text主体的限制。默认为1mb
+  textLimit: '2mb',
+  // xml正文的限制。默认值为1mb
+  xmlLimit: '2mb',
+  // 当设置为true时，JSON解析器将只接受数组和对象。默认为 true
+  strict: true,
+  // 支持自定义错误处理，检测到body主体错误，抛出422异常
+  onerror: function (err, ctx) {
+    ctx.throw(422, 'body parse error');
+  }
 }));
 app.use(cors());
 app.use(json());

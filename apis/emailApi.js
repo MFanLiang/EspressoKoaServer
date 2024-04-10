@@ -5,16 +5,6 @@ const sendMail = async (ctx, next) => {
   let receiver = null;
   receiver = ctx.request.body;
 
-  /** 接口入参实例
-   * method: POST
-   * Content-Type: application/x-www-form-urlencoded
-   * {
-   *  from: "xxxxxxxxxx<xxxxxxxxxxxx@163.com>"
-   *  subject: '我爱吃红烧肉'
-   *  to: "xxxxxxxxxxx@qq.com"
-   *  html: '<h1>您好, 这是我为你发送的一封测试邮件，请注意查收哦！</h1>'
-   * }
-   */
   return await new Promise((resolve, reject) => {
     myEmail.transporter.sendMail(receiver, (err, info) => {
       if (err) {

@@ -158,15 +158,25 @@ const getPointerUserInfo = async (ctx, next) => {
 
 /** 更新指定用户信息 */
 const updatePointerUser = async (ctx, next) => {
-  await sequelizeDB.userSchema.update({ ...ctx.request.body }, {
+  await models.user_manage.update({ ...ctx.request.body }, {
     where: {
       id: ctx.request.body.id
     }
   }).then(async (user) => {
-    ctx.response.body = {
-      code: 200,
-      data: JSON.parse(JSON.stringify(user)),
-      message: '更新指定用户信息'
+    const userStatus = JSON.parse(JSON.stringify(user));
+    if (userStatus[0] === 1) {
+      const updatedUserObj = await models.user_manage.findOne({ where: { id: ctx.request.body.id } });
+      ctx.response.body = {
+        code: 200,
+        data: JSON.parse(JSON.stringify(updatedUserObj)),
+        message: '更新指定用户信息完成'
+      }
+    } else {
+      ctx.response.body = {
+        code: 200,
+        data: null,
+        message: '参数格式错误，请检查后重试'
+      }
     }
   }).catch((error) => {
     if (error) {
@@ -181,23 +191,35 @@ const updatePointerUser = async (ctx, next) => {
 
 /** 删除指定用户 */
 const delPointerUser = async (ctx, next) => {
-  await sequelizeDB.userSchema.destroy({
-    where: {
-      id: ctx.request.body.id
-    }
-  }).then((data) => {
-    ctx.response.body = {
-      code: 200,
-      data: null,
-      message: `删除指定用户成功`
-    }
-  }).catch((err) => {
-    ctx.response.body = {
-      code: 200,
-      data: null,
-      message: '删除指定用户失败',
-    }
-  })
+  await models.user_manage.findByPk(ctx.request.body.id)
+    .then(async (item) => {
+      if (item === null) {
+        ctx.response.body = {
+          code: 200,
+          data: null,
+          msg: '没有该条数据，无需删除'
+        }
+      } else {
+        await models.user_manage.destroy({
+          where: {
+            id: ctx.request.body.id
+          }
+        }).then((data) => {
+          ctx.response.body = {
+            code: 200,
+            data: null,
+            message: `删除指定用户成功`
+          }
+        }).catch((err) => {
+          ctx.response.body = {
+            code: 200,
+            data: null,
+            message: '删除指定用户失败',
+            errorInfo: err.message
+          }
+        })
+      }
+    })
 };
 
 /** 模糊搜索查询指定的用户列表 */

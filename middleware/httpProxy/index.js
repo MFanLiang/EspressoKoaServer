@@ -1,10 +1,12 @@
-/**
- * @Author: linzq
- * @Date: 2021-05-21 14:45:34
- * @LastEditors: linzq
- * @LastEditTime: 2021-05-24 20:20:12
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-09 13:01:38
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-10 17:53:06
+ * @FilePath: \koa-generator\middleware\httpProxy\index.js
  * @Description: 请求转发，服务代理
  */
+
 const axios = require('axios');
 
 module.exports = (opts = {}) => {

@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-07 20:16:16
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-07 21:24:45
+ * @LastEditTime: 2024-04-10 16:48:13
  * @FilePath: \koa-generator\middleware\errorHandler\index.js
  * @Description: 统一错误异常处理
  */
@@ -12,7 +12,6 @@ const catchError = async (ctx, next) => {
   try {
     await next();
   } catch (error) {
-    console.log('捕获异常生成返回的接口 error :>> ', error);
     // mysql报错处理
     if (error.errno) {
       // sql报错处理

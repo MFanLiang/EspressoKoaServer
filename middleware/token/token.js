@@ -1,10 +1,12 @@
 /*
- * @Author: linzq
- * @Date: 2020-11-25 10:02:48
- * @LastEditors: linzq
- * @LastEditTime: 2021-04-26 22:43:40
- * @Description: token相关
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-09 13:01:38
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-10 17:54:22
+ * @FilePath: \koa-generator\middleware\token\token.js
+ * @Description: token相关配置和方法函数
  */
+
 const jwt = require('jsonwebtoken');
 const NodeRSA = require('node-rsa');
 const crypto = require('crypto');
