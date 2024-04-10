@@ -15,6 +15,7 @@ const { sendMail } = require("../apis/emailApi");
  * @swagger
  * /coffee/send-email:
  *   post:
+ *     summary: 邮件服务
  *     description: 发送邮件服务
  *     tags: [公共模块]
  *     security:

@@ -17,6 +17,7 @@ const { getAllSysDist } = require("./../apis/commonApi");
  * @swagger
  * /coffee/getAllDict:
  *   get:
+ *     summary: 数据字典
  *     description: 获取数据字典
  *     tags: [公共模块]
  *     security:
