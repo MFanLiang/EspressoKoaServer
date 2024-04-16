@@ -1,3 +1,4 @@
+```text{.line-numbers}
 EspressoKoaServer
 ├─ apis                            # 存放接口实体的目录
 |  ├─ coffeeApi.js                 # 咖啡数据列表服务实体模块
@@ -77,3 +78,4 @@ EspressoKoaServer
 ├─ package.json                    # 依赖包管理
 ├─ pnpm-lock.yaml                  # 依赖包包版本锁
 └─ README.md                       # README 介绍
+```
