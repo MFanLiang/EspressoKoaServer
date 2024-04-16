@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const { useDelay } = require('../utils');
 const { expiresInTime } = require("../config/serverConfig.js");
 const models = require('@db/index');
+const sequelize = require('../db/sequelize.js');
 const { decodePassword } = require('../utils/encryption.js');
 
 /** 登录接口 */
@@ -50,7 +51,6 @@ const login = async (ctx, next) => {
     }
   }).catch((error) => {
     if (error) {
-      console.log('error :>> ', error);
       ctx.response.body = {
         code: 500,
         data: null,
@@ -94,7 +94,7 @@ const register = async (ctx, next) => {
 const getPointerUserInfo = async (ctx, next) => {
   const { id } = ctx.request.query;
 
-  await sequelizeDB.userSchema.findOne({
+  await models.user_manage.findOne({
     where: {
       id
     }
@@ -104,13 +104,13 @@ const getPointerUserInfo = async (ctx, next) => {
       ctx.response.body = {
         code: 200,
         data: JSON.parse(JSON.stringify(user)),
-        message: '指定用户信息查询完成'
+        msg: '指定用户信息查询完成'
       }
     } else {
       ctx.response.body = {
         code: 200,
         data: [],
-        message: '指定的用户不存在'
+        msg: '指定的用户不存在'
       }
     }
 
@@ -118,43 +118,45 @@ const getPointerUserInfo = async (ctx, next) => {
     if (error) {
       ctx.response.body = {
         code: 500,
-        data: null,
-        message: `获取指定用户信息服务接口异常，请检查koa服务接口配置`
+        data: [],
+        msg: `获取指定用户信息服务接口异常，请检查koa服务接口配置`
       }
     }
   })
 };
 
 /** 获取所有用户信息列表 */
-// const getAllUser = async (ctx, next) => {
-//   await sequelizeDB.mysql_sequelize.query('SELECT id, username, userFullName, userRole, avatar, tel, status, createDate FROM sys_network.user_manage ORDER BY createDate DESC;', {
-//     modal: sequelizeDB.userSchema,
-//     mapToModel: true
-//   }).then((data) => {
-//     const result = JSON.parse(JSON.stringify(data))[0].map((item) => {
-//       return {
-//         ...item,
-//         status: item.status === 1 ? true : false,
-//       }
-//     });
-//     ctx.response.body = {
-//       code: 200,
-//       data: result,
-//       message: '查询所有用户信息已完成',
-//       total: JSON.parse(JSON.stringify(data))[0].length,
-//       currentPage: 1,
-//       pageSize: 10
-//     }
-//   }).catch((error) => {
-//     if (error) {
-//       ctx.response.body = {
-//         code: 500,
-//         data: null,
-//         message: `获取所有用户信息服务接口异常，请检查koa服务接口配置`
-//       }
-//     }
-//   })
-// };
+const getAllUser = async (ctx, next) => {
+  await sequelize.query('SELECT id, username, user_full_name, user_role, avatar, tel, status, created_at, updated_at FROM sys_network.user_manage ORDER BY created_at DESC;', {
+    modal: models.user_manage,
+    mapToModel: true
+  }).then((data) => {
+    const parseData = JSON.parse(JSON.stringify(data));
+    const result = parseData[0].map((item) => {
+      return {
+        ...item,
+        status: item.status === 1 ? true : false,
+      }
+    });
+    ctx.response.body = {
+      code: 200,
+      data: result,
+      msg: '查询所有用户信息已完成',
+      total: parseData[0].length,
+      pageSize: 10
+    }
+  }).catch((error) => {
+    if (error) {
+      ctx.response.body = {
+        code: 500,
+        data: null,
+        msg: `获取所有用户信息服务接口异常，请检查koa服务接口配置`,
+        total: 0,
+        pageSize: 0
+      }
+    }
+  })
+};
 
 /** 更新指定用户信息 */
 const updatePointerUser = async (ctx, next) => {
@@ -169,13 +171,13 @@ const updatePointerUser = async (ctx, next) => {
       ctx.response.body = {
         code: 200,
         data: JSON.parse(JSON.stringify(updatedUserObj)),
-        message: '更新指定用户信息完成'
+        msg: '更新指定用户信息完成'
       }
     } else {
       ctx.response.body = {
         code: 200,
         data: null,
-        message: '参数格式错误，请检查后重试'
+        msg: '参数格式错误，请检查后重试'
       }
     }
   }).catch((error) => {
@@ -183,7 +185,7 @@ const updatePointerUser = async (ctx, next) => {
       ctx.response.body = {
         code: 500,
         data: null,
-        message: `更新指定用户信息服务接口异常，请检查koa服务接口配置`
+        msg: `更新指定用户信息服务接口异常，请检查koa服务接口配置`
       }
     }
   })
@@ -191,7 +193,7 @@ const updatePointerUser = async (ctx, next) => {
 
 /** 删除指定用户 */
 const delPointerUser = async (ctx, next) => {
-  await models.user_manage.findByPk(ctx.request.body.id)
+  await models.user_manage.findByPk(ctx.request.query.id)
     .then(async (item) => {
       if (item === null) {
         ctx.response.body = {
@@ -202,19 +204,19 @@ const delPointerUser = async (ctx, next) => {
       } else {
         await models.user_manage.destroy({
           where: {
-            id: ctx.request.body.id
+            id: ctx.request.query.id
           }
         }).then((data) => {
           ctx.response.body = {
             code: 200,
             data: null,
-            message: `删除指定用户成功`
+            msg: `删除指定用户成功`
           }
         }).catch((err) => {
           ctx.response.body = {
             code: 200,
             data: null,
-            message: '删除指定用户失败',
+            msg: '删除指定用户失败',
             errorInfo: err.message
           }
         })
@@ -222,34 +224,32 @@ const delPointerUser = async (ctx, next) => {
     })
 };
 
-/** 模糊搜索查询指定的用户列表 */
-// const fuzzyQuery = async (ctx, next) => {
-//   const { search } = ctx.request.body;
-//   await sequelizeDB.mysql_sequelize.query(`SELECT * FROM sys_network.user_manage where userName LIKE "%${search}%"`, {
-//     model: sequelizeDB.userSchema,
-//     mapToModel: true // 如果你有任何映射字段,则在此处传递 true
-//   }).then((data) => {
-//     ctx.response.body = {
-//       code: 200,
-//       data: JSON.parse(JSON.stringify(data)),
-//       message: `模糊查询成功`
-//     }
-//   }).catch(err => {
-//     console.log('err :>> ', err);
-//     ctx.response.body = {
-//       code: 200,
-//       data: null,
-//       message: '模糊查询失败，请检查koa服务接口配置',
-//     }
-//   })
-// };
+const fuzzyQuery = async (ctx, next) => {
+  const { search } = ctx.request.body;
+  await sequelize.query(`SELECT id, username, user_full_name, user_role, avatar, tel, status, created_at, updated_at FROM sys_network.user_manage where username LIKE "%${search}%"`, {
+    model: models.user_manage,
+    mapToModel: true // 如果你有任何映射字段,则在此处传递 true
+  }).then((data) => {
+    ctx.response.body = {
+      code: 200,
+      data: JSON.parse(JSON.stringify(data)),
+      msg: '模糊查询成功'
+    }
+  }).catch(err => {
+    ctx.response.body = {
+      code: 200,
+      data: null,
+      msg: '模糊查询失败，请检查koa服务接口配置',
+    }
+  })
+};
 
 module.exports = {
   register,
   login,
   getPointerUserInfo,
-  // getAllUser,
+  getAllUser,
   updatePointerUser,
   delPointerUser,
-  // fuzzyQuery
+  fuzzyQuery
 };
