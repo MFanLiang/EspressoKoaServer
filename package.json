@@ -1,6 +1,6 @@
 {
-  "name": "koa-generator",
-  "version": "0.1.0",
+  "name": "espresso-koa-server",
+  "version": "1.0.0",
   "private": true,
   "license": "MIT",
   "description": "koa 后端服务框架，开箱即用的脚手架，由 koa-generator 提供的 Koa2 命令安装实现",
