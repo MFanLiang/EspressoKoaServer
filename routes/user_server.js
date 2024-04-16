@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 13:25:52
+ * @LastEditTime: 2024-04-16 14:04:35
  * @FilePath: \koa-generator\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -157,86 +157,430 @@ router.post('/coffee/user/register', register);
  */
 router.post('/coffee/user/login', login);
 
-router.get('/coffee/user/:id', getPointerUserInfo);
+/**
+ * @swagger
+ * /coffee/user/pointer-info:
+ *   get:
+ *     summary: 读指定的用户
+ *     description: 获取指定的个人用户信息
+ *     tags: [用户管理]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: "id"
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Numberice ID of the user_manager to ready
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: 数据项唯一id
+ *                       example: '23eosis200'
+ *                     username:
+ *                       type: string
+ *                       description: 用户姓名
+ *                       example: 'root'
+ *                     user_full_name:
+ *                       type: string
+ *                       description: 用户全名称
+ *                       example: '超级管理员'
+ *                     user_role:
+ *                       type: number
+ *                       description: 用户角色
+ *                       example: 3
+ *                     avatar:
+ *                       type: string
+ *                       description: 用户头像
+ *                       example: 'http://example/static/img.png'
+ *                     tel:
+ *                       type: string
+ *                       description: 用户手机号码
+ *                       example: 13239844923
+ *                     status:
+ *                       type: boolean
+ *                       description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *                       example: true
+ *                     createdAt:
+ *                       type: string
+ *                       description: 创建时间
+ *                     updatedAt:
+ *                       type: string
+ *                       description: 更新时间
+ *                 msg:
+ *                   type: string
+ *                   example: 指定用户信息查询完成
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to get access
+ *       '404':
+ *         description: 请求资源未找到
+ */
+router.get('/coffee/user/pointer-info', getPointerUserInfo);
 
-// /**
-//  * @swagger
-//  * /user/user-all-info:
-//  *   post:
-//  *     summary: 获取所有用户信息列表
-//  *     description: 获取所有用户信息列表
-//  *     tags: [用户管理]
-//  *     produces:
-//  *       - application/json
-//  *     parameters: # 请求参数
-//  *       - name: userName
-//  *         description: 用户名.
-//  *         required: false
-//  *         in: query # 参数的位置，可以设置的值有 query|header|path| cookie|formData 等
-//  *         type: string # 入参的类型，可以设置的值有 string|number|file(文件) 等
-//  *       - name: password
-//  *         description: 密码.
-//  *         in: query
-//  *         required: false
-//  *         type: string
-//  *       - name: userFullName
-//  *         description: 用户全名
-//  *         in: query
-//  *         required: false
-//  *         type: string
-//  *       - name: avatar
-//  *         description: 用户头像
-//  *         in: query
-//  *         required: false
-//  *         type: string
-//  *       - name: tel
-//  *         description: 用户的手机号码
-//  *         in: query
-//  *         required: false
-//  *         type: number
-//  *       - name: status
-//  *         description: 用户状态
-//  *         in: query
-//  *         required: false
-//  *         type: number
-//  *     responses:
-//  *       200:
-//  *         description: Ok
-//  *         schema:
-//  *           type: object
-//  *         properties:
-//  *           code:
-//  *            type: 'number'
-//  *            description: 状态码
-//  *           data:
-//  *            type: 'array'
-//  *            description: 用户列表
-//  *           message:
-//  *            type: 'string'
-//  *            description: 反馈信息
-//  *           total:
-//  *            type: 'number'
-//  *            description: 总数
-//  *           currentPage:
-//  *            type: 'number'
-//  *            description: 当前页数
-//  *           pageSize:
-//  *            type: 'number'
-//  *            description: 总页数
-//  *       '400':
-//  *         description: 请求参数错误
-//  *       '401':
-//  *         description: Protected resource, use Authorization header to get access
-//  *       '404':
-//  *         description: 请求资源未找到
-//  * 
-//  */
-// router.post('/coffee/user/user-all-info', getAllUser);
+/**
+ * @swagger
+ * /coffee/user/user-all-info:
+ *   post:
+ *     summary: 读所有用户
+ *     description: 读取系统中所有用户
+ *     tags: [用户管理]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: 数据项唯一id
+ *                         example: '23eosis200'
+ *                       username:
+ *                         type: string
+ *                         description: 用户姓名
+ *                         example: 'root'
+ *                       user_full_name:
+ *                         type: string
+ *                         description: 用户全名称
+ *                         example: '超级管理员'
+ *                       user_role:
+ *                         type: number
+ *                         description: 用户角色
+ *                         example: 3
+ *                       avatar:
+ *                         type: string
+ *                         description: 用户头像
+ *                         example: 'http://example/static/img.png'
+ *                       tel:
+ *                         type: string
+ *                         description: 用户手机号码
+ *                         example: 13239844923
+ *                       status:
+ *                         type: boolean
+ *                         description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *                         example: true
+ *                       createdAt:
+ *                         type: string
+ *                         description: 创建时间
+ *                       updatedAt:
+ *                         type: string
+ *                         description: 更新时间
+ *                 msg:
+ *                   type: string
+ *                   example: 查询所有用户信息已完成
+ *                 total:
+ *                   type: number
+ *                   example: 1
+ *                 pagesize:
+ *                   type: number
+ *                   example: 10
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to get access
+ *       '404':
+ *         description: 请求资源未找到
+ */
+router.post('/coffee/user/user-all-info', getAllUser);
 
+/**
+ * @swagger
+ * /coffee/user:
+ *   put:
+ *     summary: 更新用户
+ *     description: 更新指定的用户
+ *     tags: [用户管理]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       description: '请求入参描述'
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: 'string'
+ *                 required: true
+ *                 description: 数据唯一id
+ *               username:
+ *                 type: string
+ *                 description: 用户姓名
+ *                 example: 'root'
+ *               user_full_name:
+ *                 type: string
+ *                 description: 用户全名称
+ *                 example: '超级管理员'
+ *               user_role:
+ *                 type: number
+ *                 description: 用户角色
+ *                 example: 3
+ *               avatar:
+ *                 type: string
+ *                 description: 用户头像
+ *                 example: 'http://example/static/img.png'
+ *               tel:
+ *                 type: string
+ *                 description: 用户手机号码
+ *                 example: 13239844923
+ *               status:
+ *                 type: boolean
+ *                 description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *                 example: true
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *             properties:
+ *               id:
+ *                 type: 'string'
+ *                 required: true
+ *                 description: 数据唯一id
+ *               username:
+ *                 type: string
+ *                 description: 用户姓名
+ *               user_full_name:
+ *                   type: string
+ *                   description: 用户全名称
+ *               user_role:
+ *                 type: number
+ *                 description: 用户角色
+ *               avatar:
+ *                 type: string
+ *                 description: 用户头像
+ *               tel:
+ *                 type: string
+ *                 description: 用户手机号码
+ *               status:
+ *                 type: boolean
+ *                 description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *             required:
+ *               - id
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: 数据项唯一id
+ *                       example: '23eosis200'
+ *                     username:
+ *                       type: string
+ *                       description: 用户姓名
+ *                       example: 'root'
+ *                     user_full_name:
+ *                       type: string
+ *                       description: 用户全名称
+ *                       example: '超级管理员'
+ *                     user_role:
+ *                       type: number
+ *                       description: 用户角色
+ *                       example: 3
+ *                     avatar:
+ *                       type: string
+ *                       description: 用户头像
+ *                       example: 'http://example/static/img.png'
+ *                     tel:
+ *                       type: string
+ *                       description: 用户手机号码
+ *                       example: 13239844923
+ *                     status:
+ *                       type: boolean
+ *                       description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *                       example: true
+ *                     createdAt:
+ *                       type: string
+ *                       description: 创建时间
+ *                     updatedAt:
+ *                       type: string
+ *                       description: 更新时间
+ *                 msg:
+ *                   type: string
+ *                   example: 更新指定用户信息完成
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to get access
+ *       '404':
+ *         description: 请求资源未找到
+ */
 router.put('/coffee/user', updatePointerUser);
 
+/**
+ * @swagger
+ * /coffee/user:
+ *   delete:
+ *     summary: 注销用户
+ *     description: 注销指定的用户
+ *     tags: [用户管理]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: 'id'
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Numberice ID of the user_manager to delete
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   example: null
+ *                 msg:
+ *                   type: string
+ *                   example: 删除指定用户成功
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to get access
+ *       '404':
+ *         description: 请求资源未找到
+ */
 router.delete('/coffee/user', delPointerUser);
 
-// router.post('/coffee/user/fuzzyquery', fuzzyQuery);
+/**
+ * @swagger
+ * /coffee/user/fuzzyquery:
+ *   post:
+ *     summary: 模糊搜索
+ *     description: 根据用户名进行模糊搜索匹配
+ *     tags: [用户管理]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       description: "请求参数"
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               search:
+ *                 type: string
+ *                 description: 搜索的用户名，可支持模糊搜索匹配
+ *                 required: true
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             additionalProperties: true
+ *             properties:
+ *               search:
+ *                 type: string
+ *                 description: 搜索的用户名，可支持模糊搜索匹配
+ *                 example: ro
+ *             required:
+ *               - search
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: 数据项唯一id
+ *                         example: '23eosis200'
+ *                       username:
+ *                         type: string
+ *                         description: 用户姓名
+ *                         example: 'root'
+ *                       user_full_name:
+ *                         type: string
+ *                         description: 用户全名称
+ *                         example: '超级管理员'
+ *                       user_role:
+ *                         type: number
+ *                         description: 用户角色
+ *                         example: 3
+ *                       avatar:
+ *                         type: string
+ *                         description: 用户头像
+ *                         example: 'http://example/static/img.png'
+ *                       tel:
+ *                         type: string
+ *                         description: 用户手机号码
+ *                         example: 13239844923
+ *                       status:
+ *                         type: boolean
+ *                         description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *                         example: true
+ *                       createdAt:
+ *                         type: string
+ *                         description: 创建时间
+ *                       updatedAt:
+ *                         type: string
+ *                         description: 更新时间
+ *                 msg:
+ *                   type: string
+ *                   example: 模糊查询成功
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to get access
+ *       '404':
+ *         description: 请求资源未找到
+ */
+router.post('/coffee/user/fuzzyquery', fuzzyQuery);
 
 module.exports = router;

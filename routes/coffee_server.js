@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-09-06 11:43:51
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 14:40:42
+ * @LastEditTime: 2024-04-16 13:39:48
  * @FilePath: \koa-generator\routes\coffee_server.js
  * @Description: 咖啡数据列表服务-接口路由
  */
@@ -307,7 +307,7 @@ router.get('/coffee/coffeelist', getCoffeeList);
  * @swagger
  *   /coffee/updateCoffeeItem:
  *     put:
- *       summary: 更新某个咖啡产品新
+ *       summary: 更新某个咖啡产品
  *       description: 用于更新一个自定义的咖啡产品数据，单个数据项的更新
  *       tags: [业务模块]
  *       security:
@@ -319,37 +319,37 @@ router.get('/coffee/coffeelist', getCoffeeList);
  *             schema:
  *               type: object
  *               properties:
- *                id:
- *                  type: 'string'
- *                  required: true
- *                  description: 数据唯一id
- *                name:
- *                  type: string
- *                  description: 咖啡具的产品名称
- *                color:
- *                  type: 'string'
- *                  description: 产品颜色色值
- *                count:
- *                  type: 'number'
- *                  description: 数量
- *                price:
- *                  type: 'number'
- *                  description: 价格
- *                description:
- *                  type: 'string'
- *                  description: 描述信息
- *                type:
- *                  type: 'string'
- *                  description: 类型
- *                is_flush:
- *                  type: 'boolean'
- *                  description: 是否需要冲洗
- *                is_hot:
- *                  type: 'boolean'
- *                  description: 是否会变热
- *                author:
- *                  type: 'string'
- *                  description: 提交人(作者)
+ *                 id:
+ *                   type: 'string'
+ *                   required: true
+ *                   description: 数据唯一id
+ *                 name:
+ *                   type: string
+ *                   description: 咖啡具的产品名称
+ *                 color:
+ *                   type: 'string'
+ *                   description: 产品颜色色值
+ *                 count:
+ *                   type: 'number'
+ *                   description: 数量
+ *                 price:
+ *                   type: 'number'
+ *                   description: 价格
+ *                 description:
+ *                   type: 'string'
+ *                   description: 描述信息
+ *                 type:
+ *                   type: 'string'
+ *                   description: 类型
+ *                 is_flush:
+ *                   type: 'boolean'
+ *                   description: 是否需要冲洗
+ *                 is_hot:
+ *                   type: 'boolean'
+ *                   description: 是否会变热
+ *                 author:
+ *                   type: 'string'
+ *                   description: 提交人(作者)
  *           application/x-www-form-urlencoded:
  *             schema:
  *               type: object
