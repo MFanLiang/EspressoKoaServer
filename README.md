@@ -24,7 +24,7 @@ koa 后端服务框架，开箱即用的脚手架，由 koa-generator 提供的 
 简单描述下该如何配置操作：
 
 - 1. 打开Termimal（比如vsCode自带的命令行终端，或者启动计算机系统的命令行终端），输入 mysql -u root -p 命令进入到 mysql 环境下
-- 2. 创建一个数据库，比如我在这里创建一个名叫 test 的数据库，输入 craete databse test; 命令
+- 2. 创建一个数据库，比如我在这里创建一个名叫 test 的数据库，输入 create databse test; 命令
 - 3. 退出 mysql 环境，输入 quit 即可
 
 这里贴张我的操作图片
