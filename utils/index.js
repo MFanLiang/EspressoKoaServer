@@ -36,11 +36,20 @@ exports.getLocalIP = function () {
     case 'Windows_NT':
       for (let dev in netInfo) {
         // win7的网络信息中显示为本地连接，win10显示为以太网
+        // * 判断计算机系统网络环境为网线直连模式
         if (dev === '本地连接' || dev === '以太网') {
           for (let j = 0; j < netInfo[dev].length; j++) {
             if (netInfo[dev][j].family === 'IPv4') {
               ip = netInfo[dev][j].address;
               break;
+            }
+          }
+        }
+        // * 判断计算机系统网络环境为 WIFI 网卡连接模式
+        if (dev === 'WLAN') {
+          for (let k = 0; k < netInfo[dev].length; k++) {
+            if (netInfo[dev][k].family === 'IPv4') {
+              ip = netInfo[dev][k].address;
             }
           }
         }
