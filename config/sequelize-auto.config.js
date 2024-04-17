@@ -1,6 +1,14 @@
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-06 20:42:45
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-07 13:56:55
+ * @FilePath: \koa-generator\config\sequelize-auto.config.js
+ * @Description: sequelize-auto 自动生数据表模型配置文件。文件级别：配置文件
+ */
+
 'use strict';
 
-// sequelize.model.js
 const { exec } = require('child_process');
 
 const modelName = process.argv[2];

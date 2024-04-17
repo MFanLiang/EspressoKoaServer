@@ -2,9 +2,9 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:22:07
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-06 12:48:20
- * @FilePath: \koa-generator\config\serverConfig.js
- * @Description: 全局基础服务配置文件
+ * @LastEditTime: 2024-04-17 00:16:56
+ * @FilePath: \EspressoKoaServer\config\serverConfig.js
+ * @Description: 全局基础服务配置文件。文件级别：配置文件
  */
 
 const path = require('path');
@@ -66,7 +66,14 @@ const refreshTime = '2h';
 const expiresInTime = '2h';
 
 /** 路由接口白名单(特殊的接口地址，不需要验证 jwt) */
-const WHITELIST = ["/coffee/user/login", "/coffee/user/register", "/swagger", "/coffee/rundbSyncShell"];
+const WHITELIST = [
+  "/",
+  "/coffee/user/login",
+  "/coffee/user/register",
+  "/swagger-ui",
+  "/coffee/rundbSyncShell",
+  "/coffee/send-email",
+];
 
 // * 分量导出所有服务运行时配置变量
 module.exports = {

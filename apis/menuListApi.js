@@ -293,7 +293,6 @@ const getMenuList = async (ctx, next) => {
 /** 获取权限按钮 */
 const getAuthBtns = async (ctx, next) => {
   await useDelay(880);
-
   ctx.response.body = {
     code: 200,
     data: {

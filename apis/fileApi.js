@@ -10,9 +10,9 @@ const UploadFileSimgle = async (ctx, next) => {
     const { originalname } = ctx.file;
     ctx.response.body = {
       code: 200,
-      results: [`${RESOURCE_URL}${originalname}`]
+      data: [`${RESOURCE_URL}${originalname}`],
+      msg: '图片上传成功'
     }
-
   } catch (err) {
     console.log('【UploadFileSimgle】error: ', err)
   }
@@ -28,7 +28,8 @@ const readAllFilesByStatic = async (ctx, next) => {
     await useDelay(1000);
     ctx.response.body = {
       code: 200,
-      results: filesPath
+      data: filesPath,
+      msg: '所有图片返回成功'
     }
   }
 };

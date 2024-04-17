@@ -1,37 +1,13 @@
-/** 函数工具库 */
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const bcrypt = require('bcryptjs');
-
-// * 传入文件夹的路径看是否存在，存在不用管，不存在则直接创建文件夹
-/**
- * 判断文件夹是否存在，不存在可以直接创建
- * @param reaPath {String} 文件路径
- * @returns {Promise<boolean>}
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-02 22:16:39
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-07 13:32:59
+ * @FilePath: \koa-generator\utils\index.js
+ * @Description: 公共工具函数库
  */
-exports.exitsAsyncFolder = async function (reaPath) {
-  const absPath = path.resolve(__dirname, reaPath);
-  try {
-    await fs.promises.stat(absPath)
-    return;
-  } catch (e) {
-    // 不存在文件夹，直接创建 {recursive: true} 这个配置项是配置自动创建多个文件夹
-    await fs.promises.mkdir(absPath, { recursive: true })
-  }
-};
 
-exports.exitsFolder = async function (reaPath) {
-  const absPath = path.resolve(__dirname, reaPath);
-
-  fs.stat(absPath, function (err, stats) {
-    if (!stats) {
-      fs.mkdir(absPath, { recursive: true }, err => {
-        if (err) throw err;
-      }); //Create dir in case not found
-    }
-  });
-};
+const os = require('os');
 
 /**
  * 延时执行
@@ -84,16 +60,4 @@ exports.getLocalIP = function () {
       break;
   }
   return ip;
-};
-
-/** 加密密码口令 */
-exports.encryptPassword = async function (passwordVal) {
-  // * 创建加密前的盐
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(passwordVal, salt);
-};
-
-/** 解密密码口令 */
-exports.decodePassword = async function (originVal, cryptograph) {
-  return bcrypt.compareSync(originVal, cryptograph);
 };
