@@ -81,11 +81,7 @@ app.use(logger());
 // * 注册服务器静态图片资源目录
 app.use(staticDir(UPLOAD_DIRIMGS));
 
-app.use(views(__dirname + '/views', {
-  extension: 'pug html'
-}));
-
-// * 未鉴权接口访问错误处理
+// * 未鉴权接口访问错误处理，token 验证失败的时候会抛出401错误，因此需要添加【错误处理】，而且要放在 app.use(koajwt()) 之前，否则不执行。
 app.use((ctx, next) => {
   return next().catch((err) => {
     if (err.status === 401) {
@@ -98,19 +94,27 @@ app.use((ctx, next) => {
 });
 
 // * 验证 token
-// * token 验证失败的时候会抛出401错误，因此需要添加【错误处理】，而且要放在 app.use(koajwt()) 之前，否则不执行。
-app.use(koajwt({
-  secret: jwtUnless.secretToken
-}).unless({
-  custom: ctx => {
-    if (jwtUnless.checkIsNonTokenApi(ctx)) {
-      // * 需要验证 token 的接口
-      return true;
+app.use(async (ctx, next) => {
+  const POSTMAN = ctx.request.header['user-agent'].slice(0, 7);
+  if (POSTMAN === 'Postman' ||
+    process.env.NODE_ENV === 'development' ||
+    ctx.request.header['referer']?.slice(-7) === 'gger-ui'
+  ) {
+    console.log('现在在开发调试模式');
+    await next();
+  } else {
+    console.log('现在在浏览器上');
+    const flag = await jwtUnless.checkIsNonTokenApi(ctx);
+    if (flag) {
+      await next();
     } else {
-      // * 不需要验证 token 的接口
-      return false;
+      return ctx.error([401, '令牌已过期！']);
     }
   }
+});
+
+app.use(views(__dirname + '/views', {
+  extension: 'pug html'
 }));
 
 // * logger 日志
@@ -120,7 +124,7 @@ app.use(async (ctx, next) => {
   let ms = 0; // 接口耗时
   ms = new Date() - start;
   // 若在开发环境下，记录响应日志；生产环境下不输出，为了减少服务器磁盘使用
-  if (process.env.NODE_ENV) {
+  if (process.env.NODE_ENV === 'development') {
     logsUtils.logResponse(ctx, ms);
   };
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);

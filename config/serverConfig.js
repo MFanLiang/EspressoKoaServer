@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:22:07
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-17 00:16:56
+ * @LastEditTime: 2024-04-19 18:34:44
  * @FilePath: \EspressoKoaServer\config\serverConfig.js
  * @Description: 全局基础服务配置文件。文件级别：配置文件
  */
@@ -59,11 +59,15 @@ const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
 /** 存储上传图片文件的目录 */
 const UPLOAD_DIRIMGS = path.join(__dirname, '../public/images');
 
+/** 加密 token 的秘钥 */
+const secretKey = "espresso_token";
+
 /** 刷新 token 提前时间，单位：秒 */
-const refreshTime = '2h';
+const refreshTime = 180;
 
 /** token 有效时间，单位：秒 */
-const expiresInTime = '2h';
+// 如果是使用字符串情况下，需要确保提供时间的单位，例如："2 days" 表示两天, "10h" 表示10个小时, "7d" 表示7天, "3m" 表示三分钟
+const expiresInTime = "10h";
 
 /** 路由接口白名单(特殊的接口地址，不需要验证 jwt) */
 const WHITELIST = [
@@ -73,6 +77,7 @@ const WHITELIST = [
   "/swagger-ui",
   "/coffee/rundbSyncShell",
   "/coffee/send-email",
+  "/coffee/security/publicKey",
 ];
 
 // * 分量导出所有服务运行时配置变量
@@ -80,6 +85,7 @@ module.exports = {
   mysql_config,
   RESOURCE_URL,
   UPLOAD_DIRIMGS,
+  secretKey,
   refreshTime,
   expiresInTime,
   WHITELIST

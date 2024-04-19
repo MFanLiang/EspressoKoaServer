@@ -1,63 +1,95 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const crypto = require('crypto'); // 引入fs模块
 const { useDelay } = require('../utils');
-const { expiresInTime } = require("../config/serverConfig.js");
+const { refreshTime, expiresInTime } = require("../config/serverConfig.js");
+const Joi = require("joi"); // 接口接收到的参数校验
+const { key } = require("../utils/encryption.js");
 const models = require('@db/index');
 const sequelize = require('../db/sequelize.js');
-const { decodePassword } = require('../utils/encryption.js');
 
 /** 登录接口 */
 const login = async (ctx, next) => {
-  const { username, password } = ctx.request.body;
+  let { username, password } = ctx.request.body;
+  // 防止公钥有空格存在
+  const pw = password.replace(/\s+/g, '+');
+  // 对接收到的 password 处理解密
+  password = key.decrypt(pw, 'utf8');
 
-  await models.user_manage.findAll({
-    where: {
-      username
+  // 校验接收到的参数类型
+  const schema = Joi.object({
+    username: ctx.joiRequired("用户名称"),
+    password: ctx.joiRequired("账号密码")
+  });
+  const valueValid = schema.validate({ username, password });
+  if (valueValid.error) {
+    ctx.error([-1, valueValid.error.message]);
+  }
+
+  // 加密
+  const hmac = crypto.createHmac("sha256", username);
+  hmac.update(password);
+  const required = { username, password }
+  required.password = hmac.digest("hex");
+
+  const ip_address = ctx.request.ip.substr(ctx.request.ip.lastIndexOf(':') + 1);
+
+  const userRsp = await models.user_manage.findOne({ where: { username } });
+  const tokenRsp = await models.online_token.findOne({ where: { ip_address } });
+  const userRspData = JSON.parse(JSON.stringify(userRsp));
+  const tokenRspData = JSON.parse(JSON.stringify(tokenRsp));
+
+
+  if (userRspData.id === tokenRsp?.user_id && tokenRspData.ip_address === ip_address) {
+    ctx.response.body = {
+      code: 0,
+      data: null,
+      message: '该账号已在其他设备登录'
     }
-  }).then(async (user) => {
-    if (!JSON.parse(JSON.stringify(user))[0]) {
-      ctx.response.body = {
-        code: 0,
-        data: null,
-        message: '用户名或密码错误'
-      }
+    return false;
+  } else {
+    // 查询数据库中是否含有该用户
+    const userInfoStatus = await models.user_manage.findAll({
+      where: required
+    });
+    const userInfomation = JSON.parse(JSON.stringify(userInfoStatus))
+
+    if (userInfomation.length > 0) {
+      // 生成 access_token 口令
+      const access_token = ctx.getToken({
+        id: userInfomation[0].id,
+        username: userInfomation[0].username,
+        ip_address
+      }, expiresInTime);
+      // 生成刷新 token 口令
+      // const refresh_token = ctx.getToken({
+      //   id: userInfomation[0].id,
+      //   username: userInfomation[0].username
+      // }, refreshTime);
+
+      delete userInfomation[0].password;
+      ctx.success({
+        access_token,
+        token_type: 'Bearer',
+        expires_in: expiresInTime,
+        // refresh_token,
+        userInfo: userInfomation[0],
+      })
     } else {
-      const flag = await decodePassword(password, JSON.parse(JSON.stringify(user))[0].password);
-      if (!flag) {
-        ctx.response.body = {
-          code: 0,
-          data: null,
-          message: '用户名或密码错误'
-        }
-      } else {
-        const { username, status, tel, userRole, avatar, userFullName, id } = JSON.parse(JSON.stringify(user))[0];
-
-        // 生成鉴权 token 私钥口令，有效期2小时
-        // 调用 jsonwebtoken 的 sign() 方法来生成token，接收三个参数，第一个是载荷，用于编码后存储在 token 中的数据，也是验证 token 后可以拿到的数据；第二个是密钥，自己定义的，验证的时候也是要相同的密钥才能解码；第三个是options，可以设置 token 的过期时间
-
-        const tokenStr = jwt.sign({
-          username,
-          id: JSON.parse(JSON.stringify(user))[0].id
-        }, 'espresso_token', { expiresIn: expiresInTime });
-        const userInfo = { username, status, tel, userRole, avatar, userFullName, id };
-        await useDelay(800);
-        ctx.response.body = {
-          code: 200,
-          data: userInfo,
-          token: tokenStr,
-          message: '登录成功'
-        }
-      }
+      ctx.error([0, '用户名或密码错误']);
     }
-  }).catch((error) => {
-    if (error) {
-      ctx.response.body = {
-        code: 500,
-        data: null,
-        msg: `登录接口服务接口异常，请检查koa服务接口配置`
-      }
-    }
-  })
+  }
+};
+
+/** 用户退出登录系统 */
+const logout = async (ctx, next) => {
+  const decryptToken = ctx.decryptToken(ctx.request.header.authorization)
+  models.online_token.destroy({ where: { token: decryptToken } })
+  ctx.success(true);
+};
+
+/** 生成公钥 */
+const generatePublicKey = async (ctx, next) => {
+  const publicKey = key.exportKey('public'); // 生成公钥
+  ctx.success(publicKey);
 };
 
 /** 注册用户接口 */
@@ -65,29 +97,47 @@ const register = async (ctx, next) => {
   // 如果表不存在, 则创建用户表(如果已经存在, 则不执行任何操作)
   await models.user_manage.sync();
 
-  let { password } = ctx.request.body;
-  // 创建加密前的盐
-  const salt = await bcrypt.genSalt(10);
-  // 加密密码
-  password = await bcrypt.hash(password, salt);
-  await models.user_manage.create({ ...ctx.request.body, password }).then(async (users) => {
-    await useDelay(1000);
-    ctx.response.body = {
-      code: 200,
-      data: JSON.parse(JSON.stringify(users)),
-      message: '用户创建成功',
-    }
-  }).catch(err => {
-    const gui = JSON.parse(JSON.stringify(err));
-    const validate = JSON.parse(JSON.stringify(err.errors));
-    ctx.response.status = err.statusCode || err.status || 500;
-    ctx.response.body = {
-      code: 500,
-      data: [],
-      message: validate[0].message || '创建用户失败',
-      mysqlReturnInfo: gui
-    }
+  // 校验接收到的参数类型
+  const schema = Joi.object({
+    username: ctx.joiRequired("用户名称"),
+    password: ctx.joiRequired("账号密码"),
+    user_full_name: ctx.joiRequired("用户全名"),
+    tel: ctx.joiRequired("手机号码"),
   });
+  const data = ctx.request.body;
+  const { username, password, user_full_name, tel } = data;
+  const required = { username, password, user_full_name, tel };
+  const valueValid = schema.validate(required);
+  if (valueValid.error) {
+    ctx.error([-1, valueValid.error.message]);
+  } else {
+    const hmac = crypto.createHmac("sha256", required.username);
+    hmac.update(required.password);
+    required.password = hmac.digest("hex");
+
+    // 准备好要往数据库的用户表中插入的数据字段
+    const cutInDataToSheet = { ...data, ...required }
+    await models.user_manage.create(cutInDataToSheet)
+      .then(async (users) => {
+        const { id, avatar, username, tel, user_full_name, user_role, status, updatedAt, createdAt } = JSON.parse(JSON.stringify(users));
+        const displayData = { id, avatar, username, tel, user_full_name, user_role, status, updatedAt, createdAt }
+        await useDelay(1000);
+        ctx.response.body = {
+          code: 200,
+          data: displayData,
+          message: '用户创建成功',
+        }
+      })
+      .catch(err => {
+        const validate = JSON.parse(JSON.stringify(err.errors));
+        ctx.response.status = err.statusCode || err.status || 500;
+        ctx.response.body = {
+          code: 500,
+          data: [],
+          message: validate[0].message || '创建用户失败',
+        }
+      })
+  }
 };
 
 /** 获取指定用户信息 */
@@ -247,6 +297,8 @@ const fuzzyQuery = async (ctx, next) => {
 module.exports = {
   register,
   login,
+  logout,
+  generatePublicKey,
   getPointerUserInfo,
   getAllUser,
   updatePointerUser,

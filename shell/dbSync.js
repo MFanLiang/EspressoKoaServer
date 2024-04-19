@@ -20,6 +20,5 @@ sequelize
     exit(0); // 指示 Node.js 以 code 的退出状态同步终止进程，当前为正常退出终止进程
   })
   .catch(err => {
-    console.log('所有模型均已同步失败');
-    console.log(err);
+    console.log('所有模型均已同步失败', err);
   });

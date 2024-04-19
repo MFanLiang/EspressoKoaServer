@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 20:42:45
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-09 12:22:48
- * @FilePath: \koa-generator\config\swagger.config.js
+ * @LastEditTime: 2024-04-19 19:00:41
+ * @FilePath: \EspressoKoaServer\config\swagger.config.js
  * @Description: Swagger-UI 配置文件。文件级别：配置文件
  */
 

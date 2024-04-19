@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-16 14:04:35
- * @FilePath: \koa-generator\routes\user_server.js
+ * @LastEditTime: 2024-04-19 13:33:49
+ * @FilePath: \EspressoKoaServer\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
 
@@ -11,6 +11,8 @@ const Router = require('koa-router');
 const {
   register,
   login,
+  logout,
+  generatePublicKey,
   getPointerUserInfo,
   getAllUser,
   updatePointerUser,
@@ -156,6 +158,43 @@ router.post('/coffee/user/register', register);
  *         description: 请求资源未找到
  */
 router.post('/coffee/user/login', login);
+
+/**
+ * @swagger
+ * /coffee/user/logout:
+ *   post:
+ *     summary: 退出登录
+ *     description: 用户的退出登录操作
+ *     tags: [用户管理]
+ */
+router.post("/coffee/user/logout", logout);
+
+/**
+ * @swagger
+ * /coffee/security/publicKey:
+ *   get:
+ *     summary: 生成公钥
+ *     description: 生成系统公钥
+ *     tags: [用户管理]
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: string
+ *                 message:
+ *                   type: string
+ *                   example: "操作成功"
+ */
+router.get("/coffee/security/publicKey", generatePublicKey);
 
 /**
  * @swagger

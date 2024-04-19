@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV1,
       allowNull: false,
       primaryKey: true,
-      comment: "唯一主键"
+      comment: "用户列表唯一主键"
     },
     username: {
       type: DataTypes.STRING(255),
@@ -66,6 +66,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "username" },
+        ]
+      },
+      {
+        name: "id",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "id" },
         ]
       },
     ]

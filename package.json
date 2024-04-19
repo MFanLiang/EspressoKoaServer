@@ -17,7 +17,6 @@
     "@koa/cors": "^4.0.0",
     "@koa/multer": "^3.0.2",
     "axios": "^1.6.8",
-    "bcryptjs": "^2.4.3",
     "canvas": "^2.11.2",
     "cross-env": "^7.0.3",
     "debug": "^4.1.1",

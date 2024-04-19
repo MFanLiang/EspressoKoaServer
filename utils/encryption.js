@@ -7,16 +7,12 @@
  * @Description: 密码加解密工具函数
  */
 
-const bcrypt = require('bcryptjs');
+const NodeRSA = require("node-rsa");
 
-/** 加密密码口令 */
-exports.encryptPassword = async function (passwordVal) {
-  // * 创建加密前的盐
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(passwordVal, salt);
-};
+// * rsa加密
+const key = new NodeRSA({ b: 512 });
+key.setOptions({ encryptionScheme: "pkcs1" });
 
-/** 解密密码口令 */
-exports.decodePassword = async function (originVal, cryptograph) {
-  return bcrypt.compareSync(originVal, cryptograph);
+module.exports = {
+  key
 };

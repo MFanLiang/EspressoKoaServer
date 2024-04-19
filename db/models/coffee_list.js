@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV1,
       allowNull: false,
       primaryKey: true,
-      comment: "唯一主键"
+      comment: "咖啡列表数据唯一主键"
     },
     name: {
       type: DataTypes.STRING(40),
@@ -52,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(15),
       allowNull: true,
       comment: "提交作者"
-    },
+    }
   }, {
     sequelize,
     tableName: 'coffee_list',

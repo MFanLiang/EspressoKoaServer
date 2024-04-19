@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-09 13:01:38
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 16:46:24
- * @FilePath: \koa-generator\middleware\response\response.js
+ * @LastEditTime: 2024-04-19 00:35:44
+ * @FilePath: \EspressoKoaServer\middleware\response\response.js
  * @Description: 统一接口返回格式
  */
 
@@ -69,7 +69,7 @@ exports.success = (ctx, data, code = 200, message = '操作成功') => {
  * @param code 错误码 || [错误码, 错误描述]
  * @param message 错误描述
  */
-exports.error = (ctx, code = 0, data = '', message = '操作失败') => {
+exports.error = (ctx, code = 0, data = "", message = '操作失败') => {
   if (typeof code === 'object') {
     message = code[1];
     code = code[0];

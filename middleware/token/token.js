@@ -2,26 +2,31 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-09 13:01:38
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 17:54:22
- * @FilePath: \koa-generator\middleware\token\token.js
+ * @LastEditTime: 2024-04-19 21:23:25
+ * @FilePath: \EspressoKoaServer\middleware\token\token.js
  * @Description: token相关配置和方法函数
  */
 
 const jwt = require('jsonwebtoken');
 const NodeRSA = require('node-rsa');
 const crypto = require('crypto');
+const { secretKey } = require("../../config/serverConfig.js");
 const models = require('@db/index');
 
-// const secret = 'token'; // 密钥，不能丢
-const secret = new NodeRSA({ b: 512 }).exportKey('public');
+// 保存密钥，不能丢
+const secret = new NodeRSA({ b: 512 }).exportKey("public");
 
 // 加密必要参数
 const ALGORITHM = 'aes-192-cbc';
-const PASSWORD = '用于生成密钥的密码';
-// 改为使用异步的 `crypto.scrypt()`。
+
+const PASSWORD = 'espressoCoffee';
+
+// key 是 algorithm 使用的原始密钥
 const key = crypto.scryptSync(PASSWORD, '盐值', 24);
-// 使用 `crypto.randomBytes()` 生成随机的 iv 而不是此处显示的静态的 iv。
-const iv = Buffer.alloc(16, 16); // 初始化向量。
+
+// 生成加密强伪随机数据作为初始化向量
+const iv = Buffer.alloc(16, 16); // 初始化向量
+
 
 /**
  * token生成
@@ -38,14 +43,17 @@ exports.getToken = (ctx, userInfo, time) => {
     };
   }
   // 创建token并导出
-  const token = jwt.sign(userInfo, secret, { expiresIn: time }); // 60, "2 days", "10h", "7d".
+  const token = jwt.sign(userInfo, secretKey, { expiresIn: time }); // 60, "2 days", "10h", "7d".
   const data = {
     token,
-    userId: userInfo.id
+    user_id: userInfo.id,
+    ip_address: userInfo.ip_address,
+    create_time: new Date(),
+    update_time: new Date(),
   };
-  models.onlineToken.create(data);
+  models.online_token.create(data);
 
-  // token加密
+  // token加密 [api使用参考文档：https://nodejs.cn/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options]
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
   let encrypted = cipher.update(token, 'utf8', 'hex');
   encrypted += cipher.final('hex');
@@ -69,34 +77,41 @@ exports.decryptToken = (ctx, tokens) => {
   }
   return decrypted;
 };
+
 /**
  * token验证
  * @param String tokens
  * @param bool type, token: true,refreshToken: false
  * @return bool 过期: false, 不过期: true
  */
-exports.checkToken = (ctx, tokens, type = true) => {
+exports.checkToken = async (ctx, tokens, type = true) => {
   tokens = tokens.replace(/\s+/g, ''); // 空格替换
-  // 解密
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  // 使用相同的算法、密钥和 iv 进行加密
-  let decrypted = decipher.update(tokens, 'hex', 'utf8');
-  try {
-    decrypted += decipher.final('utf8');
-  } catch (error) {
+  const decryptToken = ctx.decryptToken(tokens);
+  const datas = await models.online_token.findAll({ where: { token: decryptToken } })
+  const datasStringfy = JSON.parse(JSON.stringify(datas));
+  if (datasStringfy[0]?.user_id) {
+    // 解密
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+    // 使用相同的算法、密钥和 iv 进行加密
+    let decrypted = decipher.update(tokens, 'hex', 'utf8');
+    try {
+      decrypted += decipher.final('utf8');
+    } catch (error) {
+      return false;
+    }
+    const decoded = jwt.decode(decrypted, secret);
+    // 600秒过期预警
+    if (type) {
+      if (decoded.exp > new Date() / 1000 && decoded.exp < new Date() / 1000 + 600) {
+        ctx.append('refresh', true);
+      } else {
+        ctx.remove('refresh');
+      }
+    }
+    return !(decoded && decoded.exp <= new Date() / 1000);
+  } else {
     return false;
   }
-  const decoded = jwt.decode(decrypted, secret);
-  // 600秒过期预警
-  if (type) {
-    if (decoded.exp > new Date() / 1000 && decoded.exp < new Date() / 1000 + 600) {
-      ctx.append('refresh', true);
-    } else {
-      ctx.remove('refresh');
-    }
-  }
-
-  return !(decoded && decoded.exp <= new Date() / 1000);
 };
 
 /**
