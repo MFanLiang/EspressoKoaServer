@@ -30,36 +30,60 @@ const login = async (ctx, next) => {
   const required = { username, password }
   required.password = hmac.digest("hex");
 
-  // 查询数据库中是否含有该用户
-  const userInfoStatus = await models.user_manage.findAll({
-    where: required
-  });
-  const userInfomation = JSON.parse(JSON.stringify(userInfoStatus))
-  let loginSuccess = false;
-  if (userInfomation.length > 0) {
-    loginSuccess = true;
-    // 生成 access_token 口令
-    const access_token = ctx.getToken({
-      id: userInfomation[0].id,
-      username: userInfomation[0].username
-    }, expiresInTime);
-    // 生成刷新 token 口令
-    const refresh_token = ctx.getToken({
-      id: userInfomation[0].id,
-      username: userInfomation[0].username
-    }, refreshTime);
+  const ip_address = ctx.request.ip.substr(ctx.request.ip.lastIndexOf(':') + 1);
 
-    delete userInfomation[0].password;
-    ctx.success({
-      access_token,
-      token_type: 'Bearer',
-      expires_in: expiresInTime,
-      refresh_token,
-      userInfo: userInfomation[0],
-    })
+  const userRsp = await models.user_manage.findOne({ where: { username } })
+  const tokenRsp = await models.online_token.findOne({ where: { ip_address } });
+  const userRspData = JSON.parse(JSON.stringify(userRsp));
+  const tokenRspData = JSON.parse(JSON.stringify(tokenRsp));
+
+
+  if (userRspData.id === tokenRsp.user_id && tokenRspData.ip_address === ip_address) {
+    ctx.response.body = {
+      code: 0,
+      data: null,
+      message: '该账号已在其他设备登录'
+    }
+    return false;
   } else {
-    ctx.error([0, '用户名或密码错误']);
+    // 查询数据库中是否含有该用户
+    const userInfoStatus = await models.user_manage.findAll({
+      where: required
+    });
+    const userInfomation = JSON.parse(JSON.stringify(userInfoStatus))
+
+    if (userInfomation.length > 0) {
+      // 生成 access_token 口令
+      const access_token = ctx.getToken({
+        id: userInfomation[0].id,
+        username: userInfomation[0].username,
+        ip_address
+      }, expiresInTime);
+      // 生成刷新 token 口令
+      // const refresh_token = ctx.getToken({
+      //   id: userInfomation[0].id,
+      //   username: userInfomation[0].username
+      // }, refreshTime);
+
+      delete userInfomation[0].password;
+      ctx.success({
+        access_token,
+        token_type: 'Bearer',
+        expires_in: expiresInTime,
+        // refresh_token,
+        userInfo: userInfomation[0],
+      })
+    } else {
+      ctx.error([0, '用户名或密码错误']);
+    }
   }
+};
+
+/** 用户退出登录系统 */
+const logout = async (ctx, next) => {
+  const decryptToken = ctx.decryptToken(ctx.request.header.authorization)
+  models.online_token.destroy({ where: { token: decryptToken } })
+  ctx.success(true);
 };
 
 /** 生成公钥 */
@@ -273,6 +297,7 @@ const fuzzyQuery = async (ctx, next) => {
 module.exports = {
   register,
   login,
+  logout,
   generatePublicKey,
   getPointerUserInfo,
   getAllUser,

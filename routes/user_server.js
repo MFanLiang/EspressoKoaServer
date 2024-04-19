@@ -11,6 +11,7 @@ const Router = require('koa-router');
 const {
   register,
   login,
+  logout,
   generatePublicKey,
   getPointerUserInfo,
   getAllUser,
@@ -157,6 +158,16 @@ router.post('/coffee/user/register', register);
  *         description: 请求资源未找到
  */
 router.post('/coffee/user/login', login);
+
+/**
+ * @swagger
+ * /coffee/user/logout:
+ *   post:
+ *     summary: 退出登录
+ *     description: 用户的退出登录操作
+ *     tags: [用户管理]
+ */
+router.post("/coffee/user/logout", logout);
 
 /**
  * @swagger

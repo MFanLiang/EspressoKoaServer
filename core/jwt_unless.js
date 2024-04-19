@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-12-30 16:37:30
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 18:24:58
+ * @LastEditTime: 2024-04-19 20:37:18
  * @FilePath: \EspressoKoaServer\core\jwt_unless.js
  * @Description: JWT 验证能力
  */
@@ -39,7 +39,7 @@ const isNonTokenRegApi = (path) => {
 }
 
 // * 判断当前请求 api 是否不需要 jwt 验证
-const checkIsNonTokenApi = (ctx) => {
+const checkIsNonTokenApi = async (ctx) => {
   if ((isNonTokenApi(ctx.path) || isNonTokenRegApi(ctx.path)) && ctx.method == 'GET') {
     return true
   } else {
@@ -51,13 +51,8 @@ const checkIsNonTokenApi = (ctx) => {
       return true;
     } else {
       const headerToken = ctx.request.header.authorization;
-      const queryToken = ctx.query.authorization;
-      if (headerToken || queryToken) {
-        if (!ctx.checkToken(headerToken || queryToken)) {
-          return ctx.error([401, '令牌已过期！']);
-        } else {
-          return true;
-        }
+      if (headerToken) {
+        return await ctx.checkToken(headerToken);
       } else {
         return ctx.error([401, 'token检验未通过！']);
       }

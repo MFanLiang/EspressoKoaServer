@@ -103,11 +103,12 @@ app.use(async (ctx, next) => {
     console.log('现在在开发调试模式');
     await next();
   } else {
-    if (jwtUnless.checkIsNonTokenApi(ctx)) {
-      // * 需要验证 token 的接口
+    console.log('现在在浏览器上');
+    const flag = await jwtUnless.checkIsNonTokenApi(ctx);
+    if (flag) {
       await next();
     } else {
-      return false;
+      return ctx.error([401, '令牌已过期！']);
     }
   }
 });

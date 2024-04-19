@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-09 13:01:38
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 19:19:45
+ * @LastEditTime: 2024-04-19 21:23:25
  * @FilePath: \EspressoKoaServer\middleware\token\token.js
  * @Description: token相关配置和方法函数
  */
@@ -47,6 +47,7 @@ exports.getToken = (ctx, userInfo, time) => {
   const data = {
     token,
     user_id: userInfo.id,
+    ip_address: userInfo.ip_address,
     create_time: new Date(),
     update_time: new Date(),
   };
@@ -83,28 +84,34 @@ exports.decryptToken = (ctx, tokens) => {
  * @param bool type, token: true,refreshToken: false
  * @return bool 过期: false, 不过期: true
  */
-exports.checkToken = (ctx, tokens, type = true) => {
+exports.checkToken = async (ctx, tokens, type = true) => {
   tokens = tokens.replace(/\s+/g, ''); // 空格替换
-  // 解密
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  // 使用相同的算法、密钥和 iv 进行加密
-  let decrypted = decipher.update(tokens, 'hex', 'utf8');
-  try {
-    decrypted += decipher.final('utf8');
-  } catch (error) {
+  const decryptToken = ctx.decryptToken(tokens);
+  const datas = await models.online_token.findAll({ where: { token: decryptToken } })
+  const datasStringfy = JSON.parse(JSON.stringify(datas));
+  if (datasStringfy[0]?.user_id) {
+    // 解密
+    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+    // 使用相同的算法、密钥和 iv 进行加密
+    let decrypted = decipher.update(tokens, 'hex', 'utf8');
+    try {
+      decrypted += decipher.final('utf8');
+    } catch (error) {
+      return false;
+    }
+    const decoded = jwt.decode(decrypted, secret);
+    // 600秒过期预警
+    if (type) {
+      if (decoded.exp > new Date() / 1000 && decoded.exp < new Date() / 1000 + 600) {
+        ctx.append('refresh', true);
+      } else {
+        ctx.remove('refresh');
+      }
+    }
+    return !(decoded && decoded.exp <= new Date() / 1000);
+  } else {
     return false;
   }
-  const decoded = jwt.decode(decrypted, secret);
-  // 600秒过期预警
-  if (type) {
-    if (decoded.exp > new Date() / 1000 && decoded.exp < new Date() / 1000 + 600) {
-      ctx.append('refresh', true);
-    } else {
-      ctx.remove('refresh');
-    }
-  }
-
-  return !(decoded && decoded.exp <= new Date() / 1000);
 };
 
 /**
