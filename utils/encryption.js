@@ -14,7 +14,5 @@ const key = new NodeRSA({ b: 512 });
 key.setOptions({ encryptionScheme: "pkcs1" });
 
 module.exports = {
-  encryptPassword,
-  decodePassword,
   key
 };
