@@ -32,13 +32,13 @@ const login = async (ctx, next) => {
 
   const ip_address = ctx.request.ip.substr(ctx.request.ip.lastIndexOf(':') + 1);
 
-  const userRsp = await models.user_manage.findOne({ where: { username } })
+  const userRsp = await models.user_manage.findOne({ where: { username } });
   const tokenRsp = await models.online_token.findOne({ where: { ip_address } });
   const userRspData = JSON.parse(JSON.stringify(userRsp));
   const tokenRspData = JSON.parse(JSON.stringify(tokenRsp));
 
 
-  if (userRspData.id === tokenRsp.user_id && tokenRspData.ip_address === ip_address) {
+  if (userRspData.id === tokenRsp?.user_id && tokenRspData.ip_address === ip_address) {
     ctx.response.body = {
       code: 0,
       data: null,
