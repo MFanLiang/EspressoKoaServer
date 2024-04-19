@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-12-30 16:37:30
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-08 23:03:46
- * @FilePath: \koa-generator\core\jwt_unless.js
+ * @LastEditTime: 2024-04-19 18:24:58
+ * @FilePath: \EspressoKoaServer\core\jwt_unless.js
  * @Description: JWT 验证能力
  */
 
@@ -46,9 +46,22 @@ const checkIsNonTokenApi = (ctx) => {
     // * 特殊的接口地址，不需要验证 jwt
     // * /user/login --> 登录地址忽略验证
     // * /user/register --> 注册地址忽略验证
-    // * /swagger --> swagger接口文档地址忽略验证
-    if (WHITELIST.includes(ctx.path)) return true;
-    return false;
+    // * /swagger-ui --> swagger接口文档地址忽略验证
+    if (WHITELIST.includes(ctx.path)) {
+      return true;
+    } else {
+      const headerToken = ctx.request.header.authorization;
+      const queryToken = ctx.query.authorization;
+      if (headerToken || queryToken) {
+        if (!ctx.checkToken(headerToken || queryToken)) {
+          return ctx.error([401, '令牌已过期！']);
+        } else {
+          return true;
+        }
+      } else {
+        return ctx.error([401, 'token检验未通过！']);
+      }
+    }
   }
 }
 

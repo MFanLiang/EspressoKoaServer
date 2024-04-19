@@ -2,26 +2,31 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-09 13:01:38
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 17:54:22
- * @FilePath: \koa-generator\middleware\token\token.js
+ * @LastEditTime: 2024-04-19 19:19:45
+ * @FilePath: \EspressoKoaServer\middleware\token\token.js
  * @Description: token相关配置和方法函数
  */
 
 const jwt = require('jsonwebtoken');
 const NodeRSA = require('node-rsa');
 const crypto = require('crypto');
+const { secretKey } = require("../../config/serverConfig.js");
 const models = require('@db/index');
 
-// const secret = 'token'; // 密钥，不能丢
-const secret = new NodeRSA({ b: 512 }).exportKey('public');
+// 保存密钥，不能丢
+const secret = new NodeRSA({ b: 512 }).exportKey("public");
 
 // 加密必要参数
 const ALGORITHM = 'aes-192-cbc';
-const PASSWORD = '用于生成密钥的密码';
-// 改为使用异步的 `crypto.scrypt()`。
+
+const PASSWORD = 'espressoCoffee';
+
+// key 是 algorithm 使用的原始密钥
 const key = crypto.scryptSync(PASSWORD, '盐值', 24);
-// 使用 `crypto.randomBytes()` 生成随机的 iv 而不是此处显示的静态的 iv。
-const iv = Buffer.alloc(16, 16); // 初始化向量。
+
+// 生成加密强伪随机数据作为初始化向量
+const iv = Buffer.alloc(16, 16); // 初始化向量
+
 
 /**
  * token生成
@@ -38,14 +43,16 @@ exports.getToken = (ctx, userInfo, time) => {
     };
   }
   // 创建token并导出
-  const token = jwt.sign(userInfo, secret, { expiresIn: time }); // 60, "2 days", "10h", "7d".
+  const token = jwt.sign(userInfo, secretKey, { expiresIn: time }); // 60, "2 days", "10h", "7d".
   const data = {
     token,
-    userId: userInfo.id
+    user_id: userInfo.id,
+    create_time: new Date(),
+    update_time: new Date(),
   };
-  models.onlineToken.create(data);
+  models.online_token.create(data);
 
-  // token加密
+  // token加密 [api使用参考文档：https://nodejs.cn/api/crypto.html#cryptocreatecipherivalgorithm-key-iv-options]
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
   let encrypted = cipher.update(token, 'utf8', 'hex');
   encrypted += cipher.final('hex');
@@ -69,6 +76,7 @@ exports.decryptToken = (ctx, tokens) => {
   }
   return decrypted;
 };
+
 /**
  * token验证
  * @param String tokens

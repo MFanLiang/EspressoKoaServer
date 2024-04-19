@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:19:02
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-07 14:19:55
- * @FilePath: \koa-generator\db\sequelize.js
+ * @LastEditTime: 2024-04-19 00:21:50
+ * @FilePath: \EspressoKoaServer\db\sequelize.js
  * @Description: Sequelize 实例运行脚本
  */
 
