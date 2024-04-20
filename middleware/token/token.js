@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-09 13:01:38
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 21:23:25
+ * @LastEditTime: 2024-04-20 14:52:07
  * @FilePath: \EspressoKoaServer\middleware\token\token.js
  * @Description: token相关配置和方法函数
  */
@@ -85,6 +85,10 @@ exports.decryptToken = (ctx, tokens) => {
  * @return bool 过期: false, 不过期: true
  */
 exports.checkToken = async (ctx, tokens, type = true) => {
+  // 在线swagger-ui文档鉴权接口时，默认去除携带的 Bearer 标识元素
+  if (tokens.includes("Bearer")) {
+    tokens = tokens.split(" ")[1];
+  }
   tokens = tokens.replace(/\s+/g, ''); // 空格替换
   const decryptToken = ctx.decryptToken(tokens);
   const datas = await models.online_token.findAll({ where: { token: decryptToken } })

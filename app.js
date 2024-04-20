@@ -95,20 +95,20 @@ app.use((ctx, next) => {
 
 // * 验证 token
 app.use(async (ctx, next) => {
-  const POSTMAN = ctx.request.header['user-agent'].slice(0, 7);
-  if (POSTMAN === 'Postman' ||
-    process.env.NODE_ENV === 'development' ||
-    ctx.request.header['referer']?.slice(-7) === 'gger-ui'
-  ) {
-    console.log('现在在开发调试模式');
+  // 获取请求接入方式为postman
+  const IS_POSTMAN = ctx.request.header['user-agent'].slice(0, 7) === 'Postman'; // 'Postman'
+  // 获取请求接入方式为swagger-ui文档
+  const SWAGGERUI = ctx.request.header['referer']?.slice(-7); // 'gger-ui'
+
+  // * 如果请求接入方式为postman，则放行 token 验证过程
+  if (IS_POSTMAN) {
     await next();
   } else {
-    console.log('现在在浏览器上');
     const flag = await jwtUnless.checkIsNonTokenApi(ctx);
     if (flag) {
       await next();
     } else {
-      return ctx.error([401, '令牌已过期！']);
+      return ctx.error([401, 'Token has expired, please authorize and try again.']);
     }
   }
 });

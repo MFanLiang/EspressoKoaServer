@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 13:33:49
+ * @LastEditTime: 2024-04-20 14:56:16
  * @FilePath: \EspressoKoaServer\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -49,7 +49,7 @@ const router = new Router();
  *               user_full_name:
  *                 type: 'string'
  *                 description: 用户全名
- *               use_role:
+ *               user_role:
  *                 type: 'number'
  *                 description: 用户角色
  *               avatar:
@@ -80,7 +80,7 @@ const router = new Router();
  *               user_full_name:
  *                 type: 'string'
  *                 description: 用户全名
- *               use_role:
+ *               user_role:
  *                 type: 'number'
  *                 description: 用户角色
  *               avatar:
@@ -276,7 +276,7 @@ router.get('/coffee/user/pointer-info', getPointerUserInfo);
 /**
  * @swagger
  * /coffee/user/user-all-info:
- *   post:
+ *   get:
  *     summary: 读所有用户
  *     description: 读取系统中所有用户
  *     tags: [用户管理]
@@ -348,7 +348,7 @@ router.get('/coffee/user/pointer-info', getPointerUserInfo);
  *       '404':
  *         description: 请求资源未找到
  */
-router.post('/coffee/user/user-all-info', getAllUser);
+router.get('/coffee/user/user-all-info', getAllUser);
 
 /**
  * @swagger

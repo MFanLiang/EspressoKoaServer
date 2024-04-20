@@ -1,308 +1,76 @@
 const { useDelay } = require('../utils');
+const sequelize = require('../db/sequelize.js');
+const sysDataMenu = require("../dataCacheDir/sysDataMenuList.json")
 
-const sysDataMenu = [
-  {
-    "icon": "HomeOutlined",
-    "title": "首页",
-    "path": "/home/index"
-  },
-  {
-    "icon": "AreaChartOutlined",
-    "title": "数据大屏",
-    "path": "/dataScreen/index"
-  },
-  {
-    "icon": "AppstoreAddOutlined",
-    "title": "功能区块",
-    "path": "/functionalBlock",
-    "children": [
-      {
-        "icon": "FilePdfOutlined",
-        "path": "/functionalBlock/pdfView",
-        "title": "pdf 预览器",
-      },
-      {
-        "icon": "BgColorsOutlined",
-        "path": "/functionalBlock/webide",
-        "title": "WebIDE 编辑器",
-      },
-      {
-        "icon": "AndroidOutlined",
-        "path": '/functionalBlock/dialog',
-        "title": "原生弹窗",
-      },
-      {
-        "icon": "UploadOutlined",
-        "path": "/functionalBlock/pic-uploader",
-        "title": "图片文件上传器"
-      },
-      {
-        "icon": "PictureOutlined",
-        "path": "/functionalBlock/pic-selector",
-        "title": "图片选择器"
-      },
-      {
-        "icon": "DragOutlined",
-        "path": "/functionalBlock/drag-controler",
-        "title": '拖拽控制器'
-      },
-      {
-        "icon": "ArrowRightOutlined",
-        "path": "/functionalBlock/copy",
-        "title": "copy-to-clipboard",
-      },
-    ]
-  },
-  {
-    "icon": "TableOutlined",
-    "title": "超级表格",
-    "path": "/proTable",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/proTable/useHooks",
-        "title": "使用 Hooks"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/proTable/useComponent",
-        "title": "使用 Component"
-      }
-    ]
-  },
-  {
-    "icon": "FundOutlined",
-    "title": "Dashboard",
-    "path": "/dashboard",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/dashboard/dataVisualize",
-        "title": "数据可视化"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/dashboard/embedded",
-        "title": "内嵌页面"
-      }
-    ]
-  },
-  {
-    "icon": "FileTextOutlined",
-    "title": "表单 Form",
-    "path": "/form",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/form/basicForm",
-        "title": "基础 Form"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/form/validateForm",
-        "title": "校验 Form"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/form/dynamicForm",
-        "title": "动态 Form"
-      }
-    ]
-  },
-  {
-    "icon": "PieChartOutlined",
-    "title": "Echarts",
-    "path": "/echarts",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/echarts/waterChart",
-        "title": "水型图"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/echarts/columnChart",
-        "title": "柱状图"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/echarts/lineChart",
-        "title": "折线图"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/echarts/pieChart",
-        "title": "饼图"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/echarts/radarChart",
-        "title": "雷达图"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/echarts/nestedChart",
-        "title": "嵌套环形图"
-      }
-    ]
-  },
-  {
-    "icon": "ShoppingOutlined",
-    "title": "常用组件",
-    "path": "/assembly",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/assembly/guide",
-        "title": "引导页"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/assembly/svgIcon",
-        "title": "Svg 图标"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/assembly/selectIcon",
-        "title": "Icon 选择"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/assembly/batchImport",
-        "title": "批量导入数据"
-      }
-    ]
-  },
-  {
-    "icon": "ProfileOutlined",
-    "title": "菜单嵌套",
-    "path": "/menu",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/menu/menu1",
-        "title": "菜单1"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/menu/menu2",
-        "title": "菜单2",
-        "children": [
-          {
-            "icon": "AppstoreOutlined",
-            "path": "/menu/menu2/menu21",
-            "title": "菜单2-1"
-          },
-          {
-            "icon": "AppstoreOutlined",
-            "path": "/menu/menu2/menu22",
-            "title": "菜单2-2",
-            "children": [
-              {
-                "icon": "AppstoreOutlined",
-                "path": "/menu/menu2/menu22/menu221",
-                "title": "菜单2-2-1"
-              },
-              {
-                "icon": "AppstoreOutlined",
-                "path": "/menu/menu2/menu22/menu222",
-                "title": "菜单2-2-2"
-              }
-            ]
-          },
-          {
-            "icon": "AppstoreOutlined",
-            "path": "/menu/menu2/menu23",
-            "title": "菜单2-3"
-          }
-        ]
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/menu/menu3",
-        "title": "菜单3"
-      }
-    ]
-  },
-  {
-    "icon": "ExclamationCircleOutlined",
-    "title": "错误页面",
-    "path": "/error",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/404",
-        "title": "404页面"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/403",
-        "title": "403页面"
-      },
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/500",
-        "title": "500页面"
-      }
-    ]
-  },
-  {
-    "icon": "PaperClipOutlined",
-    "title": "外部链接",
-    "path": "/link",
-    "children": [
-      {
-        "icon": "AppstoreOutlined",
-        "path": "/link/github",
-        "title": "GitHub 仓库",
-        "isLink": "https://github.com/MFanLiang/coffee-platform"
-      },
-      // {
-      //   "icon": "AppstoreOutlined",
-      //   "path": "/link/gitee",
-      //   "title": "Gitee 仓库",
-      //   "isLink": "https://gitee.com/laramie/Hooks-Admin"
-      // },
-      // {
-      //   "icon": "AppstoreOutlined",
-      //   "path": "/link/juejin",
-      //   "title": "掘金文档",
-      //   "isLink": "https://juejin.cn/user/3263814531551816/posts"
-      // },
-      // {
-      //   "icon": "AppstoreOutlined",
-      //   "path": "/link/myBlog",
-      //   "title": "个人博客",
-      //   "isLink": "http://www.spicyboy.cn"
-      // }
-    ]
-  }
-];
 
 /** 获取系统菜单 */
 const getMenuList = async (ctx, next) => {
   await useDelay(880);
-
   ctx.response.body = {
     code: 200,
-    data: sysDataMenu,
+    data: sysDataMenu[1],
     message: '查询系统菜单成功',
   };
 };
 
-/** 获取权限按钮 */
+/** 根据不同的用户获取权限按钮 */
 const getAuthBtns = async (ctx, next) => {
-  await useDelay(880);
+  const decryptToken = ctx.decryptToken(ctx.request.header.authorization);
+  const queryed = await sequelize.query(`select user_role from sys_network.user_manage um  where um.id = (select user_id from sys_network.online_token ot  where token = "${decryptToken}");`);
+  const userRole = queryed[0][0].user_role;
+  let btnsTemp = null;
+  switch (userRole) {
+    // 超级管理员
+    case 0:
+      btnsTemp = {
+        root: true,
+        delUser: true, // 删除用户
+        add: true, // 新增按钮
+        delete: true, // 删除
+        update: true, // 更新
+        query: true, // 查询
+        edit: true, // 编辑
+      };
+      break;
+    // 系统管理员
+    case 1:
+      btnsTemp = {
+        add: true, // 新增按钮
+        delete: true, // 删除
+        update: true, // 更新
+        query: true, // 查询
+        edit: true, // 编辑
+      }
+      break;
+    // 普通用户
+    case 2:
+      btnsTemp = {
+        add: true,
+        update: true,
+        query: true,
+        edit: true,
+      }
+      break;
+    // 访客用户
+    case 3:
+      btnsTemp = {
+        add: true,
+        query: true,
+      }
+      break;
+    // 临时用户
+    case 4:
+      btnsTemp = {
+        query: true,
+      }
+      break;
+    default:
+      break;
+  }
   ctx.response.body = {
     code: 200,
     data: {
-      useHooks: {
-        add: true,
-        delete: true,
-        update: true,
-        query: true,
-        effects: true,
-      }
+      buttons: btnsTemp
     },
     message: '权限按钮查询返回成功'
   };

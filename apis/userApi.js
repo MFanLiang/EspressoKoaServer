@@ -9,6 +9,11 @@ const sequelize = require('../db/sequelize.js');
 /** 登录接口 */
 const login = async (ctx, next) => {
   let { username, password } = ctx.request.body;
+  // 判断接收到的密码是否符合加密算法长度
+  if (password.length !== 88) {
+    ctx.error([0, '密码不符合加密安全算法的规则']);
+    return false;
+  }
   // 防止公钥有空格存在
   const pw = password.replace(/\s+/g, '+');
   // 对接收到的 password 处理解密
@@ -36,7 +41,6 @@ const login = async (ctx, next) => {
   const tokenRsp = await models.online_token.findOne({ where: { ip_address } });
   const userRspData = JSON.parse(JSON.stringify(userRsp));
   const tokenRspData = JSON.parse(JSON.stringify(tokenRsp));
-
 
   if (userRspData.id === tokenRsp?.user_id && tokenRspData.ip_address === ip_address) {
     ctx.response.body = {
