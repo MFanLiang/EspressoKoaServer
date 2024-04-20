@@ -49,7 +49,7 @@ const router = new Router();
  *               user_full_name:
  *                 type: 'string'
  *                 description: 用户全名
- *               use_role:
+ *               user_role:
  *                 type: 'number'
  *                 description: 用户角色
  *               avatar:
@@ -80,7 +80,7 @@ const router = new Router();
  *               user_full_name:
  *                 type: 'string'
  *                 description: 用户全名
- *               use_role:
+ *               user_role:
  *                 type: 'number'
  *                 description: 用户角色
  *               avatar:
