@@ -46,11 +46,21 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: 1,
       comment: "用户状态 (1 可用状态，0 注销不可用状态)"
+    },
+    create_time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "创建时间"
+    },
+    update_time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "更新时间"
     }
   }, {
     sequelize,
     tableName: 'user_manage',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

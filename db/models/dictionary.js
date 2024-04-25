@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('dictionary', {
     id: {
       type: DataTypes.UUID,
@@ -24,15 +24,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     create_time: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      comment: "创建时间"
     },
     update_time: {
       type: DataTypes.DATE,
-      allowNull: false
-    },
-    delete_time: {
-      type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false,
+      comment: "更新时间"
     }
   }, {
     sequelize,

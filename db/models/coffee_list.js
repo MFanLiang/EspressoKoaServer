@@ -52,11 +52,21 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(15),
       allowNull: true,
       comment: "提交作者"
+    },
+    create_time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "创建时间"
+    },
+    update_time: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "更新时间"
     }
   }, {
     sequelize,
     tableName: 'coffee_list',
-    timestamps: true,
+    timestamps: false,
     indexes: [
       {
         name: "PRIMARY",

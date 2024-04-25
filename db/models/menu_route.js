@@ -11,7 +11,7 @@ module.exports = function (sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      comment: "路由名称标题",
+      comment: "路由名称标题，唯一",
       unique: "name"
     },
     alias: {
@@ -67,7 +67,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "更新时间"
-    },
+    }
   }, {
     sequelize,
     tableName: 'menu_route',

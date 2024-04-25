@@ -21,6 +21,11 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    ip_address: {
+      type: DataTypes.STRING(36),
+      allowNull: true,
+      comment: "设备登录IP地址"
+    },
     create_time: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -30,11 +35,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "更新时间"
-    },
-    ip_address: {
-      type: DataTypes.STRING(36),
-      allowNull: true,
-      comment: "设备登录IP地址"
     }
   }, {
     sequelize,
