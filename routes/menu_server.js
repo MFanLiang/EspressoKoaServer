@@ -2,15 +2,14 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 20:42:45
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 18:05:19
- * @FilePath: \koa-generator\routes\menu_server.js
+ * @LastEditTime: 2024-04-24 21:27:22
+ * @FilePath: \EspressoKoaServer\routes\menu_server.js
  * @Description: 菜单服务-接口路由
  */
 
 const Router = require('koa-router');
-const { getMenuList, getAuthBtns } = require('../apis/menuListApi');
+const { getMenuList, createMenu, getAuthBtns } = require('../apis/menuListApi');
 const router = new Router;
-
 
 
 /**
@@ -31,6 +30,8 @@ const router = new Router;
  *         description: 请求资源未找到
  */
 router.get('/coffee/menu/list', getMenuList);
+
+router.post("/coffee/menu/create", createMenu);
 
 /**
  * @swagger

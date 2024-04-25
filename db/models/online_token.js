@@ -26,11 +26,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       comment: "创建时间"
     },
-    delete_time: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      comment: "删除时间"
-    },
     update_time: {
       type: DataTypes.DATE,
       allowNull: false,

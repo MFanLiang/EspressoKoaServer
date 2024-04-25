@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('user_manage', {
     id: {
       type: DataTypes.UUID,
@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     avatar: {
       type: DataTypes.STRING(255),
       allowNull: true,
-      defaultValue: "https:\/\/116.63.42.17\/staticdata\/dog.png",
+      defaultValue: "https:\/\/xiaomenglovecoffee.top\/staticdata\/dog.png",
       comment: "用户头像"
     },
     tel: {
@@ -43,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     status: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
+      allowNull: false,
       defaultValue: 1,
       comment: "用户状态 (1 可用状态，0 注销不可用状态)"
     }
