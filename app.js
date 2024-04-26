@@ -37,6 +37,8 @@ require("./env/env.config.js");
 // * error handler
 onerror(app);
 
+app.proxy = true;
+
 // * 挂载 middlewares
 app.use(errorHandler); // 统一错误异常处理，中间件
 app.use(validate); // 验证的方法，中间件

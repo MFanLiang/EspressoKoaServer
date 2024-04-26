@@ -1,5 +1,5 @@
 const crypto = require('crypto'); // 引入fs模块
-const { useDelay } = require('../utils');
+const { useDelay, formatSourceContent } = require('../utils');
 const { refreshTime, expiresInTime } = require("../config/serverConfig.js");
 const Joi = require("joi"); // 接口接收到的参数校验
 const { key } = require("../utils/encryption.js");
@@ -35,26 +35,32 @@ const login = async (ctx, next) => {
   const required = { username, password }
   required.password = hmac.digest("hex");
 
-  const ip_address = ctx.request.ip.substr(ctx.request.ip.lastIndexOf(':') + 1);
+  // 获取客户端系统的 IP 地址
+  const forwardedFor = ctx.request.headers['x-forwarded-for'];
+  const ip_address = forwardedFor ? forwardedFor.substr(ctx.request.ip.lastIndexOf(':') + 1) : ctx.request.ip;
 
-  const userRsp = await models.user_manage.findOne({ where: { username } });
-  const tokenRsp = await models.online_token.findOne({ where: { ip_address } });
-  const userRspData = JSON.parse(JSON.stringify(userRsp));
-  const tokenRspData = JSON.parse(JSON.stringify(tokenRsp));
+  const user_manage_response = await models.user_manage.findOne({ where: { username } });
+  const user_manage_response_format = formatSourceContent(user_manage_response);
+  const online_token_response = await models.online_token.findOne({ where: { user_id: user_manage_response_format.id } });
+  const online_token_response_format = formatSourceContent(online_token_response);
 
-  if (userRspData.id === tokenRsp?.user_id && tokenRspData.ip_address === ip_address) {
-    ctx.response.body = {
-      code: 0,
-      data: null,
-      message: '该账号已在其他设备登录'
+  if (online_token_response_format !== null) {
+    if (online_token_response_format.user_id === user_manage_response_format.id || online_token_response_format.ip_address === ip_address) {
+      ctx.response.body = {
+        code: 0,
+        data: null,
+        message: '该账号已在其他设备登录'
+      }
+      return false;
     }
-    return false;
-  } else {
+  }
+
+  if (online_token_response_format === null) {
     // 查询数据库中是否含有该用户
     const userInfoStatus = await models.user_manage.findAll({
       where: required
     });
-    const userInfomation = JSON.parse(JSON.stringify(userInfoStatus))
+    const userInfomation = formatSourceContent(userInfoStatus);
 
     if (userInfomation.length > 0) {
       // 生成 access_token 口令
@@ -63,18 +69,12 @@ const login = async (ctx, next) => {
         username: userInfomation[0].username,
         ip_address
       }, expiresInTime);
-      // 生成刷新 token 口令
-      // const refresh_token = ctx.getToken({
-      //   id: userInfomation[0].id,
-      //   username: userInfomation[0].username
-      // }, refreshTime);
 
       delete userInfomation[0].password;
       ctx.success({
         access_token,
         token_type: 'Bearer',
         expires_in: expiresInTime,
-        // refresh_token,
         userInfo: userInfomation[0],
       })
     } else {
@@ -120,11 +120,16 @@ const register = async (ctx, next) => {
     required.password = hmac.digest("hex");
 
     // 准备好要往数据库的用户表中插入的数据字段
-    const cutInDataToSheet = { ...data, ...required }
+    const cutInDataToSheet = {
+      ...data,
+      ...required,
+      create_time: data.create_time || new Date(),
+      update_time: data.update_time || new Date()
+    };
     await models.user_manage.create(cutInDataToSheet)
       .then(async (users) => {
-        const { id, avatar, username, tel, user_full_name, user_role, status, updatedAt, createdAt } = JSON.parse(JSON.stringify(users));
-        const displayData = { id, avatar, username, tel, user_full_name, user_role, status, updatedAt, createdAt }
+        const { id, avatar, username, tel, user_full_name, user_role, status, create_time, update_time } = JSON.parse(JSON.stringify(users));
+        const displayData = { id, avatar, username, tel, user_full_name, user_role, status, create_time, update_time }
         await useDelay(1000);
         ctx.response.body = {
           code: 200,
@@ -140,7 +145,7 @@ const register = async (ctx, next) => {
           data: [],
           message: validate[0].message || '创建用户失败',
         }
-      })
+      });
   }
 };
 

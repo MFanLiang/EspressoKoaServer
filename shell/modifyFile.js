@@ -1,3 +1,12 @@
+/*
+ * @Author: xiaomengge && xiaomengge777076@163.com
+ * @Date: 2024-04-16 21:41:56
+ * @LastEditors: xiaomengge && xiaomengge777076@163.com
+ * @LastEditTime: 2024-04-25 00:05:14
+ * @FilePath: \EspressoKoaServer\shell\modifyFile.js
+ * @Description: serverConfig服务系统配置文件的运行脚本
+ */
+
 const fs = require("node:fs");
 const { argv } = require("node:process");
 const { resolve } = require("node:path");

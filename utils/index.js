@@ -2,18 +2,19 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-02 22:16:39
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-07 13:32:59
- * @FilePath: \koa-generator\utils\index.js
+ * @LastEditTime: 2024-04-25 20:27:07
+ * @FilePath: \EspressoKoaServer\utils\index.js
  * @Description: 公共工具函数库
  */
 
 const os = require('os');
 
 /**
- * 延时执行
- * 模拟网络延迟返回
- * */
-exports.useDelay = async function (time) {
+ * @description 模拟网络延迟返回
+ * @param time 指定的延迟时间(单位: ms)
+ * @returns Promise
+ */
+async function useDelay(time) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
@@ -21,14 +22,15 @@ exports.useDelay = async function (time) {
   })
 };
 
-/** 获取本地计算机的ip地址 */
-exports.getLocalIP = function () {
+/**
+ * @description 获取本地计算机的ip地址
+ * @returns string
+ */
+function getLocalIP() {
   // * 获取当前的操作系统类型 Windows_NT(windows操作系统) ｜ Linux(Linux操作系统) ｜ Darwin(Mac操作系统)
   const osType = os.type();
-
   // * 获取网络信息
   const netInfo = os.networkInterfaces();
-
   // * 定义ip地址变量做存储
   let ip = '';
 
@@ -69,4 +71,44 @@ exports.getLocalIP = function () {
       break;
   }
   return ip;
+};
+
+/**
+ * @description 格式化源数据
+ * @returns Object
+ */
+function formatSourceContent(content) {
+  return JSON.parse(JSON.stringify(content));
+};
+
+/**
+ * @description 转换数据结构
+ * @param menuItems 菜单项
+ * @param parentId 父节点id
+ * @returns Array
+ */
+function transformDataStructure(menuItems, parentId = null) {
+  const result = [];
+  for (const item of menuItems) {
+    if (item.parent_menu_id === parentId) {
+      const menuItem = {
+        ...item,
+        isLink: item.is_link,
+      }
+      delete menuItem.is_link;
+      const children = transformDataStructure(menuItems, item.id);
+      if (children.length) {
+        menuItem.children = children;
+      }
+      result.push(menuItem);
+    }
+  }
+  return result;
+};
+
+module.exports = {
+  useDelay,
+  getLocalIP,
+  formatSourceContent,
+  transformDataStructure
 };
