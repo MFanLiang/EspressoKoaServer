@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:22:07
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 18:34:44
+ * @LastEditTime: 2024-04-27 00:04:35
  * @FilePath: \EspressoKoaServer\config\serverConfig.js
  * @Description: 全局基础服务配置文件。文件级别：配置文件
  */
@@ -59,9 +59,6 @@ const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
 /** 存储上传图片文件的目录 */
 const UPLOAD_DIRIMGS = path.join(__dirname, '../public/images');
 
-/** 加密 token 的秘钥 */
-const secretKey = "espresso_token";
-
 /** 刷新 token 提前时间，单位：秒 */
 const refreshTime = 180;
 
@@ -85,7 +82,6 @@ module.exports = {
   mysql_config,
   RESOURCE_URL,
   UPLOAD_DIRIMGS,
-  secretKey,
   refreshTime,
   expiresInTime,
   WHITELIST

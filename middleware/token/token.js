@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-09 13:01:38
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-20 14:52:07
+ * @LastEditTime: 2024-04-26 23:54:40
  * @FilePath: \EspressoKoaServer\middleware\token\token.js
  * @Description: token相关配置和方法函数
  */
@@ -10,7 +10,6 @@
 const jwt = require('jsonwebtoken');
 const NodeRSA = require('node-rsa');
 const crypto = require('crypto');
-const { secretKey } = require("../../config/serverConfig.js");
 const models = require('@db/index');
 
 // 保存密钥，不能丢
@@ -43,7 +42,8 @@ exports.getToken = (ctx, userInfo, time) => {
     };
   }
   // 创建token并导出
-  const token = jwt.sign(userInfo, secretKey, { expiresIn: time }); // 60, "2 days", "10h", "7d".
+  // const token = jwt.sign(userInfo, secretKey, { expiresIn: time }); // 60, "2 days", "10h", "7d".
+  const token = jwt.sign(userInfo, secret, { expiresIn: time }); // 60, "2 days", "10h", "7d".
   const data = {
     token,
     user_id: userInfo.id,

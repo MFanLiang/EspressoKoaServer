@@ -5,10 +5,12 @@ const models = require('@db/index');
 /** 获取系统菜单 */
 const getMenuList = async (ctx, next) => {
   const queryFormat = formatSourceContent(ctx.request.query);
+  const tempUserRole = typeof queryFormat.user_role === "string" ? Number(queryFormat.user_role) : queryFormat.user_role;
 
   // * 模拟网络延迟体现接口返回数据缓慢的现象
   await useDelay(880);
 
+  // * 递归 mysql 语句查询“菜单路由【sys_network.menu_route】”的数据表表
   const queryed = await sequelize.query(`
   with recursive menuTree as (
 	select id, name as title, alias as path, icon, status, parent_menu_id, subordinate_role, is_link, sort
@@ -19,7 +21,7 @@ const getMenuList = async (ctx, next) => {
 	from sys_network.menu_route m 
 	join menuTree mt on m.parent_menu_id = mt.id 
   )
-  select * from menuTree where subordinate_role = ${queryFormat.user_role} ORDER BY sort ASC;
+  select * from menuTree where subordinate_role = ${tempUserRole} ORDER BY sort ASC;
   `);
 
   const treeData = transformDataStructure(queryed[0]);

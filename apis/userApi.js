@@ -37,7 +37,7 @@ const login = async (ctx, next) => {
 
   // 获取客户端系统的 IP 地址
   const forwardedFor = ctx.request.headers['x-forwarded-for'];
-  const ip_address = forwardedFor ? forwardedFor.split(',')[0] : ctx.request.ip;
+  const ip_address = forwardedFor ? forwardedFor.substr(ctx.request.ip.lastIndexOf(':') + 1) : ctx.request.ip;
 
   const user_manage_response = await models.user_manage.findOne({ where: { username } });
   const user_manage_response_format = formatSourceContent(user_manage_response);
