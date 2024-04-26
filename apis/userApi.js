@@ -120,11 +120,16 @@ const register = async (ctx, next) => {
     required.password = hmac.digest("hex");
 
     // 准备好要往数据库的用户表中插入的数据字段
-    const cutInDataToSheet = { ...data, ...required }
+    const cutInDataToSheet = {
+      ...data,
+      ...required,
+      create_time: data.create_time || new Date(),
+      update_time: data.update_time || new Date()
+    };
     await models.user_manage.create(cutInDataToSheet)
       .then(async (users) => {
-        const { id, avatar, username, tel, user_full_name, user_role, status, updatedAt, createdAt } = JSON.parse(JSON.stringify(users));
-        const displayData = { id, avatar, username, tel, user_full_name, user_role, status, updatedAt, createdAt }
+        const { id, avatar, username, tel, user_full_name, user_role, status, create_time, update_time } = JSON.parse(JSON.stringify(users));
+        const displayData = { id, avatar, username, tel, user_full_name, user_role, status, create_time, update_time }
         await useDelay(1000);
         ctx.response.body = {
           code: 200,
@@ -140,7 +145,7 @@ const register = async (ctx, next) => {
           data: [],
           message: validate[0].message || '创建用户失败',
         }
-      })
+      });
   }
 };
 
