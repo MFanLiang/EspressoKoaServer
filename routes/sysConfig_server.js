@@ -16,8 +16,8 @@ const { rundbSyncShell } = require('../apis/sysConfigApi');
  * @swagger
  * /coffee/rundbSyncShell:
  *   get:
- *     summary: 脚本运行
- *     description: 执行同步数据库模型命令
+ *     summary: 数据库表的同步
+ *     description: 执行同步数据库所有表指令
  *     tags: [公共模块]
  *     responses:
  *       200:

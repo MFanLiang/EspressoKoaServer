@@ -5,23 +5,23 @@ const models = require('@db/index');
 /** 获取系统菜单 */
 const getMenuList = async (ctx, next) => {
   const queryFormat = formatSourceContent(ctx.request.query);
-  const tempUserRole = typeof queryFormat.user_role === "string" ? Number(queryFormat.user_role) : queryFormat.user_role;
+  const tempUserRole = typeof queryFormat.userRole === "string" ? Number(queryFormat.userRole) : queryFormat.userRole;
 
   // * 模拟网络延迟体现接口返回数据缓慢的现象
-  await useDelay(880);
+  // await useDelay(880);
 
   // * 递归 mysql 语句查询“菜单路由【sys_network.menu_route】”的数据表表
   const queryed = await sequelize.query(`
   with recursive menuTree as (
-	select id, name as title, alias as path, icon, status, parent_menu_id, subordinate_role, is_link, sort
+	select id, name as title, alias as path, icon, status, parent_menu_id as parentMenuId, subordinate_role as subordinateRole, is_link as isLink, sort
 	from sys_network.menu_route 
 	where parent_menu_id is null 
 	union all 
-	select m.id, m.name, m.alias, m.icon, m.status, m.parent_menu_id, m.subordinate_role, m.is_link, m.sort
+	select m.id, m.name, m.alias, m.icon, m.status, m.parent_menu_id, m.subordinate_role as subordinateRole, m.is_link, m.sort
 	from sys_network.menu_route m 
 	join menuTree mt on m.parent_menu_id = mt.id 
   )
-  select * from menuTree where subordinate_role = ${tempUserRole} ORDER BY sort ASC;
+  select * from menuTree where subordinateRole = ${tempUserRole} ORDER BY sort ASC;
   `);
 
   const treeData = transformDataStructure(queryed[0]);
@@ -40,8 +40,8 @@ const createMenu = async (ctx, next) => {
   const data = ctx.request.body;
   await models.menu_route.create({
     ...data,
-    create_time: data.create_time || new Date(),
-    update_time: data.update_time || new Date()
+    createTime: data.createTime || new Date(),
+    updateTime: data.createTime || new Date()
   })
     .then(async (menuData) => {
       const menuDataFormat = formatSourceContent(menuData);

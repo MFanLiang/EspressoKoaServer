@@ -38,12 +38,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       comment: "类型"
     },
-    is_flush: {
+    isFlush: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       comment: "是否需要冲洗"
     },
-    is_hot: {
+    isHot: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       comment: "是否会变热"
@@ -53,12 +53,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       comment: "提交作者"
     },
-    create_time: {
+    createTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "创建时间"
     },
-    update_time: {
+    updateTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "更新时间"
@@ -67,6 +67,7 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'coffee_list',
     timestamps: false,
+    comment: "咖啡列表数据表",
     indexes: [
       {
         name: "PRIMARY",

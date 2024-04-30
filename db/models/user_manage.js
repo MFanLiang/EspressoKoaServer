@@ -8,23 +8,23 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true,
       comment: "用户列表唯一主键"
     },
-    username: {
+    userName: {
       type: DataTypes.STRING(255),
       allowNull: false,
       comment: "用户名，唯一",
       unique: "username"
     },
-    password: {
+    passWord: {
       type: DataTypes.STRING(255),
       allowNull: false,
       comment: "用户的密码"
     },
-    user_full_name: {
+    userFullName: {
       type: DataTypes.STRING(255),
       allowNull: false,
       comment: "用户全称"
     },
-    user_role: {
+    userRole: {
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: 1,
@@ -47,12 +47,12 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: 1,
       comment: "用户状态 (1 可用状态，0 注销不可用状态)"
     },
-    create_time: {
+    createTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "创建时间"
     },
-    update_time: {
+    updateTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "更新时间"
@@ -61,6 +61,7 @@ module.exports = function (sequelize, DataTypes) {
     sequelize,
     tableName: 'user_manage',
     timestamps: false,
+    comment: "用户管理表",
     indexes: [
       {
         name: "PRIMARY",

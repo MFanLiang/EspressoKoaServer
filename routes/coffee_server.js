@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-09-06 11:43:51
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-16 13:39:48
- * @FilePath: \koa-generator\routes\coffee_server.js
+ * @LastEditTime: 2024-04-30 14:48:24
+ * @FilePath: \EspressoKoaServer\routes\coffee_server.js
  * @Description: 咖啡数据列表服务-接口路由
  */
 
@@ -53,10 +53,10 @@ const router = new Router();
  *               type:
  *                 type: 'string'
  *                 description: 类型
- *               is_flush:
+ *               isFlush:
  *                 type: 'boolean'
  *                 description: 是否需要冲洗
- *               is_hot:
+ *               isHot:
  *                 type: 'boolean'
  *                 description: 是否会变热
  *               author:
@@ -87,10 +87,10 @@ const router = new Router();
  *               type:
  *                 type: 'string'
  *                 description: 类型
- *               is_flush:
+ *               isFlush:
  *                 type: 'boolean'
  *                 description: 是否需要冲洗
- *               is_hot:
+ *               isHot:
  *                 type: 'boolean'
  *                 description: 是否会变热
  *               author:
@@ -141,11 +141,11 @@ const router = new Router();
  *                       type: 'string'
  *                       description: 类型
  *                       example: '2'
- *                     is_flush:
+ *                     isFlush:
  *                       type: 'boolean'
  *                       description: 是否需要冲洗
  *                       example: 0
- *                     is_hot:
+ *                     isHot:
  *                       type: 'boolean'
  *                       description: 是否会变热
  *                       example: 1
@@ -153,14 +153,17 @@ const router = new Router();
  *                       type: 'string'
  *                       description: 提交人(作者)
  *                       example: tom
- *                     createAt:
+ *                     createTime:
  *                       type: 'string'
  *                       description: 创建时间
  *                       example: '2024-04-09T15:02:08.623Z'
- *                     updatedAt:
+ *                     updateTime:
  *                       type: 'string'
  *                       description: 更新时间
  *                       example: '2024-04-09T15:02:08.623Z'
+ *                 message:
+ *                   type: string
+ *                   example: '添加咖啡产品成功'
  *       '400':
  *         description: 请求参数错误
  *       '401':
@@ -201,7 +204,7 @@ router.post('/coffee/incrementCoffeeItem', addCoffeeListItem);
  *                   data:
  *                     type: object
  *                     example: null
- *                   msg:
+ *                   message:
  *                     type: string
  *                     example: 数据删除成功
  *         '400':
@@ -267,11 +270,11 @@ router.delete('/coffee/delCoffeeItemById', delCoffeeItemById);
  *                           type: 'string'
  *                           description: 类型
  *                           example: '2'
- *                         is_flush:
+ *                         isFlush:
  *                           type: 'boolean'
  *                           description: 是否需要冲洗
  *                           example: 0
- *                         is_hot:
+ *                         isHot:
  *                           type: 'boolean'
  *                           description: 是否会变热
  *                           example: 1
@@ -279,15 +282,15 @@ router.delete('/coffee/delCoffeeItemById', delCoffeeItemById);
  *                           type: 'string'
  *                           description: 提交人(作者)
  *                           example: tom
- *                         createAt:
+ *                         createTime:
  *                           type: 'string'
  *                           description: 创建时间
  *                           example: '2024-04-09T15:02:08.623Z'
- *                         updatedAt:
+ *                         updateTime:
  *                           type: 'string'
  *                           description: 更新时间
  *                           example: '2024-04-09T15:02:08.623Z'
- *                   msg:
+ *                   message:
  *                     type: string
  *                     example: 查询咖啡产品列表数据已成功
  *                   total:
@@ -341,10 +344,10 @@ router.get('/coffee/coffeelist', getCoffeeList);
  *                 type:
  *                   type: 'string'
  *                   description: 类型
- *                 is_flush:
+ *                 isFlush:
  *                   type: 'boolean'
  *                   description: 是否需要冲洗
- *                 is_hot:
+ *                 isHot:
  *                   type: 'boolean'
  *                   description: 是否会变热
  *                 author:
@@ -377,10 +380,10 @@ router.get('/coffee/coffeelist', getCoffeeList);
  *                 type:
  *                   type: 'string'
  *                   description: 类型
- *                 is_flush:
+ *                 isFlush:
  *                   type: 'boolean'
  *                   description: 是否需要冲洗
- *                 is_hot:
+ *                 isHot:
  *                   type: 'boolean'
  *                   description: 是否会变热
  *                 author:
@@ -403,7 +406,7 @@ router.get('/coffee/coffeelist', getCoffeeList);
  *                   data:
  *                     type: object
  *                     example: null
- *                   msg:
+ *                   message:
  *                     type: string
  *                     example: '数据更新成功'
  *         '400':

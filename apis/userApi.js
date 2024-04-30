@@ -1,6 +1,6 @@
 const crypto = require('crypto'); // 引入fs模块
-const { useDelay, formatSourceContent } = require('../utils');
-const { refreshTime, expiresInTime } = require("../config/serverConfig.js");
+const { formatSourceContent } = require('../utils');
+const { expiresInTime } = require("../config/serverConfig.js");
 const Joi = require("joi"); // 接口接收到的参数校验
 const { key } = require("../utils/encryption.js");
 const models = require('@db/index');
@@ -8,44 +8,44 @@ const sequelize = require('../db/sequelize.js');
 
 /** 登录接口 */
 const login = async (ctx, next) => {
-  let { username, password } = ctx.request.body;
+  let { userName, passWord } = ctx.request.body;
   // 判断接收到的密码是否符合加密算法长度
-  if (password.length !== 88) {
+  if (passWord.length !== 88) {
     ctx.error([0, '密码不符合加密安全算法的规则']);
     return false;
   }
   // 防止公钥有空格存在
-  const pw = password.replace(/\s+/g, '+');
-  // 对接收到的 password 处理解密
-  password = key.decrypt(pw, 'utf8');
+  const pw = passWord.replace(/\s+/g, '+');
+  // 对接收到的 passWord 处理解密
+  passWord = key.decrypt(pw, 'utf8');
 
   // 校验接收到的参数类型
   const schema = Joi.object({
-    username: ctx.joiRequired("用户名称"),
-    password: ctx.joiRequired("账号密码")
+    userName: ctx.joiRequired("用户名称"),
+    passWord: ctx.joiRequired("账号密码")
   });
-  const valueValid = schema.validate({ username, password });
+  const valueValid = schema.validate({ userName, passWord });
   if (valueValid.error) {
     ctx.error([-1, valueValid.error.message]);
   }
 
   // 加密
-  const hmac = crypto.createHmac("sha256", username);
-  hmac.update(password);
-  const required = { username, password }
-  required.password = hmac.digest("hex");
+  const hmac = crypto.createHmac("sha256", userName);
+  hmac.update(passWord);
+  const required = { userName, passWord }
+  required.passWord = hmac.digest("hex");
 
   // 获取客户端系统的 IP 地址
   const forwardedFor = ctx.request.headers['x-forwarded-for'];
-  const ip_address = forwardedFor ? forwardedFor.substr(ctx.request.ip.lastIndexOf(':') + 1) : ctx.request.ip;
+  const ipAddress = forwardedFor ? forwardedFor.replace(/^.*:/, '') : ctx.request.ip.replace(/^.*:/, '');
 
-  const user_manage_response = await models.user_manage.findOne({ where: { username } });
+  const user_manage_response = await models.user_manage.findOne({ where: { userName } });
   const user_manage_response_format = formatSourceContent(user_manage_response);
   const online_token_response = await models.online_token.findOne({ where: { user_id: user_manage_response_format.id } });
   const online_token_response_format = formatSourceContent(online_token_response);
 
   if (online_token_response_format !== null) {
-    if (online_token_response_format.user_id === user_manage_response_format.id || online_token_response_format.ip_address === ip_address) {
+    if (online_token_response_format.userId === user_manage_response_format.id || online_token_response_format.ipAddress === ipAddress) {
       ctx.response.body = {
         code: 0,
         data: null,
@@ -64,17 +64,17 @@ const login = async (ctx, next) => {
 
     if (userInfomation.length > 0) {
       // 生成 access_token 口令
-      const access_token = ctx.getToken({
+      const accessToken = ctx.getToken({
         id: userInfomation[0].id,
-        username: userInfomation[0].username,
-        ip_address
+        userName: userInfomation[0].userName,
+        ipAddress
       }, expiresInTime);
 
-      delete userInfomation[0].password;
+      delete userInfomation[0].passWord;
       ctx.success({
-        access_token,
-        token_type: 'Bearer',
-        expires_in: expiresInTime,
+        accessToken,
+        tokenType: 'Bearer',
+        expiresIn: expiresInTime,
         userInfo: userInfomation[0],
       })
     } else {
@@ -87,7 +87,7 @@ const login = async (ctx, next) => {
 const logout = async (ctx, next) => {
   const decryptToken = ctx.decryptToken(ctx.request.header.authorization)
   models.online_token.destroy({ where: { token: decryptToken } })
-  ctx.success(true);
+  ctx.success(null);
 };
 
 /** 生成公钥 */
@@ -103,34 +103,34 @@ const register = async (ctx, next) => {
 
   // 校验接收到的参数类型
   const schema = Joi.object({
-    username: ctx.joiRequired("用户名称"),
-    password: ctx.joiRequired("账号密码"),
-    user_full_name: ctx.joiRequired("用户全名"),
+    userName: ctx.joiRequired("用户名称"),
+    passWord: ctx.joiRequired("账号密码"),
+    userFullName: ctx.joiRequired("用户全名"),
     tel: ctx.joiRequired("手机号码"),
   });
   const data = ctx.request.body;
-  const { username, password, user_full_name, tel } = data;
-  const required = { username, password, user_full_name, tel };
+  const { userName, passWord, userFullName, tel } = data;
+  const required = { userName, passWord, userFullName, tel };
   const valueValid = schema.validate(required);
   if (valueValid.error) {
     ctx.error([-1, valueValid.error.message]);
   } else {
-    const hmac = crypto.createHmac("sha256", required.username);
-    hmac.update(required.password);
-    required.password = hmac.digest("hex");
+    const hmac = crypto.createHmac("sha256", required.userName);
+    hmac.update(required.passWord);
+    required.passWord = hmac.digest("hex");
 
     // 准备好要往数据库的用户表中插入的数据字段
     const cutInDataToSheet = {
       ...data,
       ...required,
-      create_time: data.create_time || new Date(),
-      update_time: data.update_time || new Date()
+      createTime: data.createTime || new Date(),
+      updateTime: data.updateTime || new Date()
     };
     await models.user_manage.create(cutInDataToSheet)
       .then(async (users) => {
-        const { id, avatar, username, tel, user_full_name, user_role, status, create_time, update_time } = JSON.parse(JSON.stringify(users));
-        const displayData = { id, avatar, username, tel, user_full_name, user_role, status, create_time, update_time }
-        await useDelay(1000);
+        const { id, avatar, userName, tel, userFullName, userRole, status, createTime, updateTime } = formatSourceContent(users);
+        const displayData = { id, avatar, userName, tel, userFullName, userRole, status: status === "1" ? true : false, createTime, updateTime }
+        // await useDelay(1000);
         ctx.response.body = {
           code: 200,
           data: displayData,
@@ -163,13 +163,13 @@ const getPointerUserInfo = async (ctx, next) => {
       ctx.response.body = {
         code: 200,
         data: JSON.parse(JSON.stringify(user)),
-        msg: '指定用户信息查询完成'
+        message: '指定用户信息查询完成'
       }
     } else {
       ctx.response.body = {
         code: 200,
         data: [],
-        msg: '指定的用户不存在'
+        message: '指定的用户不存在'
       }
     }
 
@@ -178,7 +178,7 @@ const getPointerUserInfo = async (ctx, next) => {
       ctx.response.body = {
         code: 500,
         data: [],
-        msg: `获取指定用户信息服务接口异常，请检查koa服务接口配置`
+        message: `获取指定用户信息服务接口异常，请检查koa服务接口配置`
       }
     }
   })
@@ -186,22 +186,17 @@ const getPointerUserInfo = async (ctx, next) => {
 
 /** 获取所有用户信息列表 */
 const getAllUser = async (ctx, next) => {
-  await sequelize.query('SELECT id, username, user_full_name, user_role, avatar, tel, status, created_at, updated_at FROM sys_network.user_manage ORDER BY created_at DESC;', {
-    modal: models.user_manage,
-    mapToModel: true
-  }).then((data) => {
-    const parseData = JSON.parse(JSON.stringify(data));
-    const result = parseData[0].map((item) => {
-      return {
-        ...item,
-        status: item.status === 1 ? true : false,
-      }
-    });
+  await models.user_manage.findAll({
+    // 指定要查找的 field
+    attributes: ["id", "userName", "userFullName", "userRole", "avatar", "tel", "status", "createTime", "updateTime"],
+    // 根据创建时间的field进行降序排序
+    order: [["createTime", "DESC"]]
+  }).then(async (data) => {
     ctx.response.body = {
       code: 200,
-      data: result,
-      msg: '查询所有用户信息已完成',
-      total: parseData[0].length,
+      data: formatSourceContent(data),
+      message: '查询所有用户信息已完成',
+      total: formatSourceContent(data).length,
       pageSize: 10
     }
   }).catch((error) => {
@@ -209,7 +204,7 @@ const getAllUser = async (ctx, next) => {
       ctx.response.body = {
         code: 500,
         data: null,
-        msg: `获取所有用户信息服务接口异常，请检查koa服务接口配置`,
+        message: `获取所有用户信息服务接口异常，请检查koa服务接口配置`,
         total: 0,
         pageSize: 0
       }
@@ -230,13 +225,13 @@ const updatePointerUser = async (ctx, next) => {
       ctx.response.body = {
         code: 200,
         data: JSON.parse(JSON.stringify(updatedUserObj)),
-        msg: '更新指定用户信息完成'
+        message: '更新指定用户信息完成'
       }
     } else {
       ctx.response.body = {
         code: 200,
         data: null,
-        msg: '参数格式错误，请检查后重试'
+        message: '参数格式错误，请检查后重试'
       }
     }
   }).catch((error) => {
@@ -244,7 +239,7 @@ const updatePointerUser = async (ctx, next) => {
       ctx.response.body = {
         code: 500,
         data: null,
-        msg: `更新指定用户信息服务接口异常，请检查koa服务接口配置`
+        message: `更新指定用户信息服务接口异常，请检查koa服务接口配置`
       }
     }
   })
@@ -258,7 +253,7 @@ const delPointerUser = async (ctx, next) => {
         ctx.response.body = {
           code: 200,
           data: null,
-          msg: '没有该条数据，无需删除'
+          message: '没有该条数据，无需删除'
         }
       } else {
         await models.user_manage.destroy({
@@ -269,13 +264,13 @@ const delPointerUser = async (ctx, next) => {
           ctx.response.body = {
             code: 200,
             data: null,
-            msg: `删除指定用户成功`
+            message: `删除指定用户成功`
           }
         }).catch((err) => {
           ctx.response.body = {
             code: 200,
             data: null,
-            msg: '删除指定用户失败',
+            message: '删除指定用户失败',
             errorInfo: err.message
           }
         })
@@ -292,13 +287,13 @@ const fuzzyQuery = async (ctx, next) => {
     ctx.response.body = {
       code: 200,
       data: JSON.parse(JSON.stringify(data)),
-      msg: '模糊查询成功'
+      message: '模糊查询成功'
     }
   }).catch(err => {
     ctx.response.body = {
       code: 200,
       data: null,
-      msg: '模糊查询失败，请检查koa服务接口配置',
+      message: '模糊查询失败，请检查koa服务接口配置',
     }
   })
 };

@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    user_id: {
+    userId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
       allowNull: false,
@@ -21,17 +21,17 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    ip_address: {
+    ipAddress: {
       type: DataTypes.STRING(36),
       allowNull: true,
       comment: "设备登录IP地址"
     },
-    create_time: {
+    createTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "创建时间"
     },
-    update_time: {
+    updateTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "更新时间"
@@ -40,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'online_token',
     timestamps: false,
+    comment: "内嵌令牌表",
     indexes: [
       {
         name: "PRIMARY",
