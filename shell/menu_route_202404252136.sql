@@ -31,4 +31,7 @@ INSERT INTO sys_network.menu_route (id,name,alias,icon,status,parent_menu_id,sub
 	 ('62866010-0308-11ef-bc8a-d53f53a822d9','Dashboard','/dashboard','FundOutlined',1,NULL,0,6,NULL,'2024-04-25 21:33:21','2024-04-25 21:33:21'),
 	 ('750a0f70-0308-11ef-bc8a-d53f53a822d9','数据可视化','/dashboard/dataVisualize','AppstoreOutlined',1,'62866010-0308-11ef-bc8a-d53f53a822d9',0,1,NULL,'2024-04-25 21:33:52','2024-04-25 21:33:52'),
 	 ('7dcfb240-0308-11ef-bc8a-d53f53a822d9','内嵌页面','/dashboard/embedded','AppstoreOutlined',1,'62866010-0308-11ef-bc8a-d53f53a822d9',0,2,NULL,'2024-04-25 21:34:07','2024-04-25 21:34:07'),
-	 ('59fc0e00-0307-11ef-bc8a-d53f53a822d9','外部链接','/link','PaperClipOutlined',1,NULL,0,20,'https://github.com/MFanLiang/coffee-platform','2024-04-25 21:25:58','2024-04-25 21:25:58');
+	 ('59fc0e00-0307-11ef-bc8a-d53f53a822d9','外部链接','/link','PaperClipOutlined',1,NULL,0,20,'https://github.com/MFanLiang/coffee-platform','2024-04-25 21:25:58','2024-04-25 21:25:58'),
+	 ('30442cc0-06bb-11ef-a7aa-81a9e3f38a67','系统配置','/systemConfig','AppstoreOutlined',1,NULL,0,20,NULL,'2024-04-30 14:30:51','2024-04-30 14:30:51'),
+	 ('3e3338d0-06bb-11ef-a7aa-81a9e3f38a67','菜单设置','/systemConfig/menuSetting','AppstoreOutlined',1,'30442cc0-06bb-11ef-a7aa-81a9e3f38a67',0,1,NULL,'2024-04-30 14:31:14','2024-04-30 14:31:14'),
+	 ('43788e80-06bb-11ef-a7aa-81a9e3f38a67','用户设置','/systemConfig/userSetting','AppstoreOutlined',1,'30442cc0-06bb-11ef-a7aa-81a9e3f38a67',0,2,NULL,'2024-04-30 14:31:23','2024-04-30 14:31:23');

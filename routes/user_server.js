@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-20 14:56:16
+ * @LastEditTime: 2024-05-02 23:29:11
  * @FilePath: \EspressoKoaServer\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -39,17 +39,17 @@ const router = new Router();
  *               id:
  *                 type: 'string'
  *                 description: 用户唯一主键，autocreate
- *               username:
+ *               userName:
  *                 type: 'string'
  *                 description: 用户名
  *                 required: true
- *               password:
+ *               passWord:
  *                 type: 'string'
  *                 description: 密码
- *               user_full_name:
+ *               userFullName:
  *                 type: 'string'
  *                 description: 用户全名
- *               user_role:
+ *               userRole:
  *                 type: 'number'
  *                 description: 用户角色
  *               avatar:
@@ -62,25 +62,25 @@ const router = new Router();
  *                 type: 'boolean'
  *                 description: 用户账号状态
  *             example:
- *               username: 'user'
- *               password: '*********'
- *               user_full_name: 'userFullName'
+ *               userName: 'user'
+ *               passWord: '*********'
+ *               userFullName: 'userFullName'
  *               tel: '139********'
  *         application/x-www-form-urlencoded:
  *           schema:
  *             type: object
  *             additionalProperties: true
  *             properties:
- *               username:
+ *               userName:
  *                 type: 'string'
  *                 description: 用户名
- *               password:
+ *               passWord:
  *                 type: 'string'
  *                 description: 密码
- *               user_full_name:
+ *               userFullName:
  *                 type: 'string'
  *                 description: 用户全名
- *               user_role:
+ *               userRole:
  *                 type: 'number'
  *                 description: 用户角色
  *               avatar:
@@ -93,13 +93,52 @@ const router = new Router();
  *                 type: 'boolean'
  *                 description: 用户账号状态
  *             required:
- *               - username
- *               - password
- *               - user_full_name
+ *               - userName
+ *               - passWord
+ *               - userFullName
  *               - tel
  *     responses:
- *       200:
+ *       '200':
  *         description: Ok
+ *         content:
+ *           appliaction/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       description: 数据唯一id
+ *                     userName:
+ *                       type: string
+ *                       description: 用户名
+ *                     avatar:
+ *                       type: string
+ *                       description: 用户头像图片地址
+ *                     tel:
+ *                       type: string
+ *                       description: 用户手机号码
+ *                     userRole:
+ *                       type: number
+ *                       description: 用户隶属角色
+ *                     status:
+ *                       type: boolean
+ *                       description: 用户账户状态
+ *                     createTime:
+ *                       type: string
+ *                       description: 创建时间
+ *                     updateTime:
+ *                       type: string
+ *                       description: 更新时间
+ *                 message:
+ *                   type: string
+ *                   example: 用户创建成功
  *       '400':
  *         description: 请求参数错误
  *       '401':
@@ -124,32 +163,95 @@ router.post('/coffee/user/register', register);
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               userName:
  *                 type: 'string'
  *                 description: 用户名
- *               password:
+ *               passWord:
  *                 type: 'string'
  *                 description: 密码
  *             example:
- *               username: 'root'
- *               password: '123456'
+ *               userName: 'root'
+ *               passWord: '123456'
  *         application/x-www-form-urlencoded:
  *           schema:
  *             type: object
  *             additionalProperties: true
  *             properties:
- *               username:
+ *               userName:
  *                 type: 'string'
  *                 description: 用户名
- *               password:
+ *               passWord:
  *                 type: 'string'
  *                 description: 密码
  *             required:
- *               - username
- *               - password
+ *               - userName
+ *               - passWord
  *     responses:
- *       200:
- *         description: Ok
+ *       '200':
+ *         description: OK
+ *         content:
+ *           appliaction/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     accessToken:
+ *                       type: string
+ *                       description: 访问令牌
+ *                       example: 'xxxxxxxx'
+ *                     expiresIn:
+ *                       type: string
+ *                       description: 令牌有效时长
+ *                       example: '10h'
+ *                     tokenType:
+ *                       type: string
+ *                       description: 令牌类型
+ *                       example: 'Bearer'
+ *                     userInfo:
+ *                       type: object
+ *                       description: 用户信息
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           description: 数据唯一id
+ *                           example: 'xxxxxxxx'
+ *                         userName:
+ *                           type: string
+ *                           description: 用户名
+ *                           example: admin
+ *                         avatar:
+ *                           type: string
+ *                           description: 用户头像图片地址
+ *                           example: 'https://exmaple.png'
+ *                         tel:
+ *                           type: string
+ *                           description: 用户手机号码
+ *                           example: 14*****
+ *                         userRole:
+ *                           type: number
+ *                           description: 用户隶属角色
+ *                           example: 1
+ *                         status:
+ *                           type: boolean
+ *                           description: 用户账户状态
+ *                           example: true
+ *                         createTime:
+ *                           type: string
+ *                           description: 创建时间
+ *                           example: '2023-04-05T12:22:31, 000Z'
+ *                         updateTime:
+ *                           type: string
+ *                           description: 更新时间
+ *                           example: '2023-04-05T12:22:31, 000Z'
+ *                     message:
+ *                       type: string
+ *                       example: '操作成功'
  *       '400':
  *         description: 请求参数错误
  *       '401':
@@ -166,6 +268,30 @@ router.post('/coffee/user/login', login);
  *     summary: 退出登录
  *     description: 用户的退出登录操作
  *     tags: [用户管理]
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           appliaction/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   example: null
+ *                 message:
+ *                   type: string
+ *                   example: '操作成功'
+ *       '400':
+ *         description: 请求参数错误
+ *       '401':
+ *         description: Protected resource, use Authorization header to g ac  cess
+ *       '404':
+ *         description: 请求资源未找到
  */
 router.post("/coffee/user/logout", logout);
 
@@ -231,15 +357,15 @@ router.get("/coffee/security/publicKey", generatePublicKey);
  *                       type: string
  *                       description: 数据项唯一id
  *                       example: '23eosis200'
- *                     username:
+ *                     userName:
  *                       type: string
  *                       description: 用户姓名
  *                       example: 'root'
- *                     user_full_name:
+ *                     userFullName:
  *                       type: string
  *                       description: 用户全名称
  *                       example: '超级管理员'
- *                     user_role:
+ *                     userRole:
  *                       type: number
  *                       description: 用户角色
  *                       example: 3
@@ -255,13 +381,13 @@ router.get("/coffee/security/publicKey", generatePublicKey);
  *                       type: boolean
  *                       description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
  *                       example: true
- *                     createdAt:
+ *                     createTime:
  *                       type: string
  *                       description: 创建时间
- *                     updatedAt:
+ *                     updateTIme:
  *                       type: string
  *                       description: 更新时间
- *                 msg:
+ *                 message:
  *                   type: string
  *                   example: 指定用户信息查询完成
  *       '400':
@@ -302,15 +428,15 @@ router.get('/coffee/user/pointer-info', getPointerUserInfo);
  *                         type: string
  *                         description: 数据项唯一id
  *                         example: '23eosis200'
- *                       username:
+ *                       userName:
  *                         type: string
  *                         description: 用户姓名
  *                         example: 'root'
- *                       user_full_name:
+ *                       userFullName:
  *                         type: string
  *                         description: 用户全名称
  *                         example: '超级管理员'
- *                       user_role:
+ *                       userRole:
  *                         type: number
  *                         description: 用户角色
  *                         example: 3
@@ -324,21 +450,21 @@ router.get('/coffee/user/pointer-info', getPointerUserInfo);
  *                         example: 13239844923
  *                       status:
  *                         type: boolean
- *                         description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
+ *                         description: 用户状态（true[1] 可用状态，false[0] 注销不可用状态）
  *                         example: true
- *                       createdAt:
+ *                       createTime:
  *                         type: string
  *                         description: 创建时间
- *                       updatedAt:
+ *                       updateTime:
  *                         type: string
  *                         description: 更新时间
- *                 msg:
+ *                 message:
  *                   type: string
  *                   example: 查询所有用户信息已完成
  *                 total:
  *                   type: number
  *                   example: 1
- *                 pagesize:
+ *                 pageSize:
  *                   type: number
  *                   example: 10
  *       '400':
@@ -370,15 +496,15 @@ router.get('/coffee/user/user-all-info', getAllUser);
  *                 type: 'string'
  *                 required: true
  *                 description: 数据唯一id
- *               username:
+ *               userName:
  *                 type: string
  *                 description: 用户姓名
  *                 example: 'root'
- *               user_full_name:
+ *               userFullName:
  *                 type: string
  *                 description: 用户全名称
  *                 example: '超级管理员'
- *               user_role:
+ *               userRole:
  *                 type: number
  *                 description: 用户角色
  *                 example: 3
@@ -403,13 +529,13 @@ router.get('/coffee/user/user-all-info', getAllUser);
  *                 type: 'string'
  *                 required: true
  *                 description: 数据唯一id
- *               username:
+ *               userName:
  *                 type: string
  *                 description: 用户姓名
- *               user_full_name:
+ *               userFullName:
  *                   type: string
  *                   description: 用户全名称
- *               user_role:
+ *               userRole:
  *                 type: number
  *                 description: 用户角色
  *               avatar:
@@ -442,15 +568,15 @@ router.get('/coffee/user/user-all-info', getAllUser);
  *                       type: string
  *                       description: 数据项唯一id
  *                       example: '23eosis200'
- *                     username:
+ *                     userName:
  *                       type: string
  *                       description: 用户姓名
  *                       example: 'root'
- *                     user_full_name:
+ *                     userFullName:
  *                       type: string
  *                       description: 用户全名称
  *                       example: '超级管理员'
- *                     user_role:
+ *                     userRole:
  *                       type: number
  *                       description: 用户角色
  *                       example: 3
@@ -466,13 +592,13 @@ router.get('/coffee/user/user-all-info', getAllUser);
  *                       type: boolean
  *                       description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
  *                       example: true
- *                     createdAt:
+ *                     createTime:
  *                       type: string
  *                       description: 创建时间
- *                     updatedAt:
+ *                     updateTime:
  *                       type: string
  *                       description: 更新时间
- *                 msg:
+ *                 message:
  *                   type: string
  *                   example: 更新指定用户信息完成
  *       '400':
@@ -515,7 +641,7 @@ router.put('/coffee/user', updatePointerUser);
  *                 data:
  *                   type: object
  *                   example: null
- *                 msg:
+ *                 message:
  *                   type: string
  *                   example: 删除指定用户成功
  *       '400':
@@ -580,15 +706,15 @@ router.delete('/coffee/user', delPointerUser);
  *                         type: string
  *                         description: 数据项唯一id
  *                         example: '23eosis200'
- *                       username:
+ *                       userName:
  *                         type: string
  *                         description: 用户姓名
  *                         example: 'root'
- *                       user_full_name:
+ *                       userFullName:
  *                         type: string
  *                         description: 用户全名称
  *                         example: '超级管理员'
- *                       user_role:
+ *                       userRole:
  *                         type: number
  *                         description: 用户角色
  *                         example: 3
@@ -604,13 +730,13 @@ router.delete('/coffee/user', delPointerUser);
  *                         type: boolean
  *                         description: 用户状态（true[0] 可用状态，false[1] 注销不可用状态）
  *                         example: true
- *                       createdAt:
+ *                       createTime:
  *                         type: string
  *                         description: 创建时间
- *                       updatedAt:
+ *                       updateTime:
  *                         type: string
  *                         description: 更新时间
- *                 msg:
+ *                 message:
  *                   type: string
  *                   example: 模糊查询成功
  *       '400':

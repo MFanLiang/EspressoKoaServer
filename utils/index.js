@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-02 22:16:39
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-25 20:27:07
+ * @LastEditTime: 2024-04-30 02:15:42
  * @FilePath: \EspressoKoaServer\utils\index.js
  * @Description: 公共工具函数库
  */
@@ -90,12 +90,9 @@ function formatSourceContent(content) {
 function transformDataStructure(menuItems, parentId = null) {
   const result = [];
   for (const item of menuItems) {
-    if (item.parent_menu_id === parentId) {
-      const menuItem = {
-        ...item,
-        isLink: item.is_link,
-      }
-      delete menuItem.is_link;
+    if (item.parentMenuId === parentId) {
+      const menuItem = { ...item, status: item.status === 1 ? true : false }
+      delete menuItem.isLink;
       const children = transformDataStructure(menuItems, item.id);
       if (children.length) {
         menuItem.children = children;

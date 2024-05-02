@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const { formatSourceContent } = require("../utils");
 const models = require("@db");
 
 // 获取系统所有的数据字典列表
@@ -12,27 +13,24 @@ const getAllSysDist = async (ctx, next) => {
     const data = JSON.parse(fs.readFileSync(url, "utf-8"));
     ctx.success(data, 200, '数据字典查询返回成功');
   } else {
-    // 下面对数据库的操作类似于 mysql 查询语句的 seq.query('SELECT DISTINCT dictid from dictionary;');
-    let ids = await models.dictionary.findAll({
-      attributes: ['dictId'],
-      group: 'dictId'
+    // 下面对数据库的操作类似于 mysql 查询语句的 seq.query('SELECT DISTINCT dictid from sys_dict_type;');
+    const types = await models.sys_dict_type.findAll({
+      attributes: ['type'],
+      group: 'type'
     });
-    const res = JSON.parse(
-      JSON.stringify(
-        await models.dictionary.findAll({
-          attributes: ['dictId', 'label', 'value']
-        })
-      )
-    );
-    ids = JSON.parse(JSON.stringify(ids));
+    const allDict = await models.sys_dict_data.findAll({
+      attributes: ["label", "value", "type", "sort", "status", "remark","createBy", "createTime","updateBy", "updateTime"],
+      order: [["sort", "DESC"]]
+    });
+    const allDictDataFormat = formatSourceContent(allDict);
     const result = {};
-    for (const iterator of ids) {
-      result[String(iterator.dictId)] = [];
-      for (let i = res.length - 1; i >= 0; i--) {
-        const element = res[i];
-        if (iterator.dictId == element.dictId) {
-          result[String(iterator.dictId)].push(element);
-          res.splice(i, 1);
+    for (const iterator of formatSourceContent(types)) {
+      result[String(iterator.type)] = [];
+      for (let i = allDictDataFormat.length - 1; i >= 0; i--) {
+        const element = allDictDataFormat[i];
+        if (iterator.type == element.type) {
+          result[String(iterator.type)].push(element);
+          allDictDataFormat.splice(i, 1);
         }
       }
     }
@@ -45,4 +43,59 @@ const getAllSysDist = async (ctx, next) => {
   }
 };
 
-module.exports = { getAllSysDist }
+// 获取指定的数据字典
+const getPointerDict = async (ctx, next) => {
+  const queryId = formatSourceContent(ctx.request.query);
+
+  let r = await models.sys_dict_type.findOne({
+    where: { id: queryId.id },
+    attributes: ["type"]
+  })
+
+  if (r === null) return ctx.error("无该项数据");
+  let dictData = await models.sys_dict_data.findAll({
+    where: { type: r.type }
+  });
+  ctx.success(dictData, 200, `类型为 [${r.type}] 的数据字典查询成功`);
+};
+
+// 添加数据字典类型表的数据
+const addDictTypeData = async (ctx, next) => {
+  // 如果表不存在，则创建数据字典表(如果已经存在，则不执行任何操作)
+  models.sys_dict_type.sync();
+
+  const requestBody = ctx.request.body;
+  await models.sys_dict_type.create({
+    ...requestBody,
+    createTime: requestBody.createTime || new Date(),
+    updateTime: requestBody.updateTime || new Date()
+  }).then(data => {
+    const dataFormat = formatSourceContent(data);
+    ctx.success(dataFormat);
+  }).catch(error => {
+    const errObj = formatSourceContent(error);
+    console.log('errObj :>> ', errObj);
+  })
+};
+
+// 根据数据字典类型添加n个数据实体
+const addDataByType = async (ctx, next) => {
+  // 如果表不存在，则创建数据字典表(如果已经存在，则不执行任何操作)
+  await models.sys_dict_data.sync();
+
+  const requestBody = ctx.request.body;
+  await models.sys_dict_data.create({
+    ...requestBody,
+    sort: Number(requestBody.sort),
+    createTime: requestBody.createTime || new Date(),
+    updateTime: requestBody.updateTime || new Date()
+  }).then(data => {
+    const dataFormat = formatSourceContent(data);
+    ctx.success(dataFormat);
+  }).catch(error => {
+    const errObj = formatSourceContent(error);
+    console.log('errObj :>> ', errObj);
+  })
+};
+
+module.exports = { getAllSysDist, getPointerDict, addDictTypeData, addDataByType }

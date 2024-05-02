@@ -46,10 +46,10 @@ exports.getToken = (ctx, userInfo, time) => {
   const token = jwt.sign(userInfo, secret, { expiresIn: time }); // 60, "2 days", "10h", "7d".
   const data = {
     token,
-    user_id: userInfo.id,
-    ip_address: userInfo.ip_address,
-    create_time: new Date(),
-    update_time: new Date(),
+    userId: userInfo.id,
+    ipAddress: userInfo.ipAddress,
+    createTime: new Date(),
+    updateTime: new Date(),
   };
   models.online_token.create(data);
 

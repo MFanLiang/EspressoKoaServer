@@ -2,8 +2,8 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-09-06 14:25:14
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-10 17:48:39
- * @FilePath: \koa-generator\routes\file_server.js
+ * @LastEditTime: 2024-04-30 14:39:32
+ * @FilePath: \EspressoKoaServer\routes\file_server.js
  * @Description: 文件操作管理服务-接口路由
  */
 
@@ -50,6 +50,9 @@ const router = new Router();
  *                   items:
  *                     type: string
  *                     example: 'http://localhost/sea.jpg'
+ *                 message:
+ *                   type: string
+ *                   example: '图片上传成功'
  *       '400':
  *         description: 请求参数错误
  *       '401':
@@ -84,7 +87,7 @@ router.post('/coffee/upload/simgle', multerUpload.single('file'), UploadFileSimg
  *                   items:
  *                     type: string
  *                     example: 'http://localhost/sea.jpg'
- *                 msg:
+ *                 message:
  *                   type: string
  *                   example: '所有图片返回成功'
  *       '400':

@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 20:42:45
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-27 01:00:08
+ * @LastEditTime: 2024-04-30 13:00:05
  * @FilePath: \EspressoKoaServer\routes\menu_server.js
  * @Description: 菜单服务-接口路由
  */
@@ -22,7 +22,7 @@ const router = new Router;
  *       - BearerAuth: []
  *     parameters:
  *       - in: query
- *         name: 'user_role'
+ *         name: 'userRole'
  *         schema:
  *           type: number
  *         description: 用户角色，可以是number或string数据格式，尽量传递number数据格式
@@ -61,14 +61,14 @@ const router = new Router;
  *                         description: 路由icon图标，遵循Ant Desgin icon组件命名规则
  *                         example: 'HomeOutlined'
  *                       status:
- *                         type: number
- *                         description: 路由状态 (1 可用状态，0 不可用状态)
+ *                         type: boolean
+ *                         description: 路由状态 (true 可用状态，false 不可用状态)
  *                         example: 1
- *                       parent_menu_id:
+ *                       parentMenuId:
  *                         type: string
  *                         description: 指向父级分类的ID，如果是父级分类则为null，如果是子分类则为父级分类的ID
  *                         example: null
- *                       subordinate_role:
+ *                       subordinateRole:
  *                         type: number
  *                         description: 隶属角色
  *                         example: 0
@@ -122,10 +122,10 @@ router.get('/coffee/menu/list', getMenuList);
  *                 status:
  *                   type: boolean
  *                   description: 路由状态 (1 可用状态，0 不可用状态)
- *                 parent_menu_id:
+ *                 parentMenuId:
  *                   type: null | string
  *                   description: 指向父级分类的ID，如果是父级分类则为null，如果是子分类则为父级分类的ID
- *                 subordinate_role:
+ *                 subordinateRole:
  *                   type: number
  *                   description: 隶属角色
  *               example:
@@ -134,8 +134,8 @@ router.get('/coffee/menu/list', getMenuList);
  *                 icon: 'HomeOutlined'
  *                 sort: 0
  *                 status: 1
- *                 parent_menu_id: null
- *                 subordinate_role: 0
+ *                 parentMenuId: null
+ *                 subordinateRole: 0
  *           application/x-www-form-urlencoded:
  *             schema:
  *               type: object
@@ -156,17 +156,17 @@ router.get('/coffee/menu/list', getMenuList);
  *                 status:
  *                   type: boolean
  *                   description: 路由状态 (1 可用状态，0 不可用状态)
- *                 parent_menu_id:
+ *                 parentMenuId:
  *                   type: null | string
  *                   description: 指向父级分类的ID，如果是父级分类则为null，如 果是子分类则为父级分类的ID
- *                 subordinate_role:
+ *                 subordinateRole:
  *                   type: number
  *                   description: 隶属角色
  *               required:
  *                 - name
  *                 - alias
  *                 - icon
- *                 - subordinate_role
+ *                 - subordinateRole
  *       responses:
  *         '200':
  *           description: OK
@@ -201,18 +201,18 @@ router.get('/coffee/menu/list', getMenuList);
  *                       status:
  *                         type: boolean
  *                         description: 路由状态 (1 可用状态，0 不可用状态)
- *                       parent_menu_id:
+ *                       parentMenuId:
  *                         type: string
  *                         description: 指向父级分类的ID，如果是父级分类则为null，如 果是子分类则为父级分类的ID
- *                       subordinate_role:
+ *                       subordinateRole:
  *                         type: number
  *                         description: 隶属角色
  *                       isLink:
  *                         type: string
  *                         description: 链接地址，可选项，若路由地址不存在，则为null
- *                       create_time:
+ *                       createTime:
  *                         type: string
- *                       update_time:
+ *                       updateTime:
  *                          type: string
  *                   message:
  *                     type: string
@@ -238,6 +238,26 @@ router.post("/coffee/menu/create", createMenu);
  *     responses:
  *       200:
  *         description: 权限按钮查询返回成功
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   format: int64
+ *                   example: 200
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     buttons:
+ *                       type: object
+ *                       description: 权限按钮
+ *                       properties:
+ *                         add:
+ *                           type: boolean
+ *                         delete:
+ *                           type: boolean
  *       '401':
  *         description: Protected resource, use Authorization header to get access
  *       '404':

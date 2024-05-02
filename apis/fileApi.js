@@ -11,7 +11,7 @@ const UploadFileSimgle = async (ctx, next) => {
     ctx.response.body = {
       code: 200,
       data: [`${RESOURCE_URL}${originalname}`],
-      msg: '图片上传成功'
+      message: '图片上传成功'
     }
   } catch (err) {
     console.log('【UploadFileSimgle】error: ', err)
@@ -29,7 +29,7 @@ const readAllFilesByStatic = async (ctx, next) => {
     ctx.response.body = {
       code: 200,
       data: filesPath,
-      msg: '所有图片返回成功'
+      message: '所有图片返回成功'
     }
   }
 };

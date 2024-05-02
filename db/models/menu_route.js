@@ -31,7 +31,7 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: 1,
       comment: "路由状态 (1 可用状态，0 不可用状态)"
     },
-    parent_menu_id: {
+    parentMenuId: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
       allowNull: true,
@@ -41,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       comment: "指向父级分类的ID，如果是父级分类则为null，如果是子分类则为父级分类的ID"
     },
-    subordinate_role: {
+    subordinateRole: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
@@ -58,12 +58,12 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: null,
       comment: "链接地址"
     },
-    create_time: {
+    createTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "创建时间"
     },
-    update_time: {
+    updateTime: {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "更新时间"
@@ -72,6 +72,7 @@ module.exports = function (sequelize, DataTypes) {
     sequelize,
     tableName: 'menu_route',
     timestamps: false,
+    comment: "目录菜单路由表",
     indexes: [
       {
         name: "PRIMARY",

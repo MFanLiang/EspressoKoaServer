@@ -3,11 +3,17 @@ const models = require('@db/index');
 const addCoffeeListItem = async (ctx, next) => {
   // 如果表不存在, 则创建咖啡产品表(如果已经存在, 则不执行任何操作)
   await models.coffee_list.sync();
-  await models.coffee_list.create({ ...ctx.request.body }).then(data => {
+
+  const requestBody = ctx.request.body;
+  await models.coffee_list.create({
+    ...requestBody,
+    createTime: requestBody.createTime || new Date(),
+    updateTime: requestBody.updateTime || new Date()
+  }).then(data => {
     ctx.response.body = {
       code: 200,
       data: JSON.parse(JSON.stringify(data)),
-      msg: `添加咖啡产品成功`
+      message: `添加咖啡产品成功`
     }
   }).catch((err) => {
     ctx.response.status = err.statusCode || err.status || 500;
@@ -27,7 +33,7 @@ const delCoffeeItemById = async (ctx, next) => {
         ctx.response.body = {
           code: 200,
           data: null,
-          msg: '没有该条数据，无需删除'
+          message: '没有该条数据，无需删除'
         }
       } else {
         await models.coffee_list.destroy({
@@ -38,13 +44,13 @@ const delCoffeeItemById = async (ctx, next) => {
           ctx.response.body = {
             code: 200,
             data: null,
-            msg: '数据删除成功',
+            message: '数据删除成功',
           }
         }).catch((err) => {
           ctx.response.body = {
             code: 500,
             data: [],
-            msg: err.message || '数据删除失败'
+            message: err.message || '数据删除失败'
           }
         })
       }
@@ -56,7 +62,7 @@ const getCoffeeList = async (ctx, next) => {
     ctx.response.body = {
       code: 200,
       data: JSON.parse(JSON.stringify(data)),
-      msg: '查询咖啡产品列表数据已成功',
+      message: '查询咖啡产品列表数据已成功',
       total: JSON.parse(JSON.stringify(data)).length
     }
   }).catch((err) => {
@@ -64,7 +70,7 @@ const getCoffeeList = async (ctx, next) => {
     ctx.response.body = {
       code: 500,
       data: null,
-      msg: err.message || '查询咖啡产品失败'
+      message: err.message || '查询咖啡产品失败'
     }
   })
 };
@@ -80,13 +86,13 @@ const updateCoffeeItemById = async (ctx, next) => {
             ctx.response.body = {
               code: 200,
               data: null,
-              msg: '数据更新成功'
+              message: '数据更新成功'
             }
           } else {
             ctx.response.body = {
               code: 200,
               data: null,
-              msg: '参数格式错误，请检查后重试'
+              message: '参数格式错误，请检查后重试'
             }
           }
         })
@@ -94,7 +100,7 @@ const updateCoffeeItemById = async (ctx, next) => {
         ctx.response.body = {
           code: 200,
           data: null,
-          msg: '未成功更新该数据，请检查该项数据id是否存在'
+          message: '未成功更新该数据，请检查该项数据id是否存在'
         }
       }
     });

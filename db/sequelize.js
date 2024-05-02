@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 11:19:02
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 00:21:50
+ * @LastEditTime: 2024-04-30 00:54:53
  * @FilePath: \EspressoKoaServer\db\sequelize.js
  * @Description: Sequelize 实例运行脚本
  */
@@ -37,7 +37,7 @@ const sequelize = new Sequelize(mysql_config.DB, mysql_config.USER, mysql_config
     // createdAt: 'createTime', // 重命名字段
     // updatedAt: 'updateTime',
     // deletedAt: 'deleteTime',
-    underscored: true, // 开启下划线命名方式，默认是驼峰命名
+    underscored: true, // 开启下划线命名方式，默认是驼峰命名。请注意，在这种情况下，JavaScript 字段均仍为 camelCase; 此参数仅更改这些字段如何映射到数据库本身. 每个属性的 field 参数都设置为它们的 snake_case 版本,但属性本身仍为 camelCase.
     freezeTableName: true, // 禁止修改表名
     charset: 'utf8mb4',
     dialectOptions: {
