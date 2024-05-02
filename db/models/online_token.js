@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       comment: "唯一主键"
     },
     token: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(500),
       allowNull: false
     },
     userId: {

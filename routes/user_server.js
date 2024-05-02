@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-11-23 21:46:40
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-30 14:21:11
+ * @LastEditTime: 2024-05-02 23:29:11
  * @FilePath: \EspressoKoaServer\routes\user_server.js
  * @Description: 用户操作管理服务-接口路由
  */
@@ -98,7 +98,7 @@ const router = new Router();
  *               - userFullName
  *               - tel
  *     responses:
- *       200:
+ *       '200':
  *         description: Ok
  *         content:
  *           appliaction/json:

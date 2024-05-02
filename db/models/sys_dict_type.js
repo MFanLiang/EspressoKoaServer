@@ -10,14 +10,12 @@ module.exports = function (sequelize, DataTypes) {
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: true,
-      defaultValue: null,
+      allowNull: false,
       comment: "字典名称"
     },
     type: {
       type: DataTypes.STRING(255),
-      allowNull: true,
-      defaultValue: null,
+      allowNull: false,
       comment: "字典类型"
     },
     status: {
@@ -58,7 +56,7 @@ module.exports = function (sequelize, DataTypes) {
     sequelize,
     tableName: 'sys_dict_type',
     timestamps: false,
-    comment: "系统字典的类型表",
+    comment: "系统数据字典主表，存储字典类型",
     indexes: [
       {
         name: "PRIMARY",
