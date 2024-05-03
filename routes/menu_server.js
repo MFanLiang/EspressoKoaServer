@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2024-04-06 20:42:45
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-30 13:00:05
+ * @LastEditTime: 2024-05-04 00:31:41
  * @FilePath: \EspressoKoaServer\routes\menu_server.js
  * @Description: 菜单服务-接口路由
  */
@@ -20,13 +20,6 @@ const router = new Router;
  *     tags: [菜单管理]
  *     security:
  *       - BearerAuth: []
- *     parameters:
- *       - in: query
- *         name: 'userRole'
- *         schema:
- *           type: number
- *         description: 用户角色，可以是number或string数据格式，尽量传递number数据格式
- *         required: true
  *     responses:
  *       200:
  *         description: OK
@@ -68,10 +61,6 @@ const router = new Router;
  *                         type: string
  *                         description: 指向父级分类的ID，如果是父级分类则为null，如果是子分类则为父级分类的ID
  *                         example: null
- *                       subordinateRole:
- *                         type: number
- *                         description: 隶属角色
- *                         example: 0
  *                       sort:
  *                         type: number
  *                         description: 菜单排序的序列
@@ -125,9 +114,6 @@ router.get('/coffee/menu/list', getMenuList);
  *                 parentMenuId:
  *                   type: null | string
  *                   description: 指向父级分类的ID，如果是父级分类则为null，如果是子分类则为父级分类的ID
- *                 subordinateRole:
- *                   type: number
- *                   description: 隶属角色
  *               example:
  *                 name: 首页
  *                 alias: '/home/index'
@@ -135,7 +121,6 @@ router.get('/coffee/menu/list', getMenuList);
  *                 sort: 0
  *                 status: 1
  *                 parentMenuId: null
- *                 subordinateRole: 0
  *           application/x-www-form-urlencoded:
  *             schema:
  *               type: object
@@ -159,14 +144,10 @@ router.get('/coffee/menu/list', getMenuList);
  *                 parentMenuId:
  *                   type: null | string
  *                   description: 指向父级分类的ID，如果是父级分类则为null，如 果是子分类则为父级分类的ID
- *                 subordinateRole:
- *                   type: number
- *                   description: 隶属角色
  *               required:
  *                 - name
  *                 - alias
  *                 - icon
- *                 - subordinateRole
  *       responses:
  *         '200':
  *           description: OK
@@ -204,9 +185,6 @@ router.get('/coffee/menu/list', getMenuList);
  *                       parentMenuId:
  *                         type: string
  *                         description: 指向父级分类的ID，如果是父级分类则为null，如 果是子分类则为父级分类的ID
- *                       subordinateRole:
- *                         type: number
- *                         description: 隶属角色
  *                       isLink:
  *                         type: string
  *                         description: 链接地址，可选项，若路由地址不存在，则为null

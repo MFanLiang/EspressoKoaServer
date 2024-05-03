@@ -41,12 +41,6 @@ module.exports = function (sequelize, DataTypes) {
       },
       comment: "指向父级分类的ID，如果是父级分类则为null，如果是子分类则为父级分类的ID"
     },
-    subordinateRole: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-      comment: "隶属角色"
-    },
     sort: {
       type: DataTypes.INTEGER,
       allowNull: false,

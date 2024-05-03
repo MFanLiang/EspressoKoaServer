@@ -5,6 +5,7 @@ var _online_token = require("./online_token");
 var _user_manage = require("./user_manage");
 var _sys_dict_type = require("./sys_dict_type");
 var _sys_dict_data = require("./sys_dict_data");
+var _user_menu = require("./user_menu");
 
 function initModels(sequelize) {
   var coffee_list = _coffee_list(sequelize, DataTypes);
@@ -13,11 +14,14 @@ function initModels(sequelize) {
   var user_manage = _user_manage(sequelize, DataTypes);
   var sys_dict_type = _sys_dict_type(sequelize, DataTypes);
   var sys_dict_data = _sys_dict_data(sequelize, DataTypes);
+  var user_menu = _user_menu(sequelize, DataTypes);
 
   menu_route.belongsTo(menu_route, { as: "parent_menu", foreignKey: "parent_menu_id"});
   menu_route.hasMany(menu_route, { as: "menus", foreignKey: "parent_menu_id"});
   online_token.belongsTo(user_manage, { as: "user", foreignKey: "user_id"});
-  user_manage.hasMany(online_token, { as: "online_tokens", foreignKey: "user_id"});
+  user_manage.hasMany(online_token, { as: "online_tokens", foreignKey: "user_id" });
+  user_menu.hasMany(user_manage, { as: "um1", foreignKey: "id" });
+  user_menu.hasMany(menu_route, { as: "mr1", foreignKey: "id" });
 
   return {
     coffee_list,
@@ -25,7 +29,8 @@ function initModels(sequelize) {
     online_token,
     user_manage,
     sys_dict_type,
-    sys_dict_data
+    sys_dict_data,
+    user_menu
   };
 }
 module.exports = initModels;
