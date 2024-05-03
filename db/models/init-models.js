@@ -16,9 +16,9 @@ function initModels(sequelize) {
   var sys_dict_data = _sys_dict_data(sequelize, DataTypes);
   var user_menu = _user_menu(sequelize, DataTypes);
 
-  menu_route.belongsTo(menu_route, { as: "parent_menu", foreignKey: "parent_menu_id"});
-  menu_route.hasMany(menu_route, { as: "menus", foreignKey: "parent_menu_id"});
-  online_token.belongsTo(user_manage, { as: "user", foreignKey: "user_id"});
+  menu_route.belongsTo(menu_route, { as: "parent_menu", foreignKey: "parent_menu_id" });
+  menu_route.hasMany(menu_route, { as: "menus", foreignKey: "parent_menu_id" });
+  online_token.belongsTo(user_manage, { as: "user", foreignKey: "user_id" });
   user_manage.hasMany(online_token, { as: "online_tokens", foreignKey: "user_id" });
   user_menu.hasMany(user_manage, { as: "um1", foreignKey: "id" });
   user_menu.hasMany(menu_route, { as: "mr1", foreignKey: "id" });
