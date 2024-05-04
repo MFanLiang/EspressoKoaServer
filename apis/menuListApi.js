@@ -4,27 +4,33 @@ const models = require('@db/index');
 
 /** 获取系统菜单 */
 const getMenuList = async (ctx, next) => {
-  const queryFormat = formatSourceContent(ctx.request.query);
-  const tempUserRole = typeof queryFormat.userRole === "string" ? Number(queryFormat.userRole) : queryFormat.userRole;
+  // 解密前端传递的token
+  const decryptToken = ctx.decryptToken(ctx.request.header.authorization);
+  const queryed = await sequelize.query(`select id from sys_network.user_manage um  where um.id = (select user_id from sys_network.online_token ot where token = "${decryptToken}");`);
+  const userId = queryed[0][0].id;
+
+  const menuRoutes = await sequelize.query(`
+    select mr.id, mr.name as title, mr.alias as path, mr.icon, mr.status, mr.parent_menu_id as parentMenuId, mr.sort, mr.is_link as isLink, mr.create_time as createTime, mr.update_time as updateTime from sys_network.user_menu um join sys_network.menu_route mr on um.menu_be_from_id = mr.id where um.user_be_from_id = "${userId}" ORDER BY sort ASC;
+  `);
 
   // * 模拟网络延迟体现接口返回数据缓慢的现象
   // await useDelay(880);
 
   // * 递归 mysql 语句查询“菜单路由【sys_network.menu_route】”的数据表表
-  const queryed = await sequelize.query(`
-  with recursive menuTree as (
-	select id, name as title, alias as path, icon, status, parent_menu_id as parentMenuId, subordinate_role as subordinateRole, is_link as isLink, sort
-	from sys_network.menu_route 
-	where parent_menu_id is null 
-	union all 
-	select m.id, m.name, m.alias, m.icon, m.status, m.parent_menu_id, m.subordinate_role as subordinateRole, m.is_link, m.sort
-	from sys_network.menu_route m 
-	join menuTree mt on m.parent_menu_id = mt.id 
-  )
-  select * from menuTree where subordinateRole = ${tempUserRole} ORDER BY sort ASC;
-  `);
+  // const queryed = await sequelize.query(`
+  // with recursive menuTree as (
+  // select id, name as title, alias as path, icon, status, parent_menu_id as parentMenuId, subordinate_role as subordinateRole, is_link as isLink, sort
+  // from sys_network.menu_route 
+  // where parent_menu_id is null 
+  // union all 
+  // select m.id, m.name, m.alias, m.icon, m.status, m.parent_menu_id, m.subordinate_role as subordinateRole, m.is_link, m.sort
+  // from sys_network.menu_route m 
+  // join menuTree mt on m.parent_menu_id = mt.id 
+  // )
+  // select * from menuTree where subordinateRole = ${tempUserRole} ORDER BY sort ASC;
+  // `);
 
-  const treeData = transformDataStructure(queryed[0]);
+  const treeData = transformDataStructure(menuRoutes[0]);
   ctx.response.body = {
     code: 200,
     data: treeData,

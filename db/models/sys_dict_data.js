@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
       comment: "字典标签"
     },
     value: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.INTEGER,
       allowNull: false,
       comment: "字典键值"
     },
