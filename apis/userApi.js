@@ -4,6 +4,7 @@ const { expiresInTime } = require("../config/serverConfig.js");
 const Joi = require("joi"); // 接口接收到的参数校验
 const { key } = require("../utils/encryption.js");
 const models = require('@db/index');
+const https = require("https");
 const sequelize = require('../db/sequelize.js');
 
 /** 登录接口 */
@@ -61,8 +62,9 @@ const login = async (ctx, next) => {
       where: required
     });
     const userInfomation = formatSourceContent(userInfoStatus);
-
+    let loginSuccess = false;
     if (userInfomation.length > 0) {
+      loginSuccess = true;
       // 生成 access_token 口令
       const accessToken = ctx.getToken({
         id: userInfomation[0].id,
@@ -76,9 +78,41 @@ const login = async (ctx, next) => {
         tokenType: 'Bearer',
         expiresIn: expiresInTime,
         userInfo: userInfomation[0],
-      })
+      });
+      await models.log.create(
+        {
+          type: 1,
+          ipAddress,
+          userId: userInfomation[0].id,
+          method: ctx.request.method,
+          originalUrl: ctx.request.originalUrl,
+          createTime: new Date(),
+          updateTime: new Date(),
+        }
+      )
     } else {
       ctx.error([0, '用户名或密码错误']);
+    }
+
+    // 使用的具体说明，可查看 https://lbsyun.baidu.com/faq/api?title=webapi/ip-api-base
+    // IP所在地查询
+    if (loginSuccess) {
+      const APIServer = `https://api.map.baidu.com/location/ip?ip=${ipAddress}&coor=bd09ll&ak=q1hUbqK1ozvaADkjYiLiXKylDV7t0D9W`;
+      try {
+        https.get(APIServer, response => {
+          if (response.statusCode === 200) {
+            response.on("data", async data => {
+              const content = JSON.parse(data).content;
+              models.log.update(
+                { address: content?.address, point: JSON.stringify(content?.point) },
+                { where: { ipAddress } }
+              );
+            })
+          }
+        })
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };

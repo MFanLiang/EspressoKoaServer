@@ -6,6 +6,7 @@ var _user_manage = require("./user_manage");
 var _sys_dict_type = require("./sys_dict_type");
 var _sys_dict_data = require("./sys_dict_data");
 var _user_menu = require("./user_menu");
+var _log = require("./log");
 
 function initModels(sequelize) {
   var coffee_list = _coffee_list(sequelize, DataTypes);
@@ -15,6 +16,7 @@ function initModels(sequelize) {
   var sys_dict_type = _sys_dict_type(sequelize, DataTypes);
   var sys_dict_data = _sys_dict_data(sequelize, DataTypes);
   var user_menu = _user_menu(sequelize, DataTypes);
+  var log = _log(sequelize, DataTypes);
 
   menu_route.belongsTo(menu_route, { as: "parent_menu", foreignKey: "parent_menu_id" });
   menu_route.hasMany(menu_route, { as: "menus", foreignKey: "parent_menu_id" });
@@ -30,7 +32,8 @@ function initModels(sequelize) {
     user_manage,
     sys_dict_type,
     sys_dict_data,
-    user_menu
+    user_menu,
+    log,
   };
 }
 module.exports = initModels;
