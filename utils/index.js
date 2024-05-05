@@ -92,7 +92,6 @@ function transformDataStructure(menuItems, parentId = null) {
   for (const item of menuItems) {
     if (item.parentMenuId === parentId) {
       const menuItem = { ...item, status: item.status === 1 ? true : false }
-      delete menuItem.isLink;
       const children = transformDataStructure(menuItems, item.id);
       if (children.length) {
         menuItem.children = children;
