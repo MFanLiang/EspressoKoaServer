@@ -313,13 +313,13 @@ const delPointerUser = async (ctx, next) => {
 
 const fuzzyQuery = async (ctx, next) => {
   const { search } = ctx.request.body;
-  await sequelize.query(`select um.user_name as userName, um.user_full_name as userFullName, um.user_role as userRole, um.avatar, um.tel, um.status, um.create_time, um.update_time from sys_network.user_manage um where user_name like "%${search}%";`, {
+  await sequelize.query(`select um.user_name as userName, um.user_full_name as userFullName, um.user_role as userRole, um.avatar, um.tel, um.status, um.create_time as createTime, um.update_time as updateTime from sys_network.user_manage um where user_name like "%${search}%";`, {
     model: models.user_manage,
     mapToModel: true // 如果你有任何映射字段,则在此处传递 true
   }).then(async (data) => {
     ctx.response.body = {
       code: 200,
-      data: JSON.parse(JSON.stringify(data)),
+      data: formatSourceContent(data),
       message: '模糊查询成功',
       total: formatSourceContent(data).length,
       pageSize: 10
