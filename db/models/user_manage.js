@@ -12,7 +12,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false,
       comment: "用户名，唯一",
-      unique: "username"
+      unique: "user_name"
     },
     passWord: {
       type: DataTypes.STRING(255),
@@ -72,11 +72,11 @@ module.exports = function (sequelize, DataTypes) {
         ]
       },
       {
-        name: "username",
+        name: "user_name",
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "username" },
+          { name: "user_name" },
         ]
       },
       {

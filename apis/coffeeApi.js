@@ -1,4 +1,5 @@
 const models = require('@db/index');
+const { formatSourceContent } = require('../utils/index');
 
 const addCoffeeListItem = async (ctx, next) => {
   // 如果表不存在, 则创建咖啡产品表(如果已经存在, 则不执行任何操作)
@@ -12,7 +13,7 @@ const addCoffeeListItem = async (ctx, next) => {
   }).then(data => {
     ctx.response.body = {
       code: 200,
-      data: JSON.parse(JSON.stringify(data)),
+      data: formatSourceContent(data),
       message: `添加咖啡产品成功`
     }
   }).catch((err) => {
@@ -63,7 +64,7 @@ const getCoffeeList = async (ctx, next) => {
       code: 200,
       data: JSON.parse(JSON.stringify(data)),
       message: '查询咖啡产品列表数据已成功',
-      total: JSON.parse(JSON.stringify(data)).length
+      total: formatSourceContent(data).length
     }
   }).catch((err) => {
     ctx.response.status = err.statusCode || err.status || 500;
@@ -78,11 +79,11 @@ const getCoffeeList = async (ctx, next) => {
 const updateCoffeeItemById = async (ctx, next) => {
   await models.coffee_list.findByPk(ctx.request.body.id)
     .then(async (item) => {
-      if (JSON.parse(JSON.stringify(item)) !== null) {
+      if (formatSourceContent(item) !== null) {
         await models.coffee_list.update({ ...ctx.request.body }, {
           where: { id: ctx.request.body.id }
         }).then((coffeeListItem) => {
-          if (JSON.parse(JSON.stringify(coffeeListItem))[0] === 1) {
+          if (formatSourceContent(coffeeListItem)[0] === 1) {
             ctx.response.body = {
               code: 200,
               data: null,
