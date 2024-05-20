@@ -1,6 +1,10 @@
 const models = require('@db/index');
 const { formatSourceContent } = require('../utils/index');
+const sequelize = require('../db/sequelize.js');
 
+/**
+ * @name 添加新的咖啡产品项
+ */
 const addCoffeeListItem = async (ctx, next) => {
   // 如果表不存在, 则创建咖啡产品表(如果已经存在, 则不执行任何操作)
   await models.coffee_list.sync();
@@ -26,6 +30,9 @@ const addCoffeeListItem = async (ctx, next) => {
   })
 };
 
+/**
+ * @name 删除某个咖啡产品项
+ */
 const delCoffeeItemById = async (ctx, next) => {
   // findByPk 方法使用提供的主键从表中仅获得一个条目
   await models.coffee_list.findByPk(ctx.request.query.id)
@@ -58,6 +65,9 @@ const delCoffeeItemById = async (ctx, next) => {
     });
 };
 
+/**
+ * @name 获取咖啡数据列表
+ */
 const getCoffeeList = async (ctx, next) => {
   await models.coffee_list.findAll().then(data => {
     ctx.response.body = {
@@ -76,6 +86,9 @@ const getCoffeeList = async (ctx, next) => {
   })
 };
 
+/**
+ * @name 更新某个咖啡产品项
+ */
 const updateCoffeeItemById = async (ctx, next) => {
   await models.coffee_list.findByPk(ctx.request.body.id)
     .then(async (item) => {
@@ -107,8 +120,44 @@ const updateCoffeeItemById = async (ctx, next) => {
     });
 };
 
-// 模糊搜索某个数据
-const pageSearchlistForCoffeeList = async (ctx, next) => { };
+/**
+ * @name 模糊搜索某个数据
+ */
+const pageSearchlistForCoffeeList = async (ctx, next) => {
+  let { name, color, isFlush, isHot, author } = ctx.request.body;
+
+  name = name == undefined ? '' : name;
+  color = color == undefined ? '' : color
+  isFlush = isFlush == undefined ? '' : (isFlush === 'true' ? '1' : '0');
+  isHot = isHot == undefined ? '' : (isHot === 'true' ? '1' : '0');
+  author = author == undefined ? '' : author;
+
+  await sequelize.query(`
+  SELECT cl.id,cl.name, cl.color, cl.count, cl.price, cl.description, cl.type, cl.is_flush as isFlush, cl.is_hot as isHot, cl.author,cl.create_time as createTime, cl.update_time as updateTime FROM sys_network.coffee_list cl
+WHERE COALESCE(cl.name, '') LIKE '%${name}%'
+   and COALESCE(cl.color, '') LIKE '%${color}%'
+   and COALESCE(cl.is_flush, '') like '%${isFlush}%'
+   and COALESCE(cl.is_hot, '') like '%${isHot}%'
+   and COALESCE(cl.author, '') like '%${author}%';
+  `, {
+    model: models.user_manage,
+    mapToModel: true // 如果你有任何映射字段,则在此处传递 true
+  }).then(async (data) => {
+    ctx.response.body = {
+      code: 200,
+      data: formatSourceContent(data),
+      message: '模糊查询成功',
+      total: formatSourceContent(data).length,
+      pageSize: 10
+    }
+  }).catch(err => {
+    ctx.response.body = {
+      code: 200,
+      data: null,
+      message: '模糊查询失败，请检查koa服务接口配置',
+    }
+  })
+};
 
 module.exports = {
   addCoffeeListItem,

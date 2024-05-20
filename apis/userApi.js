@@ -7,7 +7,9 @@ const models = require('@db/index');
 const https = require("https");
 const sequelize = require('../db/sequelize.js');
 
-/** 登录接口 */
+/**
+ * @name 登录接口
+ */
 const login = async (ctx, next) => {
   let { userName, passWord } = ctx.request.body;
   // 判断接收到的密码是否符合加密算法长度
@@ -117,20 +119,26 @@ const login = async (ctx, next) => {
   }
 };
 
-/** 用户退出登录系统 */
+/**
+ * @name 用户退出登录系统
+ */
 const logout = async (ctx, next) => {
   const decryptToken = ctx.decryptToken(ctx.request.header.authorization)
   models.online_token.destroy({ where: { token: decryptToken } })
   ctx.success(null);
 };
 
-/** 生成公钥 */
+/**
+ * @name 生成公钥
+ */
 const generatePublicKey = async (ctx, next) => {
   const publicKey = key.exportKey('public'); // 生成公钥
   ctx.success(publicKey);
 };
 
-/** 注册用户接口 */
+/**
+ * @name 注册用户接口
+ */
 const register = async (ctx, next) => {
   // 如果表不存在, 则创建用户表(如果已经存在, 则不执行任何操作)
   await models.user_manage.sync();
@@ -182,7 +190,9 @@ const register = async (ctx, next) => {
   }
 };
 
-/** 获取指定用户信息 */
+/**
+ * @name 获取指定用户信息
+ */
 const getPointerUserInfo = async (ctx, next) => {
   const { id } = ctx.request.query;
 
@@ -217,7 +227,9 @@ const getPointerUserInfo = async (ctx, next) => {
   })
 };
 
-/** 获取所有用户信息列表 */
+/**
+ * @name 获取所有用户信息列表
+ */
 const getAllUser = async (ctx, next) => {
   await models.user_manage.findAll({
     // 指定要查找的 field
@@ -245,7 +257,9 @@ const getAllUser = async (ctx, next) => {
   })
 };
 
-/** 更新指定用户信息 */
+/**
+ * @name 更新指定用户信息
+ */
 const updatePointerUser = async (ctx, next) => {
   await models.user_manage.update({ ...ctx.request.body }, {
     where: {
@@ -278,7 +292,9 @@ const updatePointerUser = async (ctx, next) => {
   })
 };
 
-/** 删除指定用户 */
+/**
+ * @name 删除指定用户
+ */
 const delPointerUser = async (ctx, next) => {
   await models.user_manage.findByPk(ctx.request.query.id)
     .then(async (item) => {
@@ -311,6 +327,9 @@ const delPointerUser = async (ctx, next) => {
     })
 };
 
+/**
+ * @name 模糊搜索某个用户相关信息
+ */
 const fuzzyQuery = async (ctx, next) => {
   const { search } = ctx.request.body;
   await sequelize.query(`select um.user_name as userName, um.user_full_name as userFullName, um.user_role as userRole, um.avatar, um.tel, um.status, um.create_time as createTime, um.update_time as updateTime from sys_network.user_manage um where user_name like "%${search}%";`, {

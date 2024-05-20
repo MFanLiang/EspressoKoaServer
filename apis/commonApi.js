@@ -3,7 +3,9 @@ const fs = require("fs");
 const { formatSourceContent } = require("../utils");
 const models = require("@db");
 
-// 获取系统所有的数据字典列表
+/**
+ * @description 获取系统所有的数据字典列表
+ */
 const getAllSysDist = async (ctx, next) => {
   const url = path.join(path.resolve(), "dataCacheDir/dict.json");
   // 下面的判断逻辑是为了缓存从数据库查到的数据
@@ -43,7 +45,9 @@ const getAllSysDist = async (ctx, next) => {
   }
 };
 
-// 获取指定的数据字典
+/**
+ * @description 获取指定的数据字典
+ */
 const getPointerDict = async (ctx, next) => {
   const queryId = formatSourceContent(ctx.request.query);
 
@@ -59,7 +63,9 @@ const getPointerDict = async (ctx, next) => {
   ctx.success(dictData, 200, `类型为 [${r.type}] 的数据字典查询成功`);
 };
 
-// 添加数据字典类型表的数据
+/**
+ * @description 添加数据字典类型表的数据
+ */
 const addDictTypeData = async (ctx, next) => {
   // 如果表不存在，则创建数据字典表(如果已经存在，则不执行任何操作)
   models.sys_dict_type.sync();
@@ -78,7 +84,9 @@ const addDictTypeData = async (ctx, next) => {
   })
 };
 
-// 根据数据字典类型添加n个数据实体
+/**
+ * @description 根据数据字典类型添加n个数据实体
+ */
 const addDataByType = async (ctx, next) => {
   // 如果表不存在，则创建数据字典表(如果已经存在，则不执行任何操作)
   await models.sys_dict_data.sync();

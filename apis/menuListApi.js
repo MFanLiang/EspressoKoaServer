@@ -2,7 +2,9 @@ const { useDelay, formatSourceContent, transformDataStructure } = require('../ut
 const sequelize = require('../db/sequelize.js');
 const models = require('@db/index');
 
-/** 获取系统菜单 */
+/**
+ * @name 获取系统菜单
+ */
 const getMenuList = async (ctx, next) => {
   // 解密前端传递的token
   const decryptToken = ctx.decryptToken(ctx.request.header.authorization);
@@ -38,7 +40,9 @@ const getMenuList = async (ctx, next) => {
   };
 };
 
-/** 新建菜单 */
+/**
+ * @name 新建菜单
+ */
 const createMenu = async (ctx, next) => {
   // 如果表不存在, 则创建菜单路由表(如果已经存在, 则不执行任何操作)
   await models.menu_route.sync();
@@ -68,7 +72,9 @@ const createMenu = async (ctx, next) => {
     });
 };
 
-/** 根据不同的用户获取权限按钮 */
+/**
+ * @name 根据不同的用户获取权限按钮
+ */
 const getAuthBtns = async (ctx, next) => {
   // 解密前端传递的token
   const decryptToken = ctx.decryptToken(ctx.request.header.authorization);

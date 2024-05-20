@@ -1,5 +1,8 @@
 const myEmail = require("../config/nodemailer.config");
 
+/**
+ * @name 发送邮件信息
+ */
 const sendMail = async (ctx, next) => {
   // 定义配置收件人信息存储空间
   let receiver = null;
