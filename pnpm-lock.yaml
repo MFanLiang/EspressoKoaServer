@@ -71,6 +71,9 @@ importers:
       koa-views:
         specifier: ^6.2.0
         version: https://registry.npmmirror.com/koa-views/-/koa-views-6.3.1.tgz(handlebars@4.7.8)(lodash@4.17.21)(pug@https://registry.npmmirror.com/pug/-/pug-2.0.4.tgz)
+      koa-websocket:
+        specifier: ^7.0.0
+        version: 7.0.0
       koa2-swagger-ui:
         specifier: ^5.10.0
         version: 5.10.0(@types/koa@2.15.0)
@@ -1013,6 +1016,10 @@ packages:
     resolution: {integrity: sha512-m7pOT6CdLN7FuXUcpuz/8lfQ/L77x8SchHCF4G0RBTJO20Wzmhn5Sp4/5WsKy8OSpifBSUrmg83qEqaDHdyFuQ==, tarball: https://registry.npmmirror.com/co-body/-/co-body-6.1.0.tgz}
     version: 6.1.0
 
+  co@4.6.0:
+    resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
+    engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+
   co@https://registry.npmmirror.com/co/-/co-4.6.0.tgz:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==, tarball: https://registry.npmmirror.com/co/-/co-4.6.0.tgz}
     version: 4.6.0
@@ -1358,6 +1365,15 @@ packages:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==, tarball: https://registry.npmmirror.com/date-format/-/date-format-4.0.14.tgz}
     version: 4.0.14
     engines: {node: '>=4.0'}
+
+  debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
 
   debug@https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==, tarball: https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz}
@@ -2680,6 +2696,9 @@ packages:
     version: 4.4.1
     engines: {node: '>=8.0.0'}
 
+  koa-compose@4.1.0:
+    resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
+
   koa-compose@https://registry.npmmirror.com/koa-compose/-/koa-compose-3.2.1.tgz:
     resolution: {integrity: sha512-8gen2cvKHIZ35eDEik5WOo8zbVp9t4cP8p4hW4uE55waxolLRexKKrqfCpwhGVppnB40jWeF8bZeTVg99eZgPw==, tarball: https://registry.npmmirror.com/koa-compose/-/koa-compose-3.2.1.tgz}
     version: 3.2.1
@@ -2745,6 +2764,9 @@ packages:
     resolution: {integrity: sha512-weIaPs2cCHWT2qK8qHRmwlZ29xRCvUVy1v/z12AGavVV5j4QIU0W/Y7OVBBu1sTkcO9dDJ25ajGYHGZ/aY43IQ==, tarball: https://registry.npmmirror.com/koa-views/-/koa-views-6.3.1.tgz}
     version: 6.3.1
     deprecated: This package is deprecated, please use the new fork @ladjs/koa-views. Maintenance is supported by Forward Email at https://forwardemail.net ; follow/watch https://github.com/ladjs/koa-views for updates and release changelog
+
+  koa-websocket@7.0.0:
+    resolution: {integrity: sha512-MsHUFKqA4+j+0dpPKWtsvZfnpQ1NcgF+AaTZQZ4B3Xj/cWK31qqmKx9HnA5Gw1LV2aIDzqwy0IDBsZYRurTUAg==}
 
   koa2-swagger-ui@5.10.0:
     resolution: {integrity: sha512-UEktDUyWP5BvBB8glVWHN14246IH6WZC8sryONC+v9Rm6FA3/8V+CgXpRuHkAEy0KntMwp2sJ5CutTu6ODtC3w==, tarball: https://registry.npmmirror.com/koa2-swagger-ui/-/koa2-swagger-ui-5.10.0.tgz}
@@ -3014,6 +3036,9 @@ packages:
   moment@https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==, tarball: https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz}
     version: 2.29.4
+
+  ms@2.1.2:
+    resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
   ms@https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==, tarball: https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz}
@@ -4411,6 +4436,18 @@ packages:
     resolution: {integrity: sha512-GaETH5wwsX+GcnzhPgKcKjJ6M2Cq3/iZp1WyY/X1CSqrW+jVNM9Y7D8EC2sM4ZG/V8wZlSniJnCKWPmBYAucRQ==, tarball: https://registry.npmmirror.com/write-file-atomic/-/write-file-atomic-2.4.3.tgz}
     version: 2.4.3
 
+  ws@8.17.0:
+    resolution: {integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xdg-basedir@https://registry.npmmirror.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz:
     resolution: {integrity: sha512-1Dly4xqlulvPD3fZUQJLY+FUIeqN3N2MM3uqe4rCJftAvOjFa3jFGfctOgluGx4ahPbUCsZkmJILiP0Vi4T6lQ==, tarball: https://registry.npmmirror.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz}
     version: 3.0.0
@@ -5362,6 +5399,8 @@ snapshots:
       raw-body: https://registry.npmmirror.com/raw-body/-/raw-body-2.5.2.tgz
       type-is: https://registry.npmmirror.com/type-is/-/type-is-1.6.18.tgz
 
+  co@4.6.0: {}
+
   co@https://registry.npmmirror.com/co/-/co-4.6.0.tgz: {}
 
   collection-visit@https://registry.npmmirror.com/collection-visit/-/collection-visit-1.0.0.tgz:
@@ -5514,6 +5553,10 @@ snapshots:
       is-data-view: https://registry.npmmirror.com/is-data-view/-/is-data-view-1.0.1.tgz
 
   date-format@https://registry.npmmirror.com/date-format/-/date-format-4.0.14.tgz: {}
+
+  debug@4.3.4:
+    dependencies:
+      ms: 2.1.2
 
   debug@https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz(supports-color@https://registry.npmmirror.com/supports-color/-/supports-color-5.5.0.tgz):
     dependencies:
@@ -6706,6 +6749,8 @@ snapshots:
       copy-to: https://registry.npmmirror.com/copy-to/-/copy-to-2.0.1.tgz
       type-is: https://registry.npmmirror.com/type-is/-/type-is-1.6.18.tgz
 
+  koa-compose@4.1.0: {}
+
   koa-compose@https://registry.npmmirror.com/koa-compose/-/koa-compose-3.2.1.tgz:
     dependencies:
       any-promise: https://registry.npmmirror.com/any-promise/-/any-promise-1.3.0.tgz
@@ -6838,6 +6883,17 @@ snapshots:
       - velocityjs
       - walrus
       - whiskers
+
+  koa-websocket@7.0.0:
+    dependencies:
+      co: 4.6.0
+      debug: 4.3.4
+      koa-compose: 4.1.0
+      ws: 8.17.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
 
   koa2-swagger-ui@5.10.0(@types/koa@2.15.0):
     dependencies:
@@ -7063,6 +7119,8 @@ snapshots:
       moment: https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz
 
   moment@https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz: {}
+
+  ms@2.1.2: {}
 
   ms@https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz: {}
 
@@ -8297,6 +8355,8 @@ snapshots:
       graceful-fs: 4.2.11
       imurmurhash: https://registry.npmmirror.com/imurmurhash/-/imurmurhash-0.1.4.tgz
       signal-exit: https://registry.npmmirror.com/signal-exit/-/signal-exit-3.0.7.tgz
+
+  ws@8.17.0: {}
 
   xdg-basedir@https://registry.npmmirror.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz: {}
 

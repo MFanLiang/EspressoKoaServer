@@ -12,6 +12,8 @@ pnpm-lock.yaml
 dist
 dist-ssr
 *.local
+.pnpm-store
+v3
 
 # Editor directories and files
 .vscode/*
