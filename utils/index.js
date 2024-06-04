@@ -11,22 +11,31 @@ const os = require('os');
 
 /**
  * @description 模拟网络延迟返回
- * @param time 指定的延迟时间(单位: ms)
+ * @param duration 指定的延迟时间(单位: ms)
  * @returns Promise
  */
-async function useDelay(time) {
+async function useDelay (duration) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
-    }, time)
+    }, duration)
   })
-};
+}
+
+/**
+ * @description 模拟网络延迟返回
+ * @param duration 指定的延迟时间(单位: ms)
+ */
+function useDelayTwo (duration) {
+  var start = Date.now();
+  while (Date.now() - start < duration);
+}
 
 /**
  * @description 获取本地计算机的ip地址
  * @returns string
  */
-function getLocalIP() {
+function getLocalIP () {
   // * 获取当前的操作系统类型 Windows_NT(windows操作系统) ｜ Linux(Linux操作系统) ｜ Darwin(Mac操作系统)
   const osType = os.type();
   // * 获取网络信息
@@ -71,15 +80,15 @@ function getLocalIP() {
       break;
   }
   return ip;
-};
+}
 
 /**
  * @description 格式化源数据
  * @returns Object
  */
-function formatSourceContent(content) {
+function formatSourceContent (content) {
   return JSON.parse(JSON.stringify(content));
-};
+}
 
 /**
  * @description 转换数据结构
@@ -87,7 +96,7 @@ function formatSourceContent(content) {
  * @param parentId 父节点id
  * @returns Array
  */
-function transformDataStructure(menuItems, parentId = null) {
+function transformDataStructure (menuItems, parentId = null) {
   const result = [];
   for (const item of menuItems) {
     if (item.parentMenuId === parentId) {
@@ -100,10 +109,11 @@ function transformDataStructure(menuItems, parentId = null) {
     }
   }
   return result;
-};
+}
 
 module.exports = {
   useDelay,
+  useDelayTwo,
   getLocalIP,
   formatSourceContent,
   transformDataStructure
