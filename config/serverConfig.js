@@ -59,6 +59,9 @@ const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
 /** 存储上传图片文件的目录 */
 const UPLOAD_DIRIMGS = path.join(__dirname, '../public/images');
 
+/** 存储上传的文件的目录 */
+const UPLOAD_DIRFILES = path.join(__dirname, "../public/docs");
+
 /** 刷新 token 提前时间，单位：秒 */
 const refreshTime = 180;
 
@@ -72,6 +75,7 @@ const WHITELIST = [
   "/coffee/user/login",
   "/coffee/user/register",
   "/swagger-ui",
+  "/swagger.yaml",
   "/coffee/rundbSyncShell",
   "/coffee/send-email",
   "/coffee/security/publicKey",
@@ -82,6 +86,7 @@ module.exports = {
   mysql_config,
   RESOURCE_URL,
   UPLOAD_DIRIMGS,
+  UPLOAD_DIRFILES,
   refreshTime,
   expiresInTime,
   WHITELIST

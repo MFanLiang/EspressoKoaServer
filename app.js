@@ -1,10 +1,10 @@
 // 引入 koa 核心主程序
 const Koa = require('koa');
-// 创建 koa 实例 app
-const app = new Koa();
-
+// const websocketify = require("koa-websocket");
 const onerror = require('koa-onerror');
+const path = require("path");
 const views = require('koa-views');
+const koaBody = require('koa-body');
 const json = require('koa-json');
 const cors = require('@koa/cors');
 const koajwt = require('koa-jwt');
@@ -15,6 +15,9 @@ const InitManager = require('./core/initManage');
 const jwtUnless = require('./core/jwt_unless');
 const { UPLOAD_DIRIMGS } = require('./config/serverConfig');
 require('module-alias/register'); // 路径别名
+
+// 创建 koa 实例 app
+const app = new Koa();
 
 // 加载全局环境配置
 InitManager.loadConfig();

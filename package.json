@@ -24,16 +24,17 @@
     "joi": "^17.12.3",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.7.0",
+    "koa-body": "4.1.0",
     "koa-bodyparser": "^4.2.1",
     "koa-convert": "^1.2.0",
     "koa-json": "^2.0.2",
     "koa-jwt": "^4.0.4",
     "koa-logger": "^3.2.0",
-    "koa-multer": "^1.0.2",
     "koa-onerror": "^4.1.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
+    "koa-websocket": "^7.0.0",
     "koa2-swagger-ui": "^5.10.0",
     "log4js": "^6.9.1",
     "mime-types": "^2.1.35",
@@ -47,7 +48,8 @@
     "sequelize": "^6.35.2",
     "sequelize-auto": "^0.8.8",
     "swagger-jsdoc": "^6.2.8",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

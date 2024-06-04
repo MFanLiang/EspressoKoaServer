@@ -2,7 +2,7 @@
  * @Author: xiaomengge && xiaomengge777076@163.com
  * @Date: 2023-07-30 17:12:28
  * @LastEditors: xiaomengge && xiaomengge777076@163.com
- * @LastEditTime: 2024-04-19 18:58:07
+ * @LastEditTime: 2024-05-21 01:11:00
  * @FilePath: \EspressoKoaServer\routes\index.js
  * @Description: 默认(测试)服务-接口路由
  */
@@ -13,48 +13,6 @@ const swaggerUI = require('koa2-swagger-ui').koaSwagger;
 var { getLocalIP } = require('./../utils/index');
 const swaggerSpec = require('../config/swagger.config');
 const router = new Router();
-
-/**
- * @swagger
- * tags:
- *   name: default-api
- *   description: sys default API
- */
-
-/**
- * @swagger
- * tags:
- *   name: 公共模块
- *   description: base module API
- */
-
-/**
- * @swagger
- * tags:
- *   name: 菜单管理
- *   description: Menu management
- */
-
-/**
- * @swagger
- * tags:
- *   name: 文件服务
- *   description: File management
- */
-
-/**
- * @swagger
- * tags:
- *   name: 用户管理
- *   description: User management
- */
-
-/**
- * @swagger
- * tags:
- *   name: 业务模块
- *   description: General service module
- */
 
 /**
  * @swagger
