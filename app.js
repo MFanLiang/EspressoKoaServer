@@ -8,6 +8,8 @@ const koaBody = require('koa-body');
 const json = require('koa-json');
 const cors = require('@koa/cors');
 const koajwt = require('koa-jwt');
+const session = require('koa-generic-session');
+const RedisStore = require('koa-redis');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const staticDir = require('koa-static');
@@ -22,8 +24,16 @@ const app = new Koa();
 // 加载全局环境配置
 InitManager.loadConfig();
 
+// 发送给浏览器 cookie 值时的加密数组
+app.keys = ['keys', 'keykeys'];
+app.use(session({
+  key: 'espress',
+  prefix: 'espress_prf',
+  store: RedisStore()
+}));
+
 // 引入日志格式化输出工具函数
-const logsUtils = require("./utils/logs.js");
+const logsUtils = require('./utils/logs.js');
 
 // 引入中间件
 const baseCheckPath = require('./middleware/index.js');
@@ -35,7 +45,7 @@ const response = require('./middleware/response');
 const httpProxy = require('./middleware/httpProxy');
 
 // * 引入 NodeJS 环境变量配置
-require("./env/env.config.js");
+require('./env/env.config.js');
 
 // * error handler
 onerror(app);

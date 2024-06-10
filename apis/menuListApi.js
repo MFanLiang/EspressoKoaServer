@@ -24,7 +24,7 @@ const getMenuList = async (ctx, next) => {
   // select id, name as title, alias as path, icon, status, parent_menu_id as parentMenuId, subordinate_role as subordinateRole, is_link as isLink, sort
   // from sys_network.menu_route 
   // where parent_menu_id is null 
-  // union all 
+  // union all
   // select m.id, m.name, m.alias, m.icon, m.status, m.parent_menu_id, m.subordinate_role as subordinateRole, m.is_link, m.sort
   // from sys_network.menu_route m 
   // join menuTree mt on m.parent_menu_id = mt.id 
@@ -37,15 +37,34 @@ const getMenuList = async (ctx, next) => {
     code: 200,
     data: treeData,
     message: '查询系统菜单成功',
+    total: treeData.length,
+    pageSize: 10
   };
 };
 
 /**
- * @name 新建菜单
+ * @name 新建父级菜单
  */
-const createMenu = async (ctx, next) => {
+const createParentMenu = async (ctx, next) => {
   // 如果表不存在, 则创建菜单路由表(如果已经存在, 则不执行任何操作)
   await models.menu_route.sync();
+
+  // 解密前端传递的token
+  const decryptToken = ctx.decryptToken(ctx.request.header.authorization);
+  const queryed = await sequelize.query(`select um.id as userId, um.user_role as userRole from sys_network.user_manage um where um.id = (select user_id from sys_network.online_token ot where token = "${decryptToken}");`);
+
+  const { userRole, userId } = queryed[0][0];
+
+  // 创建用户和菜单的关联数据 id
+  async function createUserMenuConnectionFunc(params) {
+    // 如果请求接口的角色是超级管理员，则创建关联数据，否则不创建
+    if (userRole === 0) {
+      await models.user_menu.create({
+        userBeFromId: userId,
+        menuBeFromId: params.id
+      });
+    }
+  }
 
   const data = ctx.request.body;
   await models.menu_route.create({
@@ -55,6 +74,7 @@ const createMenu = async (ctx, next) => {
   })
     .then(async (menuData) => {
       const menuDataFormat = formatSourceContent(menuData);
+      await createUserMenuConnectionFunc(menuDataFormat);
       ctx.response.body = {
         code: 200,
         data: menuDataFormat,
@@ -140,6 +160,6 @@ const getAuthBtns = async (ctx, next) => {
 
 module.exports = {
   getMenuList,
-  createMenu,
+  createParentMenu,
   getAuthBtns,
 };

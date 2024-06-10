@@ -8,7 +8,7 @@
  */
 
 const Router = require('koa-router');
-const { getMenuList, createMenu, getAuthBtns } = require('../apis/menuListApi');
+const { getMenuList, createParentMenu, getAuthBtns } = require('../apis/menuListApi');
 const router = new Router;
 
 /**
@@ -83,8 +83,8 @@ router.get('/coffee/menu/list', getMenuList);
  * @swagger
  *   /coffee/menu/create:
  *     post:
- *       summary: 新建菜单
- *       description: 创建一个新的菜单路由
+ *       summary: 新建父级菜单
+ *       description: 创建一个新的父级菜单路由
  *       tags: [菜单管理]
  *       security:
  *         - BearerAuth: []
@@ -202,7 +202,7 @@ router.get('/coffee/menu/list', getMenuList);
  *         '404':
  *           description: 请求资源未找到
  */
-router.post("/coffee/menu/create", createMenu);
+router.post("/coffee/menu/create", createParentMenu);
 
 /**
  * @swagger
