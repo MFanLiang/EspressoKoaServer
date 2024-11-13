@@ -13,7 +13,7 @@ const { getLocalIP } = require('../utils');
 /** 数据库基本配置信息 */
 const getMysqlConfig = () => {
   let sqlConfig = null;
-  let sqlBaseConfig = {
+  const sqlBaseConfig = {
     /** 主机地址 */
     HOST: 'localhost',
     /** 数据库用户名 */
@@ -40,18 +40,18 @@ const getMysqlConfig = () => {
     }
   };
 
-  if (process.env.NODE_ENV === "development" || "development") {
+  if (process.env.NODE_ENV === 'development' || 'development') {
     // 开发环境
     sqlConfig = { ...sqlBaseConfig };
   } else {
     // 生产环境
-    sqlConfig = { ...sqlBaseConfig, HOST: "116.63.24.17" };
+    sqlConfig = { ...sqlBaseConfig, HOST: '116.63.24.17' };
   }
   return sqlConfig;
 };
 
 /** 数据库配置 */
-let mysql_config = getMysqlConfig();
+const mysql_config = getMysqlConfig();
 
 /** 上传后资源的 url 地址 */
 const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
@@ -60,25 +60,26 @@ const RESOURCE_URL = `http://${getLocalIP()}:${process.env.PORT || '5050'}/`;
 const UPLOAD_DIRIMGS = path.join(__dirname, '../public/images');
 
 /** 存储上传的文件的目录 */
-const UPLOAD_DIRFILES = path.join(__dirname, "../public/docs");
+const UPLOAD_DIRFILES = path.join(__dirname, '../public/docs');
 
 /** 刷新 token 提前时间，单位：秒 */
 const refreshTime = 180;
 
 /** token 有效时间，单位：秒 */
 // 如果是使用字符串情况下，需要确保提供时间的单位，例如："2 days" 表示两天, "10h" 表示10个小时, "7d" 表示7天, "3m" 表示三分钟
-const expiresInTime = "10h";
+const expiresInTime = '10h';
 
 /** 路由接口白名单(特殊的接口地址，不需要验证 jwt) */
 const WHITELIST = [
-  "/",
-  "/coffee/user/login",
-  "/coffee/user/register",
-  "/swagger-ui",
-  "/swagger.yaml",
-  "/coffee/rundbSyncShell",
-  "/coffee/send-email",
-  "/coffee/security/publicKey",
+  '/',
+  '/coffee/user/login',
+  '/coffee/user/register',
+  '/swagger-ui',
+  '/swagger.yaml',
+  '/coffee/rundbSyncShell',
+  '/coffee/send-email',
+  '/coffee/security/publicKey',
+  '/coffee/user/user-all-info'
 ];
 
 // * 分量导出所有服务运行时配置变量

@@ -90,3 +90,5 @@ pnpm run start:dev
 ## 注意事项及问题
 
 [Q&A.md](./markdown/Q&A.md)
+
+"canvas": "^2.11.2",

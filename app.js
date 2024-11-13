@@ -2,7 +2,6 @@
 const Koa = require('koa');
 // const websocketify = require("koa-websocket");
 const onerror = require('koa-onerror');
-const path = require("path");
 const views = require('koa-views');
 const koaBody = require('koa-body');
 const json = require('koa-json');
@@ -16,6 +15,7 @@ const staticDir = require('koa-static');
 const InitManager = require('./core/initManage');
 const jwtUnless = require('./core/jwt_unless');
 const { UPLOAD_DIRIMGS } = require('./config/serverConfig');
+
 require('module-alias/register'); // 路径别名
 
 // 创建 koa 实例 app

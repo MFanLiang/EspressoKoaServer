@@ -4,34 +4,56 @@
  * Module dependencies.
  */
 
+const path = require("path");
 var app = require('../app');
 var debug = require('debug')('demo:server');
 var http = require('http');
+const https = require("https");
+const fs = require('fs');
 var { getLocalIP } = require('./../utils/index');
 
 /**
  * Get port from environment and store in Express.
  */
 
-// * 服务端口
-var port = normalizePort(process.env.PORT || '5050');
-// app.set('port', port);
+/** http 服务端口 */
+var port_http = normalizePort(process.env.PORT || '5050');
+
+/** https 服务端口 */
+var port_https = normalizePort(process.env.PORT_HTTPS || '443');
 
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app.callback());
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port, () => {
-  console.log(`The service is running, starting on port ${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port}.`);
+server.listen(port_http, () => {
+  console.log(`The http service is running, starting on port http://${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port_http}.`);
 });
 server.on('error', onError);
 server.on('listening', onListening);
+
+/**
+ * Create HTTPS server.
+ */
+var server_https = https.createServer(app.callback());
+
+// 读取证书和私钥文件
+const options = {
+  key: fs.readFileSync(path.join(__dirname, '../cert/private.key')), // 私钥
+  cert: fs.readFileSync(path.join(__dirname, '../cert/certificate.crt')) // 证书
+};
+
+server_https.listen(port_https, () => {
+  console.log(`The https service is running, starting on port https://${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port_https}.`);
+});
+
+server_https.on('error', onError);
+server_https.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -71,11 +93,9 @@ function onError (error) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
       process.exit(1);
-      break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
       process.exit(1);
-      break;
     default:
       throw error;
   }
@@ -93,4 +113,4 @@ function onListening () {
   debug('Listening on ' + bind);
 }
 
-module.exports = { port };
+module.exports = { port_http, port_https };
