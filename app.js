@@ -113,7 +113,7 @@ app.use(async (ctx, next) => {
   // 获取请求接入方式为postman
   const IS_POSTMAN = ctx.request.header['user-agent'].slice(0, 7) === 'Postman'; // 'Postman'
   // 获取请求接入方式为swagger-ui文档
-  const SWAGGERUI = ctx.request.header['referer']?.slice(-7); // 'gger-ui'
+  const SWAGGERUI = ctx.request.header['referer']?.slice(-7); // 'swgger-ui'
 
   // * 如果请求接入方式为postman，则放行 token 验证过程
   if (IS_POSTMAN) {

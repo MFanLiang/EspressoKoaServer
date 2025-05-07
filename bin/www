@@ -38,16 +38,16 @@ server.listen(port_http, () => {
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Create HTTPS server.
- */
-var server_https = https.createServer(app.callback());
-
 // 读取证书和私钥文件
 const options = {
   key: fs.readFileSync(path.join(__dirname, '../cert/private.key')), // 私钥
   cert: fs.readFileSync(path.join(__dirname, '../cert/certificate.crt')) // 证书
 };
+
+/**
+ * Create HTTPS server.
+ */
+var server_https = https.createServer(options, app.callback());
 
 server_https.listen(port_https, () => {
   console.log(`The https service is running, starting on port https://${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port_https}.`);

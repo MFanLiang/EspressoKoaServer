@@ -53,6 +53,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       comment: "提交作者"
     },
+    avatar: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: "https:\/\/xiaomenglovecoffee.top\/staticdata\/dog.png",
+      comment: "用户头像"
+    },
     createTime: {
       type: DataTypes.DATE,
       allowNull: false,
