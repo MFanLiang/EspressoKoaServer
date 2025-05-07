@@ -30,9 +30,10 @@ var server = http.createServer(app.callback());
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port_http, () => {
-  console.log(`The http service is running, starting on port http://${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port_http}.`);
+  console.log(`The service is running at ${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port_http}.`);
+  console.log(`→ Local: http://localhost:${port_http}.`)
+  console.log(`→ Network: http://${process.env.NODE_ENV === "development" ? getLocalIP() || process.env.HOST_IPADDRESS : process.env.HOST_IPADDRESS}:${port_http}.`)
 });
 server.on('error', onError);
 server.on('listening', onListening);
